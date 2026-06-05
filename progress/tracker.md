@@ -8,7 +8,7 @@
 
 | Hari | Topik | Output Konkret | Status | Selesai |
 |------|-------|----------------|--------|---------|
-| [Hari 01](daily/hari-01.md) | Setup Repo & Golang API | `main.go` dengan 3 endpoint + unit test | ⬜ | — |
+| [Hari 01](daily/hari-01.md) | Setup Repo & Golang API | `main.go` dengan 3 endpoint + unit test | ✅ | 2026-06-05 |
 | [Hari 02](daily/hari-02.md) | Pipeline CI/CD Dasar | `ci.yml` — auto build & test on push | ⬜ | — |
 | [Hari 03](daily/hari-03.md) | Secret Scanning (Gitleaks) | Gitleaks lokal + `.gitleaks.toml` dikonfigurasi | ⬜ | — |
 | [Hari 04](daily/hari-04.md) | Secret Scan di Pipeline + Remediasi | Job Gitleaks di CI, kredensial ke env vars | ⬜ | — |
@@ -24,7 +24,7 @@
 | [Hari 14](daily/hari-14.md) | Intentional Vuln Test | Commit fake secret → Gitleaks gagalkan build → revert | ⬜ | — |
 | [Hari 15](daily/hari-15.md) | Dokumentasi Fase 1 | `fase-1-appsec.md` lengkap dengan cara kerja SAST, SCA, Secret Scan | ⬜ | — |
 
-**Progres Fase 1: 0/15**
+**Progres Fase 1: 1/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 0 / 60 |
+| Total Hari Selesai | 1 / 60 |
 | Fase Selesai | 0 / 4 |
-| Hari Aktif (ada catatan) | 0 |
+| Hari Aktif (ada catatan) | 1 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
