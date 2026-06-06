@@ -1,0 +1,37 @@
+name: SecureBank CI - Day 02
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build & Test (Go 1.26)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: securebank-api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go 1.26
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test with Race Detection & Coverage
+        run: go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: securebank-api/coverage.out
