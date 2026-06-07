@@ -1,0 +1,8 @@
+title = "SecureBank Gitleaks Config"
+
+[allowlist]
+  paths = [
+    '''go\.sum''',
+    '''vendor/''',
+    '''docs/''',
+  ]
