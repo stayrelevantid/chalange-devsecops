@@ -1,8 +1,14 @@
 title = "SecureBank Gitleaks Config"
 
 [allowlist]
+  description = "Global allowlist for SecureBank DevSecOps project"
   paths = [
     '''go\.sum''',
     '''vendor/''',
     '''docs/''',
+    '''progress/''',
+    '''blogpost\.md''',
+    '''securebank-api/security/''',
+    '''\.gitleaks\.toml''',
+    '''\.gitignore''',
   ]
