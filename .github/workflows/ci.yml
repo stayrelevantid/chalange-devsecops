@@ -1,4 +1,4 @@
-name: SecureBank CI - Day 02
+name: SecureBank CI - Day 04
 
 on:
   push:
@@ -35,3 +35,17 @@ jobs:
         with:
           name: coverage-report
           path: securebank-api/coverage.out
+
+  secret-scan:
+    name: Secret Scan (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

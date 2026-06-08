@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"sync"
+
+	"github.com/stayrelevantid/securebank-api/configs"
 )
 
 type Account struct {
@@ -70,9 +72,10 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	cfg := configs.Load()
 	http.HandleFunc("/health", healthCheck)
 	http.HandleFunc("/balance", getBalance)
 	http.HandleFunc("/transfer", transfer)
-	log.Println("SecureBank API running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Printf("SecureBank API running on :%s", cfg.Port)
+	log.Fatal(http.ListenAndServe(":"+cfg.Port, nil))
 }
