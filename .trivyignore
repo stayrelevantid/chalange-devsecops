@@ -1,0 +1,12 @@
+# .trivyignore — Accepted risks for SecureBank API
+# These are intentionally vulnerable dependencies added for Day 05 SCA learning
+
+# jwt-go is deprecated — will be replaced with golang-jwt/jwt/v5 on Day 07
+CVE-2020-26160
+
+# golang.org/x/crypto — transitive dependency from gin, fixed on Day 07
+CVE-2024-45337
+CVE-2025-22869
+
+# golang.org/x/net — transitive dependency from gin, fixed on Day 07
+CVE-2023-39325

@@ -12,7 +12,7 @@
 | [Hari 02](daily/hari-02.md) | Pipeline CI/CD Dasar | `ci.yml` — auto build & test on push | ✅ | 2026-06-06 |
 | [Hari 03](daily/hari-03.md) | Secret Scanning (Gitleaks) | Gitleaks lokal + `.gitleaks.toml` dikonfigurasi | ✅ | 2026-06-07 |
 | [Hari 04](daily/hari-04.md) | Secret Scan di Pipeline + Remediasi | Job Gitleaks di CI, kredensial ke env vars | ✅ | 2026-06-08 |
-| [Hari 05](daily/hari-05.md) | SCA Setup (Trivy FS) | `trivy fs .` menemukan CVE di `go.mod` | ⬜ | — |
+| [Hari 05](daily/hari-05.md) | SCA Setup (Trivy FS) | `trivy fs .` menemukan CVE di `go.mod` | ✅ | 2026-06-09 |
 | [Hari 06](daily/hari-06.md) | SCA di Pipeline (Gate) | Job Trivy gagalkan build jika CVE CRITICAL | ⬜ | — |
 | [Hari 07](daily/hari-07.md) | SCA Remediation | `go get -u` patch dependensi, pipeline hijau | ⬜ | — |
 | [Hari 08](daily/hari-08.md) | SAST Setup (Semgrep) | Semgrep lokal menemukan insecure crypto & SQL injection | ⬜ | — |
@@ -24,7 +24,7 @@
 | [Hari 14](daily/hari-14.md) | Intentional Vuln Test | Commit fake secret → Gitleaks gagalkan build → revert | ⬜ | — |
 | [Hari 15](daily/hari-15.md) | Dokumentasi Fase 1 | `fase-1-appsec.md` lengkap dengan cara kerja SAST, SCA, Secret Scan | ⬜ | — |
 
-**Progres Fase 1: 4/15**
+**Progres Fase 1: 5/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 4 / 60 |
+| Total Hari Selesai | 5 / 60 |
 | Fase Selesai | 0 / 4 |
-| Hari Aktif (ada catatan) | 4 |
+| Hari Aktif (ada catatan) | 5 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
