@@ -77,7 +77,7 @@ securebank-api/
 
 | Fase | Status | Selesai |
 |------|--------|---------|
-| 🔐 Fase 1 — Secure SDLC & AppSec | 🔄 Berjalan | 5/15 |
+| 🔐 Fase 1 — Secure SDLC & AppSec | 🔄 Berjalan | 6/15 |
 | 🐳 Fase 2 — IaC & Container Security | ⏳ Menunggu | 0/15 |
 | ☸️ Fase 3 — K8s & Runtime Security | ⏳ Menunggu | 0/15 |
 | 🔴 Fase 4 — Vuln Mgmt & Red Team | ⏳ Menunggu | 0/15 |
