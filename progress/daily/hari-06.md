@@ -67,7 +67,7 @@ sca-scan:
 
 | Hambatan | Solusi / Workaround |
 |----------|---------------------|
-| — | Tidak ada hambatan — menggunakan `trivy-action` yang sudah tersedia gratis, berbeda dengan Gitleaks yang butuh binary install manual |
+| Pipeline hijau padahal seharusnya merah (4 CVE ditemukan) | `.trivyignore` di root repo mengecualikan semua 4 CVE — Trivy membaca file ini di CI dan meng-ignore semua temuan. Solusi: hapus `.trivyignore` supaya quality gate berfungsi. File ini hanya dipakai di lokal untuk dokumentasi accepted risk |
 
 ---
 
@@ -86,7 +86,8 @@ sca-scan:
 - **`trivy-action@master`** gratis dan tidak butuh lisensi — berbeda dengan `gitleaks-action@v2` yang sekarang butuh lisensi berbayar
 - **`scan-ref`** harus mengarah ke direktori yang berisi `go.mod` — karena proyek kita ada di subdirektori `securebank-api/`, bukan di root repo
 - **`if: always()`** memastikan report tetap di-upload meskipun Trivy menemukan CVE dan pipeline gagal — penting untuk debugging
-- **`.trivyignore` hanya untuk lokal** — di CI, kita ingin pipeline gagal untuk membuktikan quality gate berfungsi
+- **`.trivyignore` hanya untuk lokal** — di CI, kita tidak pakai `.trivyignore` supaya pipeline gagal. File ini dihapus dari repo setelah diketahui menyebabkan false green di CI
+- **`.trivyignore` vs CI** — `.trivyignore` menyebabkan semua CVE di-ignore sehingga pipeline hijau padahal ada 4 CVE. Harus dihapus supaya quality gate bekerja
 
 ---
 
