@@ -1,6 +1,6 @@
 package crypto
 
 import (
-	_ "github.com/dgrijalva/jwt-go"
 	_ "github.com/gin-gonic/gin"
+	_ "github.com/golang-jwt/jwt/v5"
 )
