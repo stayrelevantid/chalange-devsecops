@@ -11,4 +11,5 @@ title = "SecureBank Gitleaks Config"
     '''securebank-api/security/''',
     '''\.gitleaks\.toml''',
     '''\.gitignore''',
+    '''\.semgrep\.yml''',
   ]

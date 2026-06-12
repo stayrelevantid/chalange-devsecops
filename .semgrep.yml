@@ -1,0 +1,14 @@
+rules:
+  - id: no-md5-usage
+    patterns:
+      - pattern: md5.Sum(...)
+    message: "MD5 is cryptographically broken. Use SHA-256 or bcrypt for password hashing."
+    languages: [go]
+    severity: ERROR
+
+  - id: no-http-listen-without-tls
+    patterns:
+      - pattern: http.ListenAndServe(...)
+    message: "HTTP server without TLS detected. Use http.ListenAndServeTLS() for production."
+    languages: [go]
+    severity: WARNING
