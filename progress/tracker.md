@@ -17,14 +17,14 @@
 | [Hari 07](daily/hari-07.md) | SCA Remediation | `go get -u` patch dependensi, pipeline hijau | ✅ | 2026-06-11 |
 | [Hari 08](daily/hari-08.md) | SAST Setup (Semgrep) | Semgrep lokal menemukan insecure crypto & SQL injection | ✅ | 2026-06-12 |
 | [Hari 09](daily/hari-09.md) | SAST di Pipeline (Gate) | Job Semgrep blokir PR jika severity HIGH | ✅ | 2026-06-13 |
-| [Hari 10](daily/hari-10.md) | SAST Remediation | Fix md5→sha256, parameterized query, pipeline hijau | ⬜ | — |
+| [Hari 10](daily/hari-10.md) | SAST Remediation | Fix md5→bcrypt, pipeline hijau | ✅ | 2026-06-14 |
 | [Hari 11](daily/hari-11.md) | AI-Assisted Code Audit | Output Trivy/Semgrep → AI → perbaikan diterapkan | ⬜ | — |
 | [Hari 12](daily/hari-12.md) | Pipeline Optimization | Cache Go modules, parallel jobs, total < 2 menit | ⬜ | — |
 | [Hari 13](daily/hari-13.md) | Threat Modeling (STRIDE) | Diagram arsitektur + tabel ancaman di `threat-model/` | ⬜ | — |
 | [Hari 14](daily/hari-14.md) | Intentional Vuln Test | Commit fake secret → Gitleaks gagalkan build → revert | ⬜ | — |
 | [Hari 15](daily/hari-15.md) | Dokumentasi Fase 1 | `fase-1-appsec.md` lengkap dengan cara kerja SAST, SCA, Secret Scan | ⬜ | — |
 
-**Progres Fase 1: 9/15**
+**Progres Fase 1: 10/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 9 / 60 |
+| Total Hari Selesai | 10 / 60 |
 | Fase Selesai | 0 / 4 |
-| Hari Aktif (ada catatan) | 9 |
+| Hari Aktif (ada catatan) | 10 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
