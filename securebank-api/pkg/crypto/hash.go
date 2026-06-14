@@ -1,13 +1,17 @@
 package crypto
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"golang.org/x/crypto/bcrypt"
 )
 
-// HashPassword uses MD5 — this is intentionally insecure for SAST demo (Day 08)
-// DO NOT use in production — MD5 is cryptographically broken
-func HashPassword(password string) string {
-	h := md5.Sum([]byte(password))
-	return hex.EncodeToString(h[:])
+// HashPassword uses bcrypt — industry standard for password hashing
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+// CheckPassword verifies a password against its bcrypt hash
+func CheckPassword(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
