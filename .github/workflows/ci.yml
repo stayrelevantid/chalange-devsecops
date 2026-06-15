@@ -26,12 +26,13 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.26'
+          cache: true
 
       - name: Build
         run: go build -v ./...
 
       - name: Test with Race Detection & Coverage
-        run: go test -v -race -coverprofile=coverage.out ./...
+        run: go test -v -race -count=1 -coverprofile=coverage.out ./...
 
       - name: Upload Coverage Report
         if: always()
@@ -49,11 +50,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Cache Gitleaks binary
+        uses: actions/cache@v4
+        id: cache-gitleaks
+        with:
+          path: /usr/local/bin/gitleaks
+          key: gitleaks-8.30.1
+
       - name: Install Gitleaks
+        if: steps.cache-gitleaks.outputs.cache-hit != 'true'
         run: |
           GITLEAKS_VERSION="8.30.1"
           wget -q "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -O /tmp/gitleaks.tar.gz
-          file /tmp/gitleaks.tar.gz
           tar -xzf /tmp/gitleaks.tar.gz -C /tmp/
           sudo mv /tmp/gitleaks /usr/local/bin/
           gitleaks version
@@ -67,6 +75,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Cache Trivy DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trivy
+          key: trivy-db-${{ github.run_id }}
+          restore-keys: |
+            trivy-db-
+
+      - name: Update Trivy DB
+        run: trivy image --download-db-only 2>/dev/null || true
 
       - name: Run Trivy SCA
         uses: aquasecurity/trivy-action@master
@@ -91,6 +110,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Cache Semgrep
+        uses: actions/cache@v4
+        with:
+          path: ~/.semgrep
+          key: semgrep-rules-${{ hashFiles('.semgrep.yml') }}
+          restore-keys: |
+            semgrep-rules-
 
       - name: Run Semgrep
         uses: semgrep/semgrep-action@v1
