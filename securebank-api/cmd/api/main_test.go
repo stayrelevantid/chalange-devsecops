@@ -6,7 +6,22 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
+
+	"github.com/stayrelevantid/securebank-api/internal/middleware"
+	"github.com/stayrelevantid/securebank-api/pkg/crypto"
 )
+
+var testJWTSecret = []byte("test-secret-key-for-testing-only")
+
+func generateTestToken(t *testing.T) string {
+	t.Helper()
+	token, err := crypto.GenerateToken(testJWTSecret, "test-user", 1*time.Hour)
+	if err != nil {
+		t.Fatalf("failed to generate test token: %v", err)
+	}
+	return token
+}
 
 func TestHealthCheck(t *testing.T) {
 	req := httptest.NewRequest("GET", "/health", nil)
@@ -24,10 +39,36 @@ func TestHealthCheck(t *testing.T) {
 	}
 }
 
-func TestGetBalanceFound(t *testing.T) {
-	req := httptest.NewRequest("GET", "/balance?id=ACC001", nil)
+func TestHealthCheckSecurityHeaders(t *testing.T) {
+	handler := middleware.SecurityHeaders(middleware.LimitBodySize(1024, healthCheck))
+	req := httptest.NewRequest("GET", "/health", nil)
 	w := httptest.NewRecorder()
-	getBalance(w, req)
+	handler(w, req)
+
+	checks := map[string]string{
+		"X-Content-Type-Options": "nosniff",
+		"X-Frame-Options":        "DENY",
+		"Cache-Control":          "no-store",
+	}
+	for header, expected := range checks {
+		got := w.Header().Get(header)
+		if got != expected {
+			t.Errorf("expected %s=%s, got %s", header, expected, got)
+		}
+	}
+}
+
+func TestGetBalanceFound(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(1024,
+			middleware.RequireAuth(testJWTSecret, getBalance),
+		),
+	)
+	req := httptest.NewRequest("GET", "/balance?id=ACC001", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	w := httptest.NewRecorder()
+	handler(w, req)
 	if w.Code != http.StatusOK {
 		t.Errorf("expected 200, got %d", w.Code)
 	}
@@ -41,43 +82,195 @@ func TestGetBalanceFound(t *testing.T) {
 }
 
 func TestGetBalanceNotFound(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(1024,
+			middleware.RequireAuth(testJWTSecret, getBalance),
+		),
+	)
 	req := httptest.NewRequest("GET", "/balance?id=INVALID", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
 	w := httptest.NewRecorder()
-	getBalance(w, req)
+	handler(w, req)
 	if w.Code != http.StatusNotFound {
 		t.Errorf("expected 404, got %d", w.Code)
 	}
 }
 
+func TestGetBalanceMissingID(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(1024,
+			middleware.RequireAuth(testJWTSecret, getBalance),
+		),
+	)
+	req := httptest.NewRequest("GET", "/balance", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400, got %d", w.Code)
+	}
+}
+
+func TestGetBalanceNoAuth(t *testing.T) {
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(1024,
+			middleware.RequireAuth(testJWTSecret, getBalance),
+		),
+	)
+	req := httptest.NewRequest("GET", "/balance?id=ACC001", nil)
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401, got %d", w.Code)
+	}
+}
+
+func TestGetBalanceInvalidToken(t *testing.T) {
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(1024,
+			middleware.RequireAuth(testJWTSecret, getBalance),
+		),
+	)
+	req := httptest.NewRequest("GET", "/balance?id=ACC001", nil)
+	req.Header.Set("Authorization", "Bearer invalid-token")
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401, got %d", w.Code)
+	}
+}
+
 func TestTransferSuccess(t *testing.T) {
+	resetAccounts()
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
 	body, _ := json.Marshal(TransferReq{From: "ACC001", To: "ACC002", Amount: 500})
 	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
 	w := httptest.NewRecorder()
-	transfer(w, req)
+	handler(w, req)
 	if w.Code != http.StatusOK {
 		t.Errorf("expected 200, got %d", w.Code)
 	}
 }
 
 func TestTransferInsufficientBalance(t *testing.T) {
+	resetAccounts()
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
 	body, _ := json.Marshal(TransferReq{From: "ACC001", To: "ACC002", Amount: 999999})
 	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
 	w := httptest.NewRecorder()
-	transfer(w, req)
+	handler(w, req)
 	if w.Code != http.StatusBadRequest {
 		t.Errorf("expected 400, got %d", w.Code)
 	}
 }
 
 func TestTransferAccountNotFound(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
 	body, _ := json.Marshal(TransferReq{From: "INVALID", To: "ACC002", Amount: 100})
 	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
 	w := httptest.NewRecorder()
-	transfer(w, req)
+	handler(w, req)
 	if w.Code != http.StatusNotFound {
 		t.Errorf("expected 404, got %d", w.Code)
 	}
+}
+
+func TestTransferNoAuth(t *testing.T) {
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
+	body, _ := json.Marshal(TransferReq{From: "ACC001", To: "ACC002", Amount: 100})
+	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401, got %d", w.Code)
+	}
+}
+
+func TestTransferNegativeAmount(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
+	body, _ := json.Marshal(TransferReq{From: "ACC001", To: "ACC002", Amount: -100})
+	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for negative amount, got %d", w.Code)
+	}
+}
+
+func TestTransferZeroAmount(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
+	body, _ := json.Marshal(TransferReq{From: "ACC001", To: "ACC002", Amount: 0})
+	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for zero amount, got %d", w.Code)
+	}
+}
+
+func TestTransferEmptyAccountID(t *testing.T) {
+	token := generateTestToken(t)
+	handler := middleware.SecurityHeaders(
+		middleware.LimitBodySize(4096,
+			middleware.RequireAuth(testJWTSecret, transfer),
+		),
+	)
+	body, _ := json.Marshal(TransferReq{From: "", To: "ACC002", Amount: 100})
+	req := httptest.NewRequest("POST", "/transfer", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+	w := httptest.NewRecorder()
+	handler(w, req)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for empty from account, got %d", w.Code)
+	}
+}
+
+func resetAccounts() {
+	mu.Lock()
+	defer mu.Unlock()
+	accounts["ACC001"] = &Account{ID: "ACC001", Name: "Alice", Balance: 10000}
+	accounts["ACC002"] = &Account{ID: "ACC002", Name: "Bob", Balance: 5000}
 }

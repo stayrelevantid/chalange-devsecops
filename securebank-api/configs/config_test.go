@@ -16,15 +16,20 @@ func TestLoadDefaultValues(t *testing.T) {
 	if cfg.DBPassword != "" {
 		t.Errorf("expected default DBPassword empty, got %s", cfg.DBPassword)
 	}
+	if cfg.JWTSecret != "dev-secret-change-in-production" {
+		t.Errorf("expected default JWTSecret dev-secret-change-in-production, got %s", cfg.JWTSecret)
+	}
 }
 
 func TestLoadFromEnvVars(t *testing.T) {
 	os.Setenv("PORT", "9090")
 	os.Setenv("DB_HOST", "db.example.com")
 	os.Setenv("DB_PASSWORD", "mysecretpassword")
+	os.Setenv("JWT_SECRET", "my-jwt-secret")
 	defer os.Unsetenv("PORT")
 	defer os.Unsetenv("DB_HOST")
 	defer os.Unsetenv("DB_PASSWORD")
+	defer os.Unsetenv("JWT_SECRET")
 
 	cfg := Load()
 	if cfg.Port != "9090" {
@@ -35,5 +40,8 @@ func TestLoadFromEnvVars(t *testing.T) {
 	}
 	if cfg.DBPassword != "mysecretpassword" {
 		t.Errorf("expected DBPassword mysecretpassword, got %s", cfg.DBPassword)
+	}
+	if cfg.JWTSecret != "my-jwt-secret" {
+		t.Errorf("expected JWTSecret my-jwt-secret, got %s", cfg.JWTSecret)
 	}
 }
