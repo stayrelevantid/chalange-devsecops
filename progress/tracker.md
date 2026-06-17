@@ -20,11 +20,11 @@
 | [Hari 10](daily/hari-10.md) | SAST Remediation | Fix md5→bcrypt, pipeline hijau | ✅ | 2026-06-14 |
 | [Hari 11](daily/hari-11.md) | AI-Assisted Code Audit | Output Trivy/Semgrep → AI → perbaikan diterapkan | ✅ | 2026-06-15 |
 | [Hari 12](daily/hari-12.md) | Pipeline Optimization | Cache Go modules, parallel jobs, total < 2 menit | ✅ | 2026-06-15 |
-| [Hari 13](daily/hari-13.md) | Threat Modeling (STRIDE) | Diagram arsitektur + tabel ancaman di `threat-model/` | ⬜ | — |
+| [Hari 13](daily/hari-13.md) | Threat Modeling (STRIDE) | Diagram arsitektur + tabel ancaman di `threat-model/` | ✅ | 2026-06-15 |
 | [Hari 14](daily/hari-14.md) | Intentional Vuln Test | Commit fake secret → Gitleaks gagalkan build → revert | ⬜ | — |
 | [Hari 15](daily/hari-15.md) | Dokumentasi Fase 1 | `fase-1-appsec.md` lengkap dengan cara kerja SAST, SCA, Secret Scan | ⬜ | — |
 
-**Progres Fase 1: 12/15**
+**Progres Fase 1: 13/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 12 / 60 |
+| Total Hari Selesai | 13 / 60 |
 | Fase Selesai | 0 / 4 |
-| Hari Aktif (ada catatan) | 12 |
+| Hari Aktif (ada catatan) | 13 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
