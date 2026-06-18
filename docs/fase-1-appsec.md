@@ -809,3 +809,335 @@ Tulis `docs/fase-1-appsec.md` dengan struktur:
 ---
 
 > ✅ **Selesai Fase 1** — Lanjut ke [Fase 2: Infrastructure as Code & Container Security](fase-2-infra-container.md)
+
+---
+
+# Fase 1: Dokumentasi Retrospektif
+
+> **Tanggal:** 2026-06-18  
+> **Durasi:** Hari 1–14 (14 hari aktif)  
+> **Status:** ✅ Selesai  
+
+---
+
+## 1. Arsitektur Pipeline
+
+```mermaid
+graph LR
+    Push[git push / PR] --> Build[Build & Test]
+    Push --> Secret[Secret Scan<br/>Gitleaks]
+    Push --> SCA[SCA Scan<br/>Trivy]
+    Push --> SAST[SAST Scan<br/>Semgrep]
+
+    Build --> Check1{Tests Pass?}
+    Secret --> Check2{Leaks Found?}
+    SCA --> Check3{CVE Found?}
+    SAST --> Check4{Findings?}
+
+    Check1 -->|Yes| OK[✅ Pipeline Green]
+    Check2 -->|No| OK
+    Check3 -->|No CVE| OK
+    Check4 -->|No ERROR| OK
+
+    Check1 -->|No| FAIL[❌ Pipeline Red]
+    Check2 -->|Yes| FAIL
+    Check3 -->|CRITICAL/HIGH CVE| FAIL
+    Check4 -->|ERROR finding| FAIL
+```
+
+**4 parallel jobs, semuanya harus pass untuk pipeline hijau:**
+
+| Job | Tool | Purpose | Quality Gate |
+|-----|------|---------|-------------|
+| Build & Test | Go 1.26 | Compile dan unit test dengan race detection | `go test` exit code 0 |
+| Secret Scan | Gitleaks 8.30.1 | Deteksi credential/API key yang bocor di git history | Any leak = block |
+| SCA Scan | Trivy | Scan dependensi Go untuk CVE CRITICAL/HIGH | Any CRITICAL/HIGH CVE = block |
+| SAST Scan | Semgrep | Analisis statis kode Go untuk insecure pattern | Any ERROR finding = block |
+
+---
+
+## 2. Tools yang Digunakan
+
+| Tool | Fungsi | Config File | Versi | Sumber |
+|------|--------|-------------|-------|--------|
+| Go | Bahasa pemrograman API | `go.mod` | 1.26.0 | golang.org |
+| Gitleaks | Secret scanning (git history) | `.gitleaks.toml` | 8.30.1 | Binary install via wget |
+| Trivy | SCA — Software Composition Analysis | (tidak ada) | latest (action) | `aquasecurity/trivy-action@master` |
+| Semgrep | SAST — Static Application Security Testing | `.semgrep.yml` | latest (action) | `semgrep/semgrep-action@v1` |
+| GitHub Actions | CI/CD pipeline | `.github/workflows/ci.yml` | N/A | github.com |
+
+**Dependencies Go:**
+
+| Dependency | Versi | Fungsi |
+|------------|-------|--------|
+| `golang-jwt/jwt/v5` | 5.3.1 | JWT token generation & validation |
+| `golang.org/x/crypto` | 0.53.0 | bcrypt password hashing |
+
+---
+
+## 3. Quality Gates
+
+### 3.1 Secret Scan — Gitleaks
+
+```yaml
+# .github/workflows/ci.yml (secret-scan job)
+- name: Run Gitleaks
+  run: gitleaks detect --source . -v --config .gitleaks.toml --no-gitignore
+```
+
+**Gate:** Jika ada leak yang terdeteksi → pipeline gagal.
+
+**Important:** Flag `--no-gitignore` ditambahkan di Day 14 setelah ditemukan bahwa Gitleaks default menghormati `.gitignore`, sehingga file yang di-force-add (`git add -f`) tetap di-skip.
+
+**Allowlist** (`.gitleaks.toml`):
+- `go.sum` — dependency checksums, bukan secret
+- `vendor/` — third-party code
+- `docs/`, `progress/` — dokumentasi
+- `security/` — scan reports (JSON)
+- `.gitleaks.toml`, `.gitignore`, `.semgrep.yml` — config files
+
+### 3.2 SCA Scan — Trivy
+
+```yaml
+# .github/workflows/ci.yml (sca-scan job)
+severity: 'CRITICAL,HIGH'
+exit-code: '1'
+```
+
+**Gate:** Jika ada CVE dengan severity CRITICAL atau HIGH → pipeline gagal.
+
+**State:** Setelah Day 7 remediation (jwt-go → golang-jwt, upgrade gin), 0 CVE ditemukan.
+
+### 3.3 SAST Scan — Semgrep
+
+```yaml
+# .github/workflows/ci.yml (sast-scan job)
+config: p/golang p/owasp-top-ten .semgrep.yml
+```
+
+**Gate:** Jika ada finding dengan severity ERROR → pipeline gagal (Semgrep default behavior).
+
+**Custom rules** (`.semgrep.yml`):
+- `no-md5-usage` — ERROR jika ada `md5.Sum(...)` di kode Go
+
+**Accepted WARNING:** `use-tls` (HTTP tanpa TLS) — accepted karena environment development, production akan pakai reverse proxy.
+
+### 3.4 Build & Test
+
+```yaml
+# .github/workflows/ci.yml (build-and-test job)
+- name: Test with Race Detection & Coverage
+  run: go test -v -race -count=1 -coverprofile=coverage.out ./...
+```
+
+**Gate:** Jika ada test yang gagal atau race condition terdeteksi → pipeline gagal.
+
+**24 unit tests** mencakup:
+- Handler tests (health, balance, transfer)
+- Auth middleware tests (valid/invalid/missing JWT)
+- Security header tests
+- Body size limit tests
+- Input validation tests (negative, zero, empty, NaN)
+- Config tests (default values, env vars)
+- JWT utility tests (generate, parse, expired, wrong secret)
+- bcrypt tests (hash, check)
+
+---
+
+## 4. Security Improvements Applied
+
+| Day | Finding | Fix | Status |
+|-----|---------|-----|--------|
+| 03 | Hardcoded credentials (DB_PASSWORD, AWS_KEY) | Refactored to env vars (`configs/config.go`) | ✅ Fixed |
+| 04 | Gitleaks needed CI integration | Binary install via wget in CI | ✅ Fixed |
+| 05 | 4 CVE in dependencies (1 CRITICAL, 3 HIGH) | Identified via `trivy fs` | ✅ Identified |
+| 07 | jwt-go v3.2.0 (deprecated, CVE) → golang-jwt v5.3.1 | `replace` in go.mod | ✅ Fixed |
+| 07 | gin v1.9.0 (CVE) → v1.12.0 | Upgrade | ✅ Fixed |
+| 07 | x/crypto, x/net (CVE) → patched | Upgrade | ✅ Fixed |
+| 08 | MD5 password hashing (insecure crypto) | Replaced with bcrypt | ✅ Fixed |
+| 09 | HTTP without TLS | Accepted as WARNING (dev env) | ⚠️ Accepted |
+| 11 | No input validation on `/transfer` | Validate negative/zero/NaN/empty amounts | ✅ Fixed |
+| 11 | No authentication on `/balance` and `/transfer` | JWT Bearer auth middleware | ✅ Fixed |
+| 11 | No security headers | SecurityHeaders middleware (5 headers) | ✅ Fixed |
+| 11 | No body size limit | LimitBodySize middleware (1KB/4KB) | ✅ Fixed |
+| 11 | No transaction logging | `log.Printf` for transfers | ✅ Fixed |
+| 12 | No Go module caching in CI | `cache: true` in setup-go | ✅ Fixed |
+| 12 | No Gitleaks binary caching | `actions/cache@v4` with version key | ✅ Fixed |
+| 12 | No Trivy DB caching | Cache `~/.cache/trivy` with restore-keys | ✅ Fixed |
+| 12 | No Semgrep rules caching | Cache `~/.semgrep` with hash-based key | ✅ Fixed |
+| 14 | Gitleaks skips `.gitignore` files | Added `--no-gitignore` flag | ✅ Fixed |
+
+---
+
+## 5. Threat Model Summary (STRIDE + DREAD)
+
+> Full analysis: `securebank-api/security/threat-model/architecture.md`
+
+### Critical Findings (DREAD Score ≥ 8)
+
+| # | Threat | DREAD Score | Category |
+|---|--------|-------------|----------|
+| 1 | No rate limiting | 9.6 | Denial of Service |
+| 2 | Balance of any account (no user-scoped authz) | 8.4 | Info Disclosure |
+| 3 | Account ID manipulation (transfer from any account) | 8.0 | Tampering |
+
+### High Findings (DREAD Score 6-7)
+
+| # | Threat | DREAD Score | Category |
+|---|--------|-------------|----------|
+| 4 | Hardcoded accounts (no RBAC) | 7.8 | Elevation of Privilege |
+| 5 | No connection limit | 7.2 | Denial of Service |
+| 6 | No RBAC | 6.6 | Elevation of Privilege |
+| 7 | Default JWT secret fallback | 6.2 | Spoofing |
+| 8 | No persistent audit log | 6.0 | Repudiation |
+
+### Already Mitigated (6 findings)
+
+- ✅ JWT token forgery → HMAC-SHA256 signing
+- ✅ Input validation (negative/zero/NaN amounts)
+- ✅ JWT payload manipulation → signature verification
+- ✅ Large request body → LimitBodySize middleware
+- ✅ Error message leakage → generic JSON errors
+- ✅ Security headers → 5 headers implemented
+
+---
+
+## 6. Metrics
+
+| Metrik | Nilai |
+|--------|-------|
+| Total vulnerabilities ditemukan (SCA) | 4 CVE (1 CRITICAL, 3 HIGH) |
+| Total vulnerabilities diperbaiki (SCA) | 4/4 (100%) |
+| SAST findings ditemukan | 2 (1 ERROR: MD5, 1 WARNING: no-TLS) |
+| SAST findings diperbaiki | 1/2 ERROR fixed (MD5→bcrypt), 1 WARNING accepted |
+| Secret leaks ditemukan | 2 (AWS key, DB password) |
+| Secret leaks diperbaiki | 2/2 (moved to env vars) |
+| AI audit findings ditemukan | 5 (input validation, auth, security headers, body limit, logging) |
+| AI audit findings diperbaiki | 5/5 (100%) |
+| Threat model findings | 18 (6 ✅ mitigasi, 4 ⚠️ partial, 8 ❌ belum) |
+| Pipeline jobs | 4 (semua paralel) |
+| Pipeline caching | 4 layers (Go modules, Gitleaks, Trivy DB, Semgrep) |
+| Unit tests | 24 (semua PASS) |
+| Go version | 1.26.0 |
+| External dependencies | 2 direct (golang-jwt v5.3.1, x/crypto v0.53.0) |
+| Trivy CVE count (current) | 0 |
+
+---
+
+## 7. Lessons Learned
+
+### 7.1 `.gitignore` Bukan Security Boundary
+
+`.gitignore` mencegah accidental commit, tapi `git add -f` bisa bypass. Gitleaks default menghormati `.gitignore` — jadi file yang di-force-add tetap di-skip. **Flag `--no-gitignore` wajib di CI pipeline** agar semua file yang tracked di git di-scan, regardless of `.gitignore`.
+
+### 7.2 Scanner Otomatis Tidak Cukup
+
+Trivy menemukan 4 CVE. Semgrep menemukan 2 findings. Tapi AI audit di Day 11 menemukan 5 kerentanan yang keduanya lewati: missing input validation, missing auth, missing security headers, missing body size limit, missing audit logging. **Business logic gaps tidak bisa dideteksi oleh pattern matching.**
+
+### 7.3 Pipeline Caching Itu Penting
+
+Dari Day 12, kita belajar bahwa pipeline yang tanpa cache menghabiskan ~30-50 detik per run hanya untuk download. Dengan 4 layer caching (Go modules, Gitleaks, Trivy DB, Semgrep), estimasi saving 30-40% per run.
+
+### 7.4 JWT Authentication ≠ Authorization
+
+Day 11 implementasi JWT auth (authentication — "siapa kamu?"), tapi threat modeling di Day 13 menunjukkan bahwa authorization ("apa yang boleh kamu lakukan?") masih belum ada. Siapa saja dengan JWT valid bisa lihat saldo akun siapa saja dan transfer dari akun siapa saja.
+
+### 7.5 Threat Modeling Mengisi Gap Antara Scanner dan Manual Review
+
+STRIDE + DREAD memberikan framework systematic untuk mengidentifikasi ancaman. Dari 18 threats yang ditemukan, 6 sudah di-mitigasi, 4 partial, dan 8 belum. Tanpa threat modeling, 8 threat ini mungkin tidak teridentifikasi sampai terlambat.
+
+### 7.6 `math.IsInf` dan `math.IsNaN` Penting untuk Financial API
+
+Input validation untuk financial endpoint tidak cukup hanya cek `amount > 0`. `NaN` dan `Inf` adalah float64 values yang valid di JSON tapi bisa menyebabkan behavior yang tidak diinginkan di arithmetic operations.
+
+### 7.7 Intentional Vulnerability Test Memvalidasi Defense Layer
+
+Tanpa test di Day 14, kita tidak akan tahu bahwa Gitleaks CI tidak menangkap file yang di-gitignore. Test ini membuktikan bahwa false sense of security lebih berbahaya daripada tidak punya security sama sekali.
+
+---
+
+## 8. Recommendations for Fase 2
+
+| # | Rekomendasi | Prioritas | DREAD Score | Target |
+|---|-------------|-----------|-------------|--------|
+| 1 | **Rate limiter middleware** (100 req/min/IP) | 🔴 Critical | 9.6 | Fase 2 |
+| 2 | **User-scoped authorization** (JWT sub claim) | 🔴 Critical | 8.4 | Fase 2 |
+| 3 | **Persistent audit logging** (structured JSON to file) | 🟠 High | 6.0 | Fase 2 |
+| 4 | **RBAC** (admin/user roles) | 🟠 High | 6.6 | Fase 2 |
+| 5 | **JWT_SECRET mandatory** (fail if empty) | 🟠 High | 6.2 | Fase 2 |
+| 6 | **Connection limits** (http.Server tuning) | 🟠 High | 7.2 | Fase 2 |
+| 7 | **Container security** (Dockerfile hardening) | — | — | Fase 2 |
+| 8 | **DAST** (OWASP ZAP baseline scan) | — | — | Fase 2 |
+
+---
+
+## 9. Final File Structure
+
+```
+securebank-api/
+├── cmd/api/
+│   ├── main.go                      # Entry point: 3 endpoints + middleware chain
+│   └── main_test.go                 # 14 handler + validation + auth tests
+├── configs/
+│   ├── config.go                    # Config struct: PORT, DB_HOST, DB_PASSWORD, JWT_SECRET
+│   └── config_test.go               # 2 config tests
+├── internal/middleware/
+│   ├── auth.go                      # RequireAuth: JWT Bearer token validation
+│   ├── security.go                  # SecurityHeaders + LimitBodySize middleware
+│   └── security_test.go             # 8 middleware tests
+├── pkg/crypto/
+│   ├── hash.go                      # bcrypt HashPassword + CheckPassword
+│   ├── jwtutil.go                   # GenerateToken + ParseToken (golang-jwt/jwt/v5)
+│   └── jwtutil_test.go              # 5 JWT + bcrypt tests
+├── security/
+│   ├── gitleaks-report.json         # Gitleaks scan report (Day 03)
+│   ├── semgrep-report.json           # Semgrep scan report (Day 08)
+│   ├── semgrep-latest.json           # Semgrep latest report (Day 11)
+│   ├── semgrep-post-fix.json         # Semgrep post-fix report (Day 11)
+│   ├── trivy-fs-report.json          # Trivy FS scan report (Day 05)
+│   └── threat-model/
+│       └── architecture.md           # STRIDE + DREAD threat model (Day 13)
+├── go.mod                            # Module: github.com/stayrelevantid/securebank-api
+├── go.sum
+└── .gitignore
+
+Root repo files:
+├── .github/workflows/ci.yml          # CI pipeline: 4 parallel jobs + caching
+├── .gitleaks.toml                    # Gitleaks allowlist config
+├── .semgrep.yml                      # Custom Semgrep rule: no-md5-usage
+├── blogpost.md                       # Blog post drafts (gitignored)
+├── docs/
+│   ├── fase-1-appsec.md              # Tutorial + retrospective documentation
+│   ├── fase-2-infra-container.md     # Phase 2 tutorial
+│   ├── fase-3-k8s-runtime.md        # Phase 3 tutorial
+│   ├── fase-4-vuln-redteam.md        # Phase 4 tutorial
+│   └── istilah-asing.md             # Glossary
+├── progress/
+│   ├── README.md                     # Progress overview
+│   ├── tracker.md                    # Master tracker
+│   └── daily/
+│       ├── hari-01.md through hari-14.md
+│       └── hari-15.md
+├── sylabus.md                        # 60-day curriculum
+└── README.md                         # Project overview
+```
+
+---
+
+## 10. Pipeline Execution History
+
+| Day | Event | Pipeline Status |
+|-----|-------|-----------------|
+| 02 | Basic CI (build + test) | ✅ Green |
+| 04 | Added Gitleaks job | ✅ Green (after 3 fixes) |
+| 06 | Added Trivy SCA job | ❌ Red (4 CVE found) |
+| 07 | SCA remediation | ✅ Green (0 CVE) |
+| 09 | Added Semgrep SAST job | ❌ Red (2 findings) |
+| 10 | SAST remediation (MD5→bcrypt) | ✅ Green (1 WARNING accepted) |
+| 11 | AI audit security fixes | ✅ Green (24 tests pass) |
+| 12 | Pipeline optimization (caching) | ✅ Green (4 cache layers) |
+| 14 | Gitleaks `--no-gitignore` fix | ✅ Green |
+
+---
+
+*Retrospektif ini ditulis pada Hari 15 sebagai penutup Fase 1.*

@@ -22,9 +22,9 @@
 | [Hari 12](daily/hari-12.md) | Pipeline Optimization | Cache Go modules, parallel jobs, total < 2 menit | ✅ | 2026-06-15 |
 | [Hari 13](daily/hari-13.md) | Threat Modeling (STRIDE) | Diagram arsitektur + tabel ancaman di `threat-model/` | ✅ | 2026-06-15 |
 | [Hari 14](daily/hari-14.md) | Intentional Vuln Test | Commit fake secret → Gitleaks gagalkan build → revert | ✅ | 2026-06-18 |
-| [Hari 15](daily/hari-15.md) | Dokumentasi Fase 1 | `fase-1-appsec.md` lengkap dengan cara kerja SAST, SCA, Secret Scan | ⬜ | — |
+| [Hari 15](daily/hari-15.md) | Dokumentasi Fase 1 | `fase-1-appsec.md` lengkap dengan cara kerja SAST, SCA, Secret Scan | ✅ | 2026-06-18 |
 
-**Progres Fase 1: 14/15**
+**Progres Fase 1: 15/15** ✅
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 14 / 60 |
-| Fase Selesai | 0 / 4 |
-| Hari Aktif (ada catatan) | 14 |
+| Total Hari Selesai | 15 / 60 |
+| Fase Selesai | 1 / 4 |
+| Hari Aktif (ada catatan) | 15 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
