@@ -1,0 +1,11 @@
+.git
+.github
+docs
+progress
+security
+*.md
+*.test
+*.out
+coverage.out
+.env
+.env.*
