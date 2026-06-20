@@ -32,7 +32,7 @@
 
 | Hari | Topik | Output Konkret | Status | Selesai |
 |------|-------|----------------|--------|---------|
-| [Hari 16](daily/hari-16.md) | Dockerfile Multi-stage | Build di `golang:alpine`, run di `distroless` | ⬜ | — |
+| [Hari 16](daily/hari-16.md) | Dockerfile Multi-stage | Build di `golang:alpine`, run di `distroless` | ✅ | 2026-06-20 |
 | [Hari 17](daily/hari-17.md) | Container Image Scan | `trivy image securebank:v1` — daftar CVE base image | ⬜ | — |
 | [Hari 18](daily/hari-18.md) | Dockerfile Hardening | `USER nonroot`, `COPY --chown`, read-only filesystem | ⬜ | — |
 | [Hari 19](daily/hari-19.md) | Image Signing (Cosign) | Key pair + signed image di registry | ⬜ | — |
@@ -48,7 +48,7 @@
 | [Hari 29](daily/hari-29.md) | Pipeline Consolidation | Satu YAML: Secret+SAST+SCA+Image+IaC scan paralel | ⬜ | — |
 | [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ⬜ | — |
 
-**Progres Fase 2: 0/15**
+**Progres Fase 2: 1/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 15 / 60 |
+| Total Hari Selesai | 16 / 60 |
 | Fase Selesai | 1 / 4 |
-| Hari Aktif (ada catatan) | 15 |
+| Hari Aktif (ada catatan) | 16 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
