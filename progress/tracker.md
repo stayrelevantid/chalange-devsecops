@@ -34,7 +34,7 @@
 |------|-------|----------------|--------|---------|
 | [Hari 16](daily/hari-16.md) | Dockerfile Multi-stage | Build di `golang:alpine`, run di `distroless` | ✅ | 2026-06-20 |
 | [Hari 17](daily/hari-17.md) | Container Image Scan | `trivy image securebank:v1` — daftar CVE base image | ✅ | 2026-06-21 |
-| [Hari 18](daily/hari-18.md) | Dockerfile Hardening | `USER nonroot`, `COPY --chown`, read-only filesystem | ⬜ | — |
+| [Hari 18](daily/hari-18.md) | Dockerfile Hardening | `USER nonroot`, `COPY --chown`, read-only filesystem | ✅ | 2026-06-22 |
 | [Hari 19](daily/hari-19.md) | Image Signing (Cosign) | Key pair + signed image di registry | ⬜ | — |
 | [Hari 20](daily/hari-20.md) | Terraform Setup + IaC Scan (Checkov) | `terraform/main.tf` (VPC+S3) + `checkov -d .` | ⬜ | — |
 | [Hari 21](daily/hari-21.md) | IaC Scan (tfsec/Trivy) | Scan ulang dengan tfsec, bandingkan temuan | ⬜ | — |
@@ -48,7 +48,7 @@
 | [Hari 29](daily/hari-29.md) | Pipeline Consolidation | Satu YAML: Secret+SAST+SCA+Image+IaC scan paralel | ⬜ | — |
 | [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ⬜ | — |
 
-**Progres Fase 2: 2/15**
+**Progres Fase 2: 3/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 17 / 60 |
+| Total Hari Selesai | 18 / 60 |
 | Fase Selesai | 1 / 4 |
-| Hari Aktif (ada catatan) | 17 |
+| Hari Aktif (ada catatan) | 18 |
 | Streak Hari Berturut-turut | 0 |
 
 ---

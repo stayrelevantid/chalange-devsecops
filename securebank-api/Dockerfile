@@ -13,8 +13,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /securebank ./cmd/api
 
 FROM gcr.io/distroless/static-debian12:nonroot
 
-COPY --from=builder /securebank /securebank
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder --chown=nonroot:nonroot /securebank /securebank
+COPY --from=builder --chown=nonroot:nonroot /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 EXPOSE 8080
 
