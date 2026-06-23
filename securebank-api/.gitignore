@@ -38,3 +38,6 @@ Thumbs.db
 # Build output
 /bin/
 /dist/
+
+# Cosign private key (DO NOT COMMIT)
+cosign.key
