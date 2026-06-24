@@ -36,7 +36,7 @@
 | [Hari 17](daily/hari-17.md) | Container Image Scan | `trivy image securebank:v1` — daftar CVE base image | ✅ | 2026-06-21 |
 | [Hari 18](daily/hari-18.md) | Dockerfile Hardening | `USER nonroot`, `COPY --chown`, read-only filesystem | ✅ | 2026-06-22 |
 | [Hari 19](daily/hari-19.md) | Image Signing (Cosign) | Key pair + signed image di registry | ✅ | 2026-06-23 |
-| [Hari 20](daily/hari-20.md) | Terraform Setup + IaC Scan (Checkov) | `terraform/main.tf` (VPC+S3) + `checkov -d .` | ⬜ | — |
+| [Hari 20](daily/hari-20.md) | Terraform Setup + IaC Scan (Checkov) | `terraform/main.tf` (VPC+S3) + `checkov -d .` | ✅ | 2026-06-24 |
 | [Hari 21](daily/hari-21.md) | IaC Scan (tfsec/Trivy) | Scan ulang dengan tfsec, bandingkan temuan | ⬜ | — |
 | [Hari 22](daily/hari-22.md) | IaC di Pipeline | Job Checkov gagalkan build jika SG terbuka 0.0.0.0/0 | ⬜ | — |
 | [Hari 23](daily/hari-23.md) | IaC Remediation | Enkripsi S3, perketat SG rules, pipeline hijau | ⬜ | — |
@@ -48,7 +48,7 @@
 | [Hari 29](daily/hari-29.md) | Pipeline Consolidation | Satu YAML: Secret+SAST+SCA+Image+IaC scan paralel | ⬜ | — |
 | [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ⬜ | — |
 
-**Progres Fase 2: 4/15**
+**Progres Fase 2: 5/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 19 / 60 |
+| Total Hari Selesai | 20 / 60 |
 | Fase Selesai | 1 / 4 |
-| Hari Aktif (ada catatan) | 19 |
+| Hari Aktif (ada catatan) | 20 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
