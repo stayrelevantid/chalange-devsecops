@@ -67,7 +67,7 @@ jobs:
           gitleaks version
 
       - name: Run Gitleaks
-        run: gitleaks detect --source . -v --config .gitleaks.toml --no-gitignore
+        run: gitleaks detect --source . -v --config .gitleaks.toml
 
   sca-scan:
     name: SCA Scan (Trivy)
