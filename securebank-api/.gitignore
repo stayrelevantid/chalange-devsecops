@@ -41,3 +41,8 @@ Thumbs.db
 
 # Cosign private key (DO NOT COMMIT)
 cosign.key
+
+# Terraform state (DO NOT COMMIT)
+terraform/.terraform/
+terraform/terraform.tfstate*
+terraform/.terraform.lock.hcl
