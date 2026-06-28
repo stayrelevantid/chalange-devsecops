@@ -41,10 +41,10 @@ progress/
 | Fase | Rentang | Status | Selesai |
 |------|---------|--------|---------|
 | 🔐 Fase 1 — Secure SDLC & AppSec | Hari 1–15 | ✅ Selesai | 15/15 |
-| 🐳 Fase 2 — IaC & Container Security | Hari 16–30 | 🔄 Berjalan | 7/15 |
+| 🐳 Fase 2 — IaC & Container Security | Hari 16–30 | 🔄 Berjalan | 8/15 |
 | ☸️ Fase 3 — K8s & Runtime Security | Hari 31–45 | ⏳ Menunggu | 0/15 |
 | 🔴 Fase 4 — Vuln Mgmt & Red Team | Hari 46–60 | ⏳ Menunggu | 0/15 |
-| **Total** | **60 Hari** | | **22/60** |
+| **Total** | **60 Hari** | | **23/60** |
 
 > Update tabel ini setiap kali satu fase selesai penuh.
 

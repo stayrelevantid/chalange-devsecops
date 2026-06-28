@@ -39,7 +39,7 @@
 | [Hari 20](daily/hari-20.md) | Terraform Setup + IaC Scan (Checkov) | `terraform/main.tf` (VPC+S3) + `checkov -d .` | ✅ | 2026-06-24 |
 | [Hari 21](daily/hari-21.md) | IaC Scan (tfsec/Trivy) | Scan ulang dengan tfsec, bandingkan temuan | ✅ | 2026-06-25 |
 | [Hari 22](daily/hari-22.md) | IaC di Pipeline | Job Checkov gagalkan build jika SG terbuka 0.0.0.0/0 | ✅ | 2026-06-26 |
-| [Hari 23](daily/hari-23.md) | IaC Remediation | Enkripsi S3, perketat SG rules, pipeline hijau | ⬜ | — |
+| [Hari 23](daily/hari-23.md) | IaC Remediation | Enkripsi S3, perketat SG rules, pipeline hijau | ✅ | 2026-06-28 |
 | [Hari 24](daily/hari-24.md) | DAST Setup (OWASP ZAP) | ZAP Baseline Scan ke `localhost:8080` | ⬜ | — |
 | [Hari 25](daily/hari-25.md) | DAST di Pipeline | Job ZAP scan staging setelah deploy | ⬜ | — |
 | [Hari 26](daily/hari-26.md) | DAST Remediation | Tambah security headers di Go middleware | ⬜ | — |
@@ -48,7 +48,7 @@
 | [Hari 29](daily/hari-29.md) | Pipeline Consolidation | Satu YAML: Secret+SAST+SCA+Image+IaC scan paralel | ⬜ | — |
 | [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ⬜ | — |
 
-**Progres Fase 2: 7/15**
+**Progres Fase 2: 8/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 22 / 60 |
+| Total Hari Selesai | 23 / 60 |
 | Fase Selesai | 1 / 4 |
-| Hari Aktif (ada catatan) | 22 |
+| Hari Aktif (ada catatan) | 23 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
