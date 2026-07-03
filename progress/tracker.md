@@ -42,13 +42,13 @@
 | [Hari 23](daily/hari-23.md) | IaC Remediation | Enkripsi S3, perketat SG rules, pipeline hijau | ✅ | 2026-06-28 |
 | [Hari 24](daily/hari-24.md) | DAST Setup (OWASP ZAP) | ZAP Baseline Scan ke `localhost:8080` | ✅ | 2026-07-02 |
 | [Hari 25](daily/hari-25.md) | DAST di Pipeline | Job ZAP scan staging setelah deploy | ✅ | 2026-07-02 |
-| [Hari 26](daily/hari-26.md) | DAST Remediation | Tambah security headers di Go middleware | ⬜ | — |
+| [Hari 26](daily/hari-26.md) | DAST Remediation | Tambah security headers di Go middleware | ✅ | 2026-07-03 |
 | [Hari 27](daily/hari-27.md) | AI-Assisted IaC Fix | Terraform rentan → AI → versi aman diterapkan | ⬜ | — |
 | [Hari 28](daily/hari-28.md) | Compliance as Code (InSpec) | Profile InSpec: verifikasi port 22 tertutup | ⬜ | — |
 | [Hari 29](daily/hari-29.md) | Pipeline Consolidation | Satu YAML: Secret+SAST+SCA+Image+IaC scan paralel | ⬜ | — |
 | [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ⬜ | — |
 
-**Progres Fase 2: 10/15**
+**Progres Fase 2: 11/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 25 / 60 |
+| Total Hari Selesai | 26 / 60 |
 | Fase Selesai | 1 / 4 |
-| Hari Aktif (ada catatan) | 25 |
+| Hari Aktif (ada catatan) | 26 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
