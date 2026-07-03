@@ -24,7 +24,7 @@ func TestSecurityHeaders(t *testing.T) {
 	checks := map[string]string{
 		"X-Content-Type-Options":  "nosniff",
 		"X-Frame-Options":         "DENY",
-		"Cache-Control":           "no-store",
+		"Cache-Control":           "no-cache, no-store, must-revalidate, private",
 		"Content-Security-Policy": "default-src 'none'",
 		"X-XSS-Protection":        "0",
 	}
