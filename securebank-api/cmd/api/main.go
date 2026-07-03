@@ -126,12 +126,24 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
 }
 
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(ErrorResponse{Error: "endpoint not found"})
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
+}
+
 func main() {
 	cfg := configs.Load()
 	jwtSecret := []byte(cfg.JWTSecret)
 
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("/", middleware.LimitBodySize(1024, rootHandler))
 	mux.HandleFunc("/health", middleware.LimitBodySize(1024, healthCheck))
 	mux.HandleFunc("/balance", middleware.LimitBodySize(1024,
 		middleware.RequireAuth(jwtSecret, getBalance),

@@ -46,9 +46,13 @@ func TestHealthCheckSecurityHeaders(t *testing.T) {
 	handler(w, req)
 
 	checks := map[string]string{
-		"X-Content-Type-Options": "nosniff",
-		"X-Frame-Options":        "DENY",
-		"Cache-Control":          "no-cache, no-store, must-revalidate, private",
+		"X-Content-Type-Options":       "nosniff",
+		"X-Frame-Options":              "DENY",
+		"Cache-Control":                "no-cache, no-store, must-revalidate, private",
+		"Content-Security-Policy":      "default-src 'none'",
+		"Referrer-Policy":              "strict-origin-when-cross-origin",
+		"Permissions-Policy":           "camera=(), microphone=(), geolocation=()",
+		"Cross-Origin-Resource-Policy": "same-origin",
 	}
 	for header, expected := range checks {
 		got := w.Header().Get(header)

@@ -22,11 +22,14 @@ func TestSecurityHeaders(t *testing.T) {
 	handler.ServeHTTP(w, req)
 
 	checks := map[string]string{
-		"X-Content-Type-Options":  "nosniff",
-		"X-Frame-Options":         "DENY",
-		"Cache-Control":           "no-cache, no-store, must-revalidate, private",
-		"Content-Security-Policy": "default-src 'none'",
-		"X-XSS-Protection":        "0",
+		"X-Content-Type-Options":       "nosniff",
+		"X-Frame-Options":              "DENY",
+		"Cache-Control":                "no-cache, no-store, must-revalidate, private",
+		"Content-Security-Policy":      "default-src 'none'",
+		"X-XSS-Protection":             "0",
+		"Referrer-Policy":              "strict-origin-when-cross-origin",
+		"Permissions-Policy":           "camera=(), microphone=(), geolocation=()",
+		"Cross-Origin-Resource-Policy": "same-origin",
 	}
 	for header, expected := range checks {
 		got := w.Header().Get(header)
