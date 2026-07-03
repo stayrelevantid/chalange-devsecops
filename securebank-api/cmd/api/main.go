@@ -130,25 +130,18 @@ func main() {
 	cfg := configs.Load()
 	jwtSecret := []byte(cfg.JWTSecret)
 
-	authBalance := middleware.SecurityHeaders(
-		middleware.LimitBodySize(1024,
-			middleware.RequireAuth(jwtSecret, getBalance),
-		),
-	)
+	mux := http.NewServeMux()
 
-	authTransfer := middleware.SecurityHeaders(
-		middleware.LimitBodySize(4096,
-			middleware.RequireAuth(jwtSecret, transfer),
-		),
-	)
+	mux.HandleFunc("/health", middleware.LimitBodySize(1024, healthCheck))
+	mux.HandleFunc("/balance", middleware.LimitBodySize(1024,
+		middleware.RequireAuth(jwtSecret, getBalance),
+	))
+	mux.HandleFunc("/transfer", middleware.LimitBodySize(4096,
+		middleware.RequireAuth(jwtSecret, transfer),
+	))
 
-	publicHealth := middleware.SecurityHeaders(
-		middleware.LimitBodySize(1024, healthCheck),
-	)
+	handler := middleware.SecurityHeadersHandler(mux)
 
-	http.HandleFunc("/health", publicHealth)
-	http.HandleFunc("/balance", authBalance)
-	http.HandleFunc("/transfer", authTransfer)
 	log.Printf("SecureBank API running on :%s", cfg.Port)
-	log.Fatal(http.ListenAndServe(":"+cfg.Port, nil))
+	log.Fatal(http.ListenAndServe(":"+cfg.Port, handler))
 }

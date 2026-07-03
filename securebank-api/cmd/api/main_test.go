@@ -274,3 +274,32 @@ func resetAccounts() {
 	accounts["ACC001"] = &Account{ID: "ACC001", Name: "Alice", Balance: 10000}
 	accounts["ACC002"] = &Account{ID: "ACC002", Name: "Bob", Balance: 5000}
 }
+
+func TestNotFoundHasSecurityHeaders(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/health", middleware.LimitBodySize(1024, healthCheck))
+	handler := middleware.SecurityHeadersHandler(mux)
+
+	req := httptest.NewRequest("GET", "/undefined-path", nil)
+	w := httptest.NewRecorder()
+	handler.ServeHTTP(w, req)
+
+	if w.Code != http.StatusNotFound {
+		t.Errorf("expected 404, got %d", w.Code)
+	}
+
+	checks := map[string]string{
+		"X-Content-Type-Options":  "nosniff",
+		"X-Frame-Options":         "DENY",
+		"Cache-Control":           "no-store",
+		"Content-Security-Policy": "default-src 'none'",
+		"Referrer-Policy":         "strict-origin-when-cross-origin",
+		"Permissions-Policy":      "camera=(), microphone=(), geolocation=()",
+	}
+	for header, expected := range checks {
+		got := w.Header().Get(header)
+		if got != expected {
+			t.Errorf("expected %s=%s, got %s", header, expected, got)
+		}
+	}
+}
