@@ -48,7 +48,7 @@ func TestHealthCheckSecurityHeaders(t *testing.T) {
 	checks := map[string]string{
 		"X-Content-Type-Options": "nosniff",
 		"X-Frame-Options":        "DENY",
-		"Cache-Control":          "no-store",
+		"Cache-Control":          "no-cache, no-store, must-revalidate, private",
 	}
 	for header, expected := range checks {
 		got := w.Header().Get(header)
@@ -291,7 +291,7 @@ func TestNotFoundHasSecurityHeaders(t *testing.T) {
 	checks := map[string]string{
 		"X-Content-Type-Options":  "nosniff",
 		"X-Frame-Options":         "DENY",
-		"Cache-Control":           "no-store",
+		"Cache-Control":           "no-cache, no-store, must-revalidate, private",
 		"Content-Security-Policy": "default-src 'none'",
 		"Referrer-Policy":         "strict-origin-when-cross-origin",
 		"Permissions-Policy":      "camera=(), microphone=(), geolocation=()",

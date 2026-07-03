@@ -168,6 +168,7 @@ jobs:
         with:
           target: 'http://localhost:8080'
           cmd_options: '-I'
+          allow_issue_writing: false
 
       - name: Upload ZAP Report
         if: always()
