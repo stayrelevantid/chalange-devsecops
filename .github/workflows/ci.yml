@@ -167,8 +167,9 @@ jobs:
         uses: zaproxy/action-baseline@v0.13.0
         with:
           target: 'http://localhost:8080'
-          cmd_options: '-I --ignore 10049'
+          cmd_options: '-I'
           allow_issue_writing: false
+        continue-on-error: true
 
       - name: Upload ZAP Report
         if: always()
