@@ -9,6 +9,10 @@ resource "aws_subnet" "app" {
   tags = {
     Name = "securebank-app-subnet"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_iam_instance_profile" "dummy" {

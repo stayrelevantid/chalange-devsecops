@@ -48,7 +48,7 @@ resource "aws_default_security_group" "default" {
 # VPC Flow Log (CKV2_AWS_11 / AWS-0178)
 resource "aws_cloudwatch_log_group" "flow_log" {
   name              = "/aws/vpc/securebank-flow-log"
-  retention_in_days = 365
+  retention_in_days = var.log_retention_days
   kms_key_id        = aws_kms_key.securebank.arn
 }
 

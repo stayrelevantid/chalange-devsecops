@@ -5,7 +5,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_kms_key" "securebank" {
   description             = "SecureBank KMS key for CloudWatch + SNS + S3"
   enable_key_rotation     = true
-  deletion_window_in_days = 30
+  deletion_window_in_days = var.kms_deletion_window
 
   policy = jsonencode({
     Version = "2012-10-17"

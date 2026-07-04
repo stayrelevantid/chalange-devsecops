@@ -13,6 +13,11 @@ resource "aws_iam_role" "flow_log" {
         Principal = {
           Service = "vpc-flow-logs.amazonaws.com"
         }
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
       }
     ]
   })
@@ -53,6 +58,11 @@ resource "aws_iam_role" "ec2_instance" {
         Principal = {
           Service = "ec2.amazonaws.com"
         }
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
       }
     ]
   })
@@ -88,6 +98,11 @@ resource "aws_iam_role" "replication" {
         Effect = "Allow"
         Principal = {
           Service = "s3.amazonaws.com"
+        }
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
         }
       }
     ]
