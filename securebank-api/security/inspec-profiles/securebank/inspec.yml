@@ -1,0 +1,9 @@
+name: securebank-compliance
+title: SecureBank API Compliance Profile
+maintainer: stayrelativeid
+license: Apache-2.0
+summary: Compliance profile untuk verifikasi SecureBank API running dengan aman di local machine
+version: 0.1.0
+supports:
+  - platform-family: unix
+  - platform-family: windows
