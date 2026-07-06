@@ -177,3 +177,75 @@ jobs:
         with:
           name: zap-dast-report
           path: report_html.html
+
+  iac-checkov:
+    name: IaC Scan (Checkov)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: securebank-api/terraform/
+          framework: terraform
+          soft_fail: false
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+
+      - name: Upload SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
+
+      - name: Upload Checkov Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkov-sarif
+          path: checkov-results.sarif
+
+  iac-trivy:
+    name: IaC Scan (Trivy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Trivy DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trivy
+          key: trivy-iac-${{ github.run_id }}
+          restore-keys: |
+            trivy-iac-
+            trivy-db-
+
+      - name: Update Trivy DB
+        run: trivy image --download-db-only 2>/dev/null || true
+
+      - name: Run Trivy IaC
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: 'securebank-api/terraform/'
+          format: 'json'
+          output: 'trivy-iac.json'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name: Upload Trivy IaC Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-iac-report
+          path: trivy-iac.json
+
+  security-gate:
+    name: Security Gate
+    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All 7 security scans passed"

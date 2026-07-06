@@ -1,2 +1,10 @@
 # Temporary blog post drafts
 blogpost.md
+
+# Compiled Go binaries
+securebank-api/api
+securebank-api/securebank
+
+# Local ZAP scan reports (day-specific)
+securebank-api/security/zap-report-day*.html
+securebank-api/security/zap-report-day*.json
