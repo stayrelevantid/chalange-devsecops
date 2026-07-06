@@ -46,9 +46,9 @@
 | [Hari 27](daily/hari-27.md) | AI-Assisted IaC Fix | Terraform rentan → AI → versi aman diterapkan | ✅ | 2026-07-04 |
 | [Hari 28](daily/hari-28.md) | Compliance as Code (InSpec) | Profile InSpec: verifikasi port 22 tertutup | ✅ | 2026-07-05 |
 | [Hari 29](daily/hari-29.md) | Pipeline Consolidation | Satu YAML: Secret+SAST+SCA+Image+IaC scan paralel | ✅ | 2026-07-06 |
-| [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ⬜ | — |
+| [Hari 30](daily/hari-30.md) | Dokumentasi Fase 2 | `fase-2-infra-container.md` lengkap | ✅ | 2026-07-06 |
 
-**Progres Fase 2: 14/15**
+**Progres Fase 2: 15/15** ✅
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 29 / 60 |
-| Fase Selesai | 1 / 4 |
-| Hari Aktif (ada catatan) | 29 |
+| Total Hari Selesai | 30 / 60 |
+| Fase Selesai | 2 / 4 |
+| Hari Aktif (ada catatan) | 30 |
 | Streak Hari Berturut-turut | 0 |
 
 ---

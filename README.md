@@ -78,10 +78,10 @@ securebank-api/
 | Fase | Status | Selesai |
 |------|--------|---------|
 | 🔐 Fase 1 — Secure SDLC & AppSec | ✅ Selesai | 15/15 |
-| 🐳 Fase 2 — IaC & Container Security | 🔄 Berjalan | 14/15 |
+| 🐳 Fase 2 — IaC & Container Security | ✅ Selesai | 15/15 |
 | ☸️ Fase 3 — K8s & Runtime Security | ⏳ Menunggu | 0/15 |
 | 🔴 Fase 4 — Vuln Mgmt & Red Team | ⏳ Menunggu | 0/15 |
-| **Total** | | **29 / 60** |
+| **Total** | | **30 / 60** |
 
 📁 **Lihat catatan harian & retrospektif di folder [`progress/`](progress/README.md)**
 
@@ -138,8 +138,8 @@ graph LR
 
 ## 🎯 Target Milestone
 
-- [ ] **Hari 15** — Pipeline CI/CD dengan Secret Scan + SAST + SCA berjalan otomatis
-- [ ] **Hari 30** — Docker hardened + IaC Terraform + DAST live di pipeline
+- [x] **Hari 15** — Pipeline CI/CD dengan Secret Scan + SAST + SCA berjalan otomatis
+- [x] **Hari 30** — Docker hardened + IaC Terraform + DAST live di pipeline
 - [ ] **Hari 45** — K8s cluster dengan OPA Gatekeeper + Falco + RBAC audited
 - [ ] **Hari 60** — Laporan audit lengkap + CDP exam simulation selesai
 
