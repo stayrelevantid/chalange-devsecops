@@ -79,9 +79,9 @@ securebank-api/
 |------|--------|---------|
 | 🔐 Fase 1 — Secure SDLC & AppSec | ✅ Selesai | 15/15 |
 | 🐳 Fase 2 — IaC & Container Security | ✅ Selesai | 15/15 |
-| ☸️ Fase 3 — K8s & Runtime Security | ⏳ Menunggu | 0/15 |
+| ☸️ Fase 3 — K8s & Runtime Security | 🔄 Berjalan | 1/15 |
 | 🔴 Fase 4 — Vuln Mgmt & Red Team | ⏳ Menunggu | 0/15 |
-| **Total** | | **30 / 60** |
+| **Total** | | **31 / 60** |
 
 📁 **Lihat catatan harian & retrospektif di folder [`progress/`](progress/README.md)**
 
