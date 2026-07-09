@@ -57,7 +57,7 @@
 | Hari | Topik | Output Konkret | Status | Selesai |
 |------|-------|----------------|--------|---------|
 | [Hari 31](daily/hari-31.md) | K8s Cluster + Deploy | k3d cluster + `kubectl apply` deployment & service | ✅ | 2026-07-08 |
-| [Hari 32](daily/hari-32.md) | K8s Misconfiguration Scan | Kubesec/Checkov scan `deployment.yaml` | ⬜ | — |
+| [Hari 32](daily/hari-32.md) | K8s Misconfiguration Scan | Kubesec/Checkov scan `deployment.yaml` | ✅ | 2026-07-09 |
 | [Hari 33](daily/hari-33.md) | SecurityContext Hardening | `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false` | ⬜ | — |
 | [Hari 34](daily/hari-34.md) | OPA Gatekeeper Setup | Helm install Gatekeeper di cluster | ⬜ | — |
 | [Hari 35](daily/hari-35.md) | Rego Policy Writing | Policy: tolak Pod tanpa resource limits | ⬜ | — |
@@ -72,7 +72,7 @@
 | [Hari 44](daily/hari-44.md) | AI Threat Modeling K8s | Topologi + RBAC → AI analisis 3 attack path | ⬜ | — |
 | [Hari 45](daily/hari-45.md) | Dokumentasi Fase 3 | `fase-3-k8s-runtime.md` lengkap | ⬜ | — |
 
-**Progres Fase 3: 1/15**
+**Progres Fase 3: 2/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 31 / 60 |
+| Total Hari Selesai | 32 / 60 |
 | Fase Selesai | 2 / 4 |
-| Hari Aktif (ada catatan) | 31 |
+| Hari Aktif (ada catatan) | 32 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
