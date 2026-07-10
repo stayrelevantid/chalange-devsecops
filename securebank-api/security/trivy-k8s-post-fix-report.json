@@ -1,0 +1,48 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.71.0"
+  },
+  "ReportID": "019f4a4a-8f71-7ecd-870d-5088cad35a67",
+  "CreatedAt": "2026-07-10T11:30:28.209971+07:00",
+  "ArtifactName": "/Users/muhammad.indragiri/Kerja/chalange-devsecops/securebank-api/k8s",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "deployment.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 99,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "namespace.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 99,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "secret.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 99,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "service.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 99,
+        "Failures": 0
+      }
+    }
+  ]
+}
