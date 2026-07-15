@@ -63,7 +63,7 @@
 | [Hari 35](daily/hari-35.md) | Rego Policy Writing | Policy: tolak Pod tanpa resource limits + requests | ✅ | 2026-07-11 |
 | [Hari 36](daily/hari-36.md) | OPA Policy Testing | Deploy Pod tanpa limits → "Denied by Gatekeeper" | ✅ | 2026-07-13 |
 | [Hari 37](daily/hari-37.md) | Network Policies | Default Deny All + whitelist Ingress traffic | ✅ | 2026-07-14 |
-| [Hari 38](daily/hari-38.md) | RBAC Auditing | `kubectl who-can` audit, hapus overprivileged SA | ⬜ | — |
+| [Hari 38](daily/hari-38.md) | RBAC Auditing | `kubectl who-can` audit, hapus overprivileged SA | ✅ | 2026-07-15 |
 | [Hari 39](daily/hari-39.md) | Falco Setup | Helm install Falco, verifikasi logs berjalan | ⬜ | — |
 | [Hari 40](daily/hari-40.md) | Falco Custom Rules | Rule: alert jika `bash`/`sh` dijalankan di container | ⬜ | — |
 | [Hari 41](daily/hari-41.md) | Falco Attack Simulation | `kubectl exec` → cek Falco log Notice/Warning | ⬜ | — |
@@ -72,7 +72,7 @@
 | [Hari 44](daily/hari-44.md) | AI Threat Modeling K8s | Topologi + RBAC → AI analisis 3 attack path | ⬜ | — |
 | [Hari 45](daily/hari-45.md) | Dokumentasi Fase 3 | `fase-3-k8s-runtime.md` lengkap | ⬜ | — |
 
-**Progres Fase 3: 7/15**
+**Progres Fase 3: 8/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 37 / 60 |
+| Total Hari Selesai | 38 / 60 |
 | Fase Selesai | 2 / 4 |
-| Hari Aktif (ada catatan) | 37 |
+| Hari Aktif (ada catatan) | 38 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
