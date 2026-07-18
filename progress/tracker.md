@@ -66,13 +66,13 @@
 | [Hari 38](daily/hari-38.md) | RBAC Auditing | `kubectl who-can` audit, hapus overprivileged SA | ✅ | 2026-07-15 |
 | [Hari 39](daily/hari-39.md) | Falco Setup | Helm install Falco, verifikasi logs berjalan | ✅ | 2026-07-16 |
 | [Hari 40](daily/hari-40.md) | Falco Custom Rules | Rule: alert jika `bash`/`sh` dijalankan di container | ✅ | 2026-07-18 |
-| [Hari 41](daily/hari-41.md) | Falco Attack Simulation | `kubectl exec` → cek Falco log Notice/Warning | ⬜ | — |
+| [Hari 41](daily/hari-41.md) | Falco Attack Simulation | `kubectl exec` → cek Falco log Notice/Warning | ✅ | 2026-07-18 |
 | [Hari 42](daily/hari-42.md) | Alerting Webhook (n8n) | n8n workflow: webhook trigger untuk alert Falco | ⬜ | — |
 | [Hari 43](daily/hari-43.md) | K8s Secret Management | External Secrets Operator → AWS Secrets Manager | ⬜ | — |
 | [Hari 44](daily/hari-44.md) | AI Threat Modeling K8s | Topologi + RBAC → AI analisis 3 attack path | ⬜ | — |
 | [Hari 45](daily/hari-45.md) | Dokumentasi Fase 3 | `fase-3-k8s-runtime.md` lengkap | ⬜ | — |
 
-**Progres Fase 3: 10/15**
+**Progres Fase 3: 11/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 40 / 60 |
+| Total Hari Selesai | 41 / 60 |
 | Fase Selesai | 2 / 4 |
-| Hari Aktif (ada catatan) | 40 |
+| Hari Aktif (ada catatan) | 41 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
