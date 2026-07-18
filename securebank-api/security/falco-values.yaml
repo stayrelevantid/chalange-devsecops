@@ -1,0 +1,75 @@
+driver:
+  kind: modern_ebpf
+
+falcosidekick:
+  enabled: true
+  webui:
+    enabled: true
+
+customRules:
+  securebank-rules.yaml: |-
+    - rule: Shell spawned in SecureBank container
+      desc: Detect shell execution in securebank containers. Distroless pods have no shell — if shell appears, it's suspicious.
+      condition: >
+        spawned_process and
+        container and
+        container.image.repository contains "securebank" and
+        proc.name in (bash, sh, ash, zsh)
+      output: >
+        ALERT: Shell opened in SecureBank container
+        (user=%user.name container=%container.name
+        image=%container.image.repository command=%proc.cmdline
+        pod=%k8s.pod.name namespace=%k8s.ns.name)
+      priority: WARNING
+      tags: [securebank, shell, mitre_execution]
+
+    - rule: Sensitive file read in SecureBank
+      desc: Detect access to sensitive paths in securebank containers (credentials, environment secrets)
+      condition: >
+        open_read and
+        container and
+        container.image.repository contains "securebank" and
+        (fd.name startswith /etc/shadow or
+         fd.name startswith /etc/passwd or
+         fd.name startswith /proc/self/environ or
+         fd.name startswith /root/.ssh or
+         fd.name startswith /var/run/secrets)
+      output: >
+        ALERT: Sensitive file read in SecureBank
+        (file=%fd.name user=%user.name container=%container.name
+        pod=%k8s.pod.name namespace=%k8s.ns.name)
+      priority: CRITICAL
+      tags: [securebank, filesystem, mitre_credential_access]
+
+    - rule: Network tool in SecureBank container
+      desc: Detect network reconnaissance tools in securebank containers (potential lateral movement or data exfil)
+      condition: >
+        spawned_process and
+        container and
+        container.image.repository contains "securebank" and
+        proc.name in (nc, ncat, nmap, wget, curl, dig, nslookup, socat)
+      output: >
+        ALERT: Network tool detected in SecureBank
+        (tool=%proc.name user=%user.name pod=%k8s.pod.name
+        namespace=%k8s.ns.name command=%proc.cmdline)
+      priority: NOTICE
+      tags: [securebank, network, mitre_discovery]
+
+    - rule: K8s API access from SecureBank
+      desc: >
+        Detect contact to K8s API server from securebank containers.
+        automountServiceAccountToken: false means no token mounted —
+        any API server contact is suspicious (attacker may have found credentials).
+      condition: >
+        evt.type=connect and
+        (fd.typechar=4 or fd.typechar=6) and
+        container and
+        container.image.repository contains "securebank" and
+        k8s_api_server
+      output: >
+        ALERT: K8s API server contact from SecureBank
+        (connection=%fd.name rport=%fd.rport user=%user.name
+        pod=%k8s.pod.name namespace=%k8s.ns.name
+        command=%proc.cmdline)
+      priority: WARNING
+      tags: [securebank, k8s, mitre_discovery]
