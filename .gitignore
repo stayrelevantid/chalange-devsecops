@@ -8,3 +8,8 @@ securebank-api/securebank
 # Local ZAP scan reports (day-specific)
 securebank-api/security/zap-report-day*.html
 securebank-api/security/zap-report-day*.json
+
+# AWS credentials for External Secrets Operator (DO NOT COMMIT)
+securebank-api/k8s/external-secrets/aws-credentials.yaml
+# Checkov K8s ESO report (may contain scanned secrets from aws-credentials.yaml)
+securebank-api/security/checkov-k8s-eso-report.json
