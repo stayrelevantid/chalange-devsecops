@@ -1,0 +1,5665 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-20T08:12:21Z"
+    generateName: external-secrets-678fb7bf9b-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: external-secrets
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: external-secrets
+      app.kubernetes.io/version: v2.7.0
+      helm.sh/chart: external-secrets-2.7.0
+      pod-template-hash: 678fb7bf9b
+    name: external-secrets-678fb7bf9b-8bw77
+    namespace: external-secrets
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: external-secrets-678fb7bf9b
+      uid: fdf854cc-4c14-4d40-99a5-b14d59bb7db4
+    resourceVersion: "39302"
+    uid: e9227cf6-3437-4f16-b711-0928f0fe7303
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - args:
+      - --concurrent=1
+      - --metrics-addr=:8080
+      - --loglevel=info
+      - --zap-time-encoding=epoch
+      image: ghcr.io/external-secrets/external-secrets:v2.7.0
+      imagePullPolicy: IfNotPresent
+      name: external-secrets
+      ports:
+      - containerPort: 8080
+        name: metrics
+        protocol: TCP
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-glcxj
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: external-secrets
+    serviceAccountName: external-secrets
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-glcxj
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:13:21Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:12:21Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:13:21Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:13:21Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:12:21Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://fa6377619beeba03e7c8f909e55d305a0eebef82ee59b0d70a81665fef2a3ab9
+      image: ghcr.io/external-secrets/external-secrets:v2.7.0
+      imageID: ghcr.io/external-secrets/external-secrets@sha256:6615aaea8ff44924d9d7dbc99982a130c82913f7583e212fa3aeebc6dc21fbf9
+      lastState: {}
+      name: external-secrets
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-20T08:13:20Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          uid: 1000
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-glcxj
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Running
+    podIP: 10.42.1.12
+    podIPs:
+    - ip: 10.42.1.12
+    qosClass: BestEffort
+    startTime: "2026-07-20T08:12:21Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-20T08:12:21Z"
+    generateName: external-secrets-cert-controller-6cf45d9f6-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: external-secrets
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: external-secrets-cert-controller
+      app.kubernetes.io/version: v2.7.0
+      helm.sh/chart: external-secrets-2.7.0
+      pod-template-hash: 6cf45d9f6
+    name: external-secrets-cert-controller-6cf45d9f6-fnwlg
+    namespace: external-secrets
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: external-secrets-cert-controller-6cf45d9f6
+      uid: 94fc1b70-213d-416e-8f98-510457129964
+    resourceVersion: "39386"
+    uid: 50623acc-2993-4020-83f0-5524455a73aa
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - args:
+      - certcontroller
+      - --crd-requeue-interval=5m
+      - --service-name=external-secrets-webhook
+      - --service-namespace=external-secrets
+      - --secret-name=external-secrets-webhook
+      - --secret-namespace=external-secrets
+      - --metrics-addr=:8080
+      - --healthz-addr=:8081
+      - --loglevel=info
+      - --zap-time-encoding=epoch
+      - --enable-partial-cache=true
+      image: ghcr.io/external-secrets/external-secrets:v2.7.0
+      imagePullPolicy: IfNotPresent
+      name: cert-controller
+      ports:
+      - containerPort: 8080
+        name: metrics
+        protocol: TCP
+      - containerPort: 8081
+        name: ready
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /readyz
+          port: ready
+          scheme: HTTP
+        initialDelaySeconds: 20
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m62ps
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: external-secrets-cert-controller
+    serviceAccountName: external-secrets-cert-controller
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-m62ps
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:13:23Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:12:21Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:14:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:14:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:12:21Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://ea69dc19de6afa9a5dca90af0a9880d7b9267a48000119307da25c6422e4b492
+      image: ghcr.io/external-secrets/external-secrets:v2.7.0
+      imageID: ghcr.io/external-secrets/external-secrets@sha256:6615aaea8ff44924d9d7dbc99982a130c82913f7583e212fa3aeebc6dc21fbf9
+      lastState: {}
+      name: cert-controller
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-20T08:13:22Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          uid: 1000
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m62ps
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.23
+    podIPs:
+    - ip: 10.42.2.23
+    qosClass: BestEffort
+    startTime: "2026-07-20T08:12:21Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-20T08:12:21Z"
+    generateName: external-secrets-webhook-548487f58b-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: external-secrets
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: external-secrets-webhook
+      app.kubernetes.io/version: v2.7.0
+      helm.sh/chart: external-secrets-2.7.0
+      pod-template-hash: 548487f58b
+    name: external-secrets-webhook-548487f58b-475mg
+    namespace: external-secrets
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: external-secrets-webhook-548487f58b
+      uid: 0513283d-dda1-41b5-8453-20f8f4aaacca
+    resourceVersion: "39380"
+    uid: 139cac7e-661c-4eb6-903b-461bd45e550b
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - args:
+      - webhook
+      - --port=10250
+      - --dns-name=external-secrets-webhook.external-secrets.svc
+      - --cert-dir=/tmp/certs
+      - --check-interval=5m
+      - --metrics-addr=:8080
+      - --healthz-addr=:8081
+      - --loglevel=info
+      - --zap-time-encoding=epoch
+      image: ghcr.io/external-secrets/external-secrets:v2.7.0
+      imagePullPolicy: IfNotPresent
+      name: webhook
+      ports:
+      - containerPort: 8080
+        name: metrics
+        protocol: TCP
+      - containerPort: 10250
+        name: webhook
+        protocol: TCP
+      - containerPort: 8081
+        name: ready
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /readyz
+          port: ready
+          scheme: HTTP
+        initialDelaySeconds: 20
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp/certs
+        name: certs
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6xc7c
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: external-secrets-webhook
+    serviceAccountName: external-secrets-webhook
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: certs
+      secret:
+        defaultMode: 420
+        secretName: external-secrets-webhook
+    - name: kube-api-access-6xc7c
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:13:14Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:12:21Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:14:36Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:14:36Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:12:21Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://ba8a8feeb22e5e7001d94dd730677f5eaf28a47fd6ec3e5095c0ec4b0e173a34
+      image: ghcr.io/external-secrets/external-secrets:v2.7.0
+      imageID: ghcr.io/external-secrets/external-secrets@sha256:6615aaea8ff44924d9d7dbc99982a130c82913f7583e212fa3aeebc6dc21fbf9
+      lastState: {}
+      name: webhook
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-20T08:13:14Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          uid: 1000
+      volumeMounts:
+      - mountPath: /tmp/certs
+        name: certs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6xc7c
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    phase: Running
+    podIP: 10.42.0.15
+    podIPs:
+    - ip: 10.42.0.15
+    qosClass: BestEffort
+    startTime: "2026-07-20T08:12:21Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      checksum/certs: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      checksum/config: 5160b229203631fff7d5921623be2f7b88de8af548accbe4c8c9aa33e654b8de
+      checksum/rules: 7a513fa3b57a1bec68ede2c02e15b226d97adaf03316d4ab298ff64fba49db6f
+    creationTimestamp: "2026-07-18T06:44:54Z"
+    generateName: falco-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/name: falco
+      controller-revision-hash: 5bb668d6
+      pod-template-generation: "2"
+    name: falco-dqg5b
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: falco
+      uid: 3b3495ed-875d-4e14-94b3-8fe47399d7f6
+    resourceVersion: "32806"
+    uid: b15dac13-acaf-4365-bb5c-7fbdc663f395
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - k3d-securebank-agent-1
+    containers:
+    - args:
+      - /usr/bin/falco
+      env:
+      - name: HOST_ROOT
+        value: /host
+      - name: FALCO_HOSTNAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      - name: FALCO_K8S_NODE_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      image: docker.io/falcosecurity/falco:0.44.1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        periodSeconds: 15
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: falco
+      ports:
+      - containerPort: 8765
+        name: web
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        periodSeconds: 15
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      securityContext:
+        privileged: true
+      startupProbe:
+        failureThreshold: 20
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /host/var/run/docker.sock
+        name: container-engine-socket-0
+      - mountPath: /host/run/podman/podman.sock
+        name: container-engine-socket-1
+      - mountPath: /host/run/host-containerd/containerd.sock
+        name: container-engine-socket-2
+      - mountPath: /host/run/containerd/containerd.sock
+        name: container-engine-socket-3
+      - mountPath: /host/run/crio/crio.sock
+        name: container-engine-socket-4
+      - mountPath: /host/run/k3s/containerd/containerd.sock
+        name: container-engine-socket-5
+      - mountPath: /etc/falco
+        name: rulesfiles-install-dir
+      - mountPath: /usr/share/falco/plugins
+        name: plugins-install-dir
+      - mountPath: /root/.falco
+        name: root-falco-fs
+      - mountPath: /host/proc
+        name: proc-fs
+      - mountPath: /host/etc
+        name: etc-fs
+        readOnly: true
+      - mountPath: /sys/kernel
+        name: sys-fs
+        readOnly: true
+      - mountPath: /etc/falco/falco.yaml
+        name: falco-yaml
+        subPath: falco.yaml
+      - mountPath: /etc/falco/rules.d
+        name: rules-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n5gk7
+        readOnly: true
+    - args:
+      - artifact
+      - follow
+      - --log-format=json
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imagePullPolicy: IfNotPresent
+      name: falcoctl-artifact-follow
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n5gk7
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - args:
+      - artifact
+      - install
+      - --log-format=json
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imagePullPolicy: IfNotPresent
+      name: falcoctl-artifact-install
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n5gk7
+        readOnly: true
+    nodeName: k3d-securebank-agent-1
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: falco
+    serviceAccountName: falco
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - hostPath:
+        path: /var/run/docker.sock
+        type: ""
+      name: container-engine-socket-0
+    - hostPath:
+        path: /run/podman/podman.sock
+        type: ""
+      name: container-engine-socket-1
+    - hostPath:
+        path: /run/host-containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-2
+    - hostPath:
+        path: /run/containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-3
+    - hostPath:
+        path: /run/crio/crio.sock
+        type: ""
+      name: container-engine-socket-4
+    - hostPath:
+        path: /run/k3s/containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-5
+    - emptyDir: {}
+      name: plugins-install-dir
+    - emptyDir: {}
+      name: rulesfiles-install-dir
+    - emptyDir: {}
+      name: artifact-state-dir
+    - emptyDir: {}
+      name: root-falco-fs
+    - hostPath:
+        path: /boot
+        type: ""
+      name: boot-fs
+    - hostPath:
+        path: /lib/modules
+        type: ""
+      name: lib-modules
+    - hostPath:
+        path: /usr
+        type: ""
+      name: usr-fs
+    - hostPath:
+        path: /etc
+        type: ""
+      name: etc-fs
+    - hostPath:
+        path: /sys/kernel
+        type: ""
+      name: sys-fs
+    - hostPath:
+        path: /proc
+        type: ""
+      name: proc-fs
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: falcoctl.yaml
+          path: falcoctl.yaml
+        name: falco-falcoctl
+      name: falcoctl-config-volume
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: falco.yaml
+          path: falco.yaml
+        name: falco
+      name: falco-yaml
+    - configMap:
+        defaultMode: 420
+        name: falco-rules
+      name: rules-volume
+    - name: kube-api-access-n5gk7
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:56Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:23Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:29Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:29Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:54Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 512Mi
+      containerID: containerd://2f26288e16fb9ae081cb9f12c1da8bdabdf28a8dcc00bc0d64a841dea0913b0f
+      image: docker.io/falcosecurity/falco:0.44.1
+      imageID: docker.io/falcosecurity/falco@sha256:d0cfe422d6ac0e0f20857798f46c7d7273210e1b064b22821e4e6e7f843cde6b
+      lastState: {}
+      name: falco
+      ready: true
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-18T06:45:23Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+      volumeMounts:
+      - mountPath: /host/var/run/docker.sock
+        name: container-engine-socket-0
+      - mountPath: /host/run/podman/podman.sock
+        name: container-engine-socket-1
+      - mountPath: /host/run/host-containerd/containerd.sock
+        name: container-engine-socket-2
+      - mountPath: /host/run/containerd/containerd.sock
+        name: container-engine-socket-3
+      - mountPath: /host/run/crio/crio.sock
+        name: container-engine-socket-4
+      - mountPath: /host/run/k3s/containerd/containerd.sock
+        name: container-engine-socket-5
+      - mountPath: /etc/falco
+        name: rulesfiles-install-dir
+      - mountPath: /usr/share/falco/plugins
+        name: plugins-install-dir
+      - mountPath: /root/.falco
+        name: root-falco-fs
+      - mountPath: /host/proc
+        name: proc-fs
+      - mountPath: /host/etc
+        name: etc-fs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /sys/kernel
+        name: sys-fs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /etc/falco/falco.yaml
+        name: falco-yaml
+      - mountPath: /etc/falco/rules.d
+        name: rules-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n5gk7
+        readOnly: true
+        recursiveReadOnly: Disabled
+    - containerID: containerd://4e5996d3dc735fe3f61b25955316605e3c531e0a3f7033563d7ad00d5182faac
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imageID: docker.io/falcosecurity/falcoctl@sha256:0eeb79adc580ae6a5abfdefd7f8f0fed9151fcb545f015c84e8f1d7b2d8a6b02
+      lastState: {}
+      name: falcoctl-artifact-follow
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-18T06:45:23Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n5gk7
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    initContainerStatuses:
+    - containerID: containerd://f463a5c53290ed02d0d2f87bb492cd3ae9c8be46250624a992e9986e76db1323
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imageID: docker.io/falcosecurity/falcoctl@sha256:0eeb79adc580ae6a5abfdefd7f8f0fed9151fcb545f015c84e8f1d7b2d8a6b02
+      lastState: {}
+      name: falcoctl-artifact-install
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://f463a5c53290ed02d0d2f87bb492cd3ae9c8be46250624a992e9986e76db1323
+          exitCode: 0
+          finishedAt: "2026-07-18T06:45:22Z"
+          reason: Completed
+          startedAt: "2026-07-18T06:44:55Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-n5gk7
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.42.1.9
+    podIPs:
+    - ip: 10.42.1.9
+    qosClass: Burstable
+    startTime: "2026-07-18T06:44:54Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      checksum/config: d735925d7f9ed9c0150d1bf0a86d7f9d3f63bc790dfb3dd7e8520807a76228d5
+    creationTimestamp: "2026-07-19T14:04:58Z"
+    generateName: falco-falcosidekick-ffcb8567d-
+    generation: 1
+    labels:
+      app.kubernetes.io/component: core
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: falcosidekick
+      app.kubernetes.io/part-of: falcosidekick
+      app.kubernetes.io/version: 2.31.1
+      helm.sh/chart: falcosidekick-0.12.1
+      pod-template-hash: ffcb8567d
+    name: falco-falcosidekick-ffcb8567d-jfs8x
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: falco-falcosidekick-ffcb8567d
+      uid: 36e4f52f-023f-4ef4-8bf8-e13633fc577d
+    resourceVersion: "36846"
+    uid: 24ea9bce-7a1d-478a-a106-bdc8bce66a1b
+  spec:
+    containers:
+    - env:
+      - name: DEBUG
+        value: "false"
+      - name: CUSTOMFIELDS
+      - name: TEMPLATEDFIELDS
+      - name: CUSTOMTAGS
+      - name: OUTPUTFIELDFORMAT
+      - name: BRACKETREPLACER
+      - name: MUTUALTLSFILESPATH
+        value: /etc/certs
+      - name: MUTUALTLSCLIENT_CERTFILE
+      - name: MUTUALTLSCLIENT_KEYFILE
+      - name: MUTUALTLSCLIENT_CACERTFILE
+      - name: TLSCLIENT_CACERTFILE
+      envFrom:
+      - secretRef:
+          name: falco-falcosidekick
+      image: docker.io/falcosecurity/falcosidekick:2.32.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ping
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: falcosidekick
+      ports:
+      - containerPort: 2801
+        name: http
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ping
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-x2zzp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1234
+      runAsUser: 1234
+    serviceAccount: falco-falcosidekick
+    serviceAccountName: falco-falcosidekick
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-x2zzp
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:04:59Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:04:58Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:10Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:10Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:04:58Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://26b023b3f2c0121fad8053dcb2fb4b84204c9bcd47a0667de5d0afdbec73ae92
+      image: docker.io/falcosecurity/falcosidekick:2.32.0
+      imageID: docker.io/falcosecurity/falcosidekick@sha256:1976da72151850aae4436f33a5ed94bdef469f42a9b61c182b4feeb5441fb081
+      lastState: {}
+      name: falcosidekick
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-19T14:04:59Z"
+      user:
+        linux:
+          gid: 101
+          supplementalGroups:
+          - 101
+          - 1234
+          uid: 1234
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-x2zzp
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Running
+    podIP: 10.42.1.11
+    podIPs:
+    - ip: 10.42.1.11
+    qosClass: BestEffort
+    startTime: "2026-07-19T14:04:58Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      checksum/config: d735925d7f9ed9c0150d1bf0a86d7f9d3f63bc790dfb3dd7e8520807a76228d5
+    creationTimestamp: "2026-07-19T14:05:11Z"
+    generateName: falco-falcosidekick-ffcb8567d-
+    generation: 1
+    labels:
+      app.kubernetes.io/component: core
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: falcosidekick
+      app.kubernetes.io/part-of: falcosidekick
+      app.kubernetes.io/version: 2.31.1
+      helm.sh/chart: falcosidekick-0.12.1
+      pod-template-hash: ffcb8567d
+    name: falco-falcosidekick-ffcb8567d-p77rb
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: falco-falcosidekick-ffcb8567d
+      uid: 36e4f52f-023f-4ef4-8bf8-e13633fc577d
+    resourceVersion: "36887"
+    uid: 4db7eb3f-8ee5-4667-901b-2df7f062f0d2
+  spec:
+    containers:
+    - env:
+      - name: DEBUG
+        value: "false"
+      - name: CUSTOMFIELDS
+      - name: TEMPLATEDFIELDS
+      - name: CUSTOMTAGS
+      - name: OUTPUTFIELDFORMAT
+      - name: BRACKETREPLACER
+      - name: MUTUALTLSFILESPATH
+        value: /etc/certs
+      - name: MUTUALTLSCLIENT_CERTFILE
+      - name: MUTUALTLSCLIENT_KEYFILE
+      - name: MUTUALTLSCLIENT_CACERTFILE
+      - name: TLSCLIENT_CACERTFILE
+      envFrom:
+      - secretRef:
+          name: falco-falcosidekick
+      image: docker.io/falcosecurity/falcosidekick:2.32.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ping
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: falcosidekick
+      ports:
+      - containerPort: 2801
+        name: http
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ping
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-d9svj
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1234
+      runAsUser: 1234
+    serviceAccount: falco-falcosidekick
+    serviceAccountName: falco-falcosidekick
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-d9svj
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:12Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:11Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:23Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:23Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-19T14:05:11Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://3275b0c4d33703b7cc8a7339e7d2eeb64c25bcc3c242c739cd89925a5e0f3b1f
+      image: docker.io/falcosecurity/falcosidekick:2.32.0
+      imageID: docker.io/falcosecurity/falcosidekick@sha256:1976da72151850aae4436f33a5ed94bdef469f42a9b61c182b4feeb5441fb081
+      lastState: {}
+      name: falcosidekick
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-19T14:05:11Z"
+      user:
+        linux:
+          gid: 101
+          supplementalGroups:
+          - 101
+          - 1234
+          uid: 1234
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-d9svj
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.21
+    podIPs:
+    - ip: 10.42.2.21
+    qosClass: BestEffort
+    startTime: "2026-07-19T14:05:11Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-16T15:38:08Z"
+    generateName: falco-falcosidekick-ui-84f9fc7d87-
+    generation: 1
+    labels:
+      app.kubernetes.io/component: ui
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: falcosidekick
+      app.kubernetes.io/part-of: falcosidekick
+      app.kubernetes.io/version: 2.31.1
+      helm.sh/chart: falcosidekick-0.12.1
+      pod-template-hash: 84f9fc7d87
+    name: falco-falcosidekick-ui-84f9fc7d87-6965z
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: falco-falcosidekick-ui-84f9fc7d87
+      uid: aae71d02-e204-4a50-a7b4-8ac6e7576658
+    resourceVersion: "30314"
+    uid: cf8b6049-628f-48ea-af4b-625d9599c7bf
+  spec:
+    containers:
+    - args:
+      - -r
+      - falco-falcosidekick-ui-redis:6379
+      - -l
+      - info
+      envFrom:
+      - secretRef:
+          name: falco-falcosidekick-ui
+      image: docker.io/falcosecurity/falcosidekick-ui:2.2.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /api/v1/healthz
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: falcosidekick-ui
+      ports:
+      - containerPort: 2802
+        name: http
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /api/v1/healthz
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-47752
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - /scripts/ping-redis.sh
+      envFrom:
+      - secretRef:
+          name: falco-falcosidekick-ui
+      image: docker.io/redis/redis-stack:7.2.0-v11
+      imagePullPolicy: IfNotPresent
+      name: wait-redis
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /scripts/ping-redis.sh
+        name: scripts
+        subPath: ping-redis.sh
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-47752
+        readOnly: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1234
+      runAsUser: 1234
+    serviceAccount: falco-falcosidekick-ui
+    serviceAccountName: falco-falcosidekick-ui
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - configMap:
+        defaultMode: 365
+        items:
+        - key: ping-redis.sh
+          path: ping-redis.sh
+        name: falco-falcosidekick-ui-redis
+      name: scripts
+    - name: kube-api-access-47752
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:38:10Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:38:10Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:38:23Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:38:23Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:38:08Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://6093b8b810fd760862354f5a1dab46dc30ee38005c435264f808cb10f78188b6
+      image: docker.io/falcosecurity/falcosidekick-ui:2.2.0
+      imageID: docker.io/falcosecurity/falcosidekick-ui@sha256:0faadedfdff7e6af8be0d7d90efb0638cedc337e4e5c3e57f527da2f6722c851
+      lastState: {}
+      name: falcosidekick-ui
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-16T15:38:10Z"
+      user:
+        linux:
+          gid: 101
+          supplementalGroups:
+          - 101
+          - 1234
+          uid: 1234
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-47752
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    initContainerStatuses:
+    - containerID: containerd://9dc7aa3e35cf1fe03a9e0fff2d594ca80ac8aee9defa5a1627dbba017b1416eb
+      image: docker.io/redis/redis-stack:7.2.0-v11
+      imageID: docker.io/redis/redis-stack@sha256:96a8426b991a06c1e07198c5af5a62d0b24e87a7dfd6a1efaff19c2d80af836b
+      lastState: {}
+      name: wait-redis
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://9dc7aa3e35cf1fe03a9e0fff2d594ca80ac8aee9defa5a1627dbba017b1416eb
+          exitCode: 0
+          finishedAt: "2026-07-16T15:38:09Z"
+          reason: Completed
+          startedAt: "2026-07-16T15:38:09Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1234
+          uid: 1234
+      volumeMounts:
+      - mountPath: /scripts/ping-redis.sh
+        name: scripts
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-47752
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.42.2.16
+    podIPs:
+    - ip: 10.42.2.16
+    qosClass: BestEffort
+    startTime: "2026-07-16T15:38:08Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-16T15:29:10Z"
+    generateName: falco-falcosidekick-ui-84f9fc7d87-
+    generation: 1
+    labels:
+      app.kubernetes.io/component: ui
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: falcosidekick
+      app.kubernetes.io/part-of: falcosidekick
+      app.kubernetes.io/version: 2.31.1
+      helm.sh/chart: falcosidekick-0.12.1
+      pod-template-hash: 84f9fc7d87
+    name: falco-falcosidekick-ui-84f9fc7d87-pk8rd
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: falco-falcosidekick-ui-84f9fc7d87
+      uid: aae71d02-e204-4a50-a7b4-8ac6e7576658
+    resourceVersion: "30113"
+    uid: ddba20c6-4f1a-4f03-9f83-db4ec3d924fb
+  spec:
+    containers:
+    - args:
+      - -r
+      - falco-falcosidekick-ui-redis:6379
+      - -l
+      - info
+      envFrom:
+      - secretRef:
+          name: falco-falcosidekick-ui
+      image: docker.io/falcosecurity/falcosidekick-ui:2.2.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /api/v1/healthz
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: falcosidekick-ui
+      ports:
+      - containerPort: 2802
+        name: http
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /api/v1/healthz
+          port: http
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6ds5g
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - /scripts/ping-redis.sh
+      envFrom:
+      - secretRef:
+          name: falco-falcosidekick-ui
+      image: docker.io/redis/redis-stack:7.2.0-v11
+      imagePullPolicy: IfNotPresent
+      name: wait-redis
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /scripts/ping-redis.sh
+        name: scripts
+        subPath: ping-redis.sh
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6ds5g
+        readOnly: true
+    nodeName: k3d-securebank-agent-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1234
+      runAsUser: 1234
+    serviceAccount: falco-falcosidekick-ui
+    serviceAccountName: falco-falcosidekick-ui
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - configMap:
+        defaultMode: 365
+        items:
+        - key: ping-redis.sh
+          path: ping-redis.sh
+        name: falco-falcosidekick-ui-redis
+      name: scripts
+    - name: kube-api-access-6ds5g
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:31:28Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:31:38Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:34:48Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:34:48Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:29:10Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://5dbdf6622ab6c302dafabecf6eda62f7d10ac57384f34da916d0ed9c4f7a2092
+      image: docker.io/falcosecurity/falcosidekick-ui:2.2.0
+      imageID: docker.io/falcosecurity/falcosidekick-ui@sha256:0faadedfdff7e6af8be0d7d90efb0638cedc337e4e5c3e57f527da2f6722c851
+      lastState: {}
+      name: falcosidekick-ui
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-16T15:34:37Z"
+      user:
+        linux:
+          gid: 101
+          supplementalGroups:
+          - 101
+          - 1234
+          uid: 1234
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6ds5g
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    initContainerStatuses:
+    - containerID: containerd://8981b271e71a46f77e1df4d4012c619c554d9d0d3b1203acb8a2c42d22784795
+      image: docker.io/redis/redis-stack:7.2.0-v11
+      imageID: docker.io/redis/redis-stack@sha256:96a8426b991a06c1e07198c5af5a62d0b24e87a7dfd6a1efaff19c2d80af836b
+      lastState: {}
+      name: wait-redis
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://8981b271e71a46f77e1df4d4012c619c554d9d0d3b1203acb8a2c42d22784795
+          exitCode: 0
+          finishedAt: "2026-07-16T15:31:36Z"
+          reason: Completed
+          startedAt: "2026-07-16T15:31:27Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1234
+          uid: 1234
+      volumeMounts:
+      - mountPath: /scripts/ping-redis.sh
+        name: scripts
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6ds5g
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.42.0.11
+    podIPs:
+    - ip: 10.42.0.11
+    qosClass: BestEffort
+    startTime: "2026-07-16T15:29:10Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-16T15:29:10Z"
+    generateName: falco-falcosidekick-ui-redis-
+    generation: 1
+    labels:
+      app.kubernetes.io/component: ui-redis
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: falcosidekick
+      app.kubernetes.io/part-of: falcosidekick
+      app.kubernetes.io/version: 2.31.1
+      apps.kubernetes.io/pod-index: "0"
+      controller-revision-hash: falco-falcosidekick-ui-redis-7ccfb7d86
+      helm.sh/chart: falcosidekick-0.12.1
+      statefulset.kubernetes.io/pod-name: falco-falcosidekick-ui-redis-0
+    name: falco-falcosidekick-ui-redis-0
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: falco-falcosidekick-ui-redis
+      uid: 5e9d0418-7008-4495-ae68-d4f370bd9782
+    resourceVersion: "29929"
+    uid: 68eb3d02-282a-4cd4-94b3-0d22669db4ff
+  spec:
+    containers:
+    - image: docker.io/redis/redis-stack:7.2.0-v11
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        tcpSocket:
+          port: 6379
+        timeoutSeconds: 2
+      name: redis
+      ports:
+      - containerPort: 6379
+        name: redis
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        tcpSocket:
+          port: 6379
+        timeoutSeconds: 2
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data
+        name: falco-falcosidekick-ui-redis-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-2pr4p
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    hostname: falco-falcosidekick-ui-redis-0
+    nodeName: k3d-securebank-agent-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: falco-falcosidekick-ui
+    serviceAccountName: falco-falcosidekick-ui
+    subdomain: falco-falcosidekick-ui-redis
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: falco-falcosidekick-ui-redis-data
+      persistentVolumeClaim:
+        claimName: falco-falcosidekick-ui-redis-data-falco-falcosidekick-ui-redis-0
+    - name: kube-api-access-2pr4p
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:31:28Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:29:24Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:31:34Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:31:34Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-16T15:29:24Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://086a8c887025d7b88bf9eef3143e979cb556a61f6ff7355be31cffc5ba22d0f6
+      image: docker.io/redis/redis-stack:7.2.0-v11
+      imageID: docker.io/redis/redis-stack@sha256:96a8426b991a06c1e07198c5af5a62d0b24e87a7dfd6a1efaff19c2d80af836b
+      lastState: {}
+      name: redis
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-16T15:31:27Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          uid: 0
+      volumeMounts:
+      - mountPath: /data
+        name: falco-falcosidekick-ui-redis-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-2pr4p
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    phase: Running
+    podIP: 10.42.0.13
+    podIPs:
+    - ip: 10.42.0.13
+    qosClass: BestEffort
+    startTime: "2026-07-16T15:29:24Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      checksum/certs: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      checksum/config: 5160b229203631fff7d5921623be2f7b88de8af548accbe4c8c9aa33e654b8de
+      checksum/rules: 7a513fa3b57a1bec68ede2c02e15b226d97adaf03316d4ab298ff64fba49db6f
+    creationTimestamp: "2026-07-18T06:45:43Z"
+    generateName: falco-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/name: falco
+      controller-revision-hash: 5bb668d6
+      pod-template-generation: "2"
+    name: falco-hrtlv
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: falco
+      uid: 3b3495ed-875d-4e14-94b3-8fe47399d7f6
+    resourceVersion: "32896"
+    uid: 58594179-df36-47de-8214-82315cffedf6
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - k3d-securebank-agent-0
+    containers:
+    - args:
+      - /usr/bin/falco
+      env:
+      - name: HOST_ROOT
+        value: /host
+      - name: FALCO_HOSTNAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      - name: FALCO_K8S_NODE_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      image: docker.io/falcosecurity/falco:0.44.1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        periodSeconds: 15
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: falco
+      ports:
+      - containerPort: 8765
+        name: web
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        periodSeconds: 15
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      securityContext:
+        privileged: true
+      startupProbe:
+        failureThreshold: 20
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /host/var/run/docker.sock
+        name: container-engine-socket-0
+      - mountPath: /host/run/podman/podman.sock
+        name: container-engine-socket-1
+      - mountPath: /host/run/host-containerd/containerd.sock
+        name: container-engine-socket-2
+      - mountPath: /host/run/containerd/containerd.sock
+        name: container-engine-socket-3
+      - mountPath: /host/run/crio/crio.sock
+        name: container-engine-socket-4
+      - mountPath: /host/run/k3s/containerd/containerd.sock
+        name: container-engine-socket-5
+      - mountPath: /etc/falco
+        name: rulesfiles-install-dir
+      - mountPath: /usr/share/falco/plugins
+        name: plugins-install-dir
+      - mountPath: /root/.falco
+        name: root-falco-fs
+      - mountPath: /host/proc
+        name: proc-fs
+      - mountPath: /host/etc
+        name: etc-fs
+        readOnly: true
+      - mountPath: /sys/kernel
+        name: sys-fs
+        readOnly: true
+      - mountPath: /etc/falco/falco.yaml
+        name: falco-yaml
+        subPath: falco.yaml
+      - mountPath: /etc/falco/rules.d
+        name: rules-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m8w28
+        readOnly: true
+    - args:
+      - artifact
+      - follow
+      - --log-format=json
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imagePullPolicy: IfNotPresent
+      name: falcoctl-artifact-follow
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m8w28
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - args:
+      - artifact
+      - install
+      - --log-format=json
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imagePullPolicy: IfNotPresent
+      name: falcoctl-artifact-install
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m8w28
+        readOnly: true
+    nodeName: k3d-securebank-agent-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: falco
+    serviceAccountName: falco
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - hostPath:
+        path: /var/run/docker.sock
+        type: ""
+      name: container-engine-socket-0
+    - hostPath:
+        path: /run/podman/podman.sock
+        type: ""
+      name: container-engine-socket-1
+    - hostPath:
+        path: /run/host-containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-2
+    - hostPath:
+        path: /run/containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-3
+    - hostPath:
+        path: /run/crio/crio.sock
+        type: ""
+      name: container-engine-socket-4
+    - hostPath:
+        path: /run/k3s/containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-5
+    - emptyDir: {}
+      name: plugins-install-dir
+    - emptyDir: {}
+      name: rulesfiles-install-dir
+    - emptyDir: {}
+      name: artifact-state-dir
+    - emptyDir: {}
+      name: root-falco-fs
+    - hostPath:
+        path: /boot
+        type: ""
+      name: boot-fs
+    - hostPath:
+        path: /lib/modules
+        type: ""
+      name: lib-modules
+    - hostPath:
+        path: /usr
+        type: ""
+      name: usr-fs
+    - hostPath:
+        path: /etc
+        type: ""
+      name: etc-fs
+    - hostPath:
+        path: /sys/kernel
+        type: ""
+      name: sys-fs
+    - hostPath:
+        path: /proc
+        type: ""
+      name: proc-fs
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: falcoctl.yaml
+          path: falcoctl.yaml
+        name: falco-falcoctl
+      name: falcoctl-config-volume
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: falco.yaml
+          path: falco.yaml
+        name: falco
+      name: falco-yaml
+    - configMap:
+        defaultMode: 420
+        name: falco-rules
+      name: rules-volume
+    - name: kube-api-access-m8w28
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:44Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:46:20Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:46:29Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:46:29Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:43Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 512Mi
+      containerID: containerd://e7db8a20fd2c2f514fd33cacca8a89eadff5b1ff0241f82aa98ad18d8eb14637
+      image: docker.io/falcosecurity/falco:0.44.1
+      imageID: docker.io/falcosecurity/falco@sha256:d0cfe422d6ac0e0f20857798f46c7d7273210e1b064b22821e4e6e7f843cde6b
+      lastState: {}
+      name: falco
+      ready: true
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-18T06:46:21Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+      volumeMounts:
+      - mountPath: /host/var/run/docker.sock
+        name: container-engine-socket-0
+      - mountPath: /host/run/podman/podman.sock
+        name: container-engine-socket-1
+      - mountPath: /host/run/host-containerd/containerd.sock
+        name: container-engine-socket-2
+      - mountPath: /host/run/containerd/containerd.sock
+        name: container-engine-socket-3
+      - mountPath: /host/run/crio/crio.sock
+        name: container-engine-socket-4
+      - mountPath: /host/run/k3s/containerd/containerd.sock
+        name: container-engine-socket-5
+      - mountPath: /etc/falco
+        name: rulesfiles-install-dir
+      - mountPath: /usr/share/falco/plugins
+        name: plugins-install-dir
+      - mountPath: /root/.falco
+        name: root-falco-fs
+      - mountPath: /host/proc
+        name: proc-fs
+      - mountPath: /host/etc
+        name: etc-fs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /sys/kernel
+        name: sys-fs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /etc/falco/falco.yaml
+        name: falco-yaml
+      - mountPath: /etc/falco/rules.d
+        name: rules-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m8w28
+        readOnly: true
+        recursiveReadOnly: Disabled
+    - containerID: containerd://88b60a809bed8ce4bb940548a2c774b9bfcda93587362f0a820d760c9da54d46
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imageID: docker.io/falcosecurity/falcoctl@sha256:0eeb79adc580ae6a5abfdefd7f8f0fed9151fcb545f015c84e8f1d7b2d8a6b02
+      lastState: {}
+      name: falcoctl-artifact-follow
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-18T06:46:21Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m8w28
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    initContainerStatuses:
+    - containerID: containerd://3c843acbb489c09182746075f35f2236a6bf6073d50f44a03b5859a496cb4690
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imageID: docker.io/falcosecurity/falcoctl@sha256:0eeb79adc580ae6a5abfdefd7f8f0fed9151fcb545f015c84e8f1d7b2d8a6b02
+      lastState: {}
+      name: falcoctl-artifact-install
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://3c843acbb489c09182746075f35f2236a6bf6073d50f44a03b5859a496cb4690
+          exitCode: 0
+          finishedAt: "2026-07-18T06:46:20Z"
+          reason: Completed
+          startedAt: "2026-07-18T06:45:44Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m8w28
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.42.0.14
+    podIPs:
+    - ip: 10.42.0.14
+    qosClass: Burstable
+    startTime: "2026-07-18T06:45:43Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      checksum/certs: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      checksum/config: 5160b229203631fff7d5921623be2f7b88de8af548accbe4c8c9aa33e654b8de
+      checksum/rules: 7a513fa3b57a1bec68ede2c02e15b226d97adaf03316d4ab298ff64fba49db6f
+    creationTimestamp: "2026-07-18T06:44:18Z"
+    generateName: falco-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: falco
+      app.kubernetes.io/name: falco
+      controller-revision-hash: 5bb668d6
+      pod-template-generation: "2"
+    name: falco-jnl7w
+    namespace: falco
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: falco
+      uid: 3b3495ed-875d-4e14-94b3-8fe47399d7f6
+    resourceVersion: "32757"
+    uid: 8c206f26-d32b-4446-ad7e-de7fa3bf2abc
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - k3d-securebank-server-0
+    containers:
+    - args:
+      - /usr/bin/falco
+      env:
+      - name: HOST_ROOT
+        value: /host
+      - name: FALCO_HOSTNAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      - name: FALCO_K8S_NODE_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      image: docker.io/falcosecurity/falco:0.44.1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        periodSeconds: 15
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: falco
+      ports:
+      - containerPort: 8765
+        name: web
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        periodSeconds: 15
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      securityContext:
+        privileged: true
+      startupProbe:
+        failureThreshold: 20
+        httpGet:
+          path: /healthz
+          port: 8765
+          scheme: HTTP
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 5
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /host/var/run/docker.sock
+        name: container-engine-socket-0
+      - mountPath: /host/run/podman/podman.sock
+        name: container-engine-socket-1
+      - mountPath: /host/run/host-containerd/containerd.sock
+        name: container-engine-socket-2
+      - mountPath: /host/run/containerd/containerd.sock
+        name: container-engine-socket-3
+      - mountPath: /host/run/crio/crio.sock
+        name: container-engine-socket-4
+      - mountPath: /host/run/k3s/containerd/containerd.sock
+        name: container-engine-socket-5
+      - mountPath: /etc/falco
+        name: rulesfiles-install-dir
+      - mountPath: /usr/share/falco/plugins
+        name: plugins-install-dir
+      - mountPath: /root/.falco
+        name: root-falco-fs
+      - mountPath: /host/proc
+        name: proc-fs
+      - mountPath: /host/etc
+        name: etc-fs
+        readOnly: true
+      - mountPath: /sys/kernel
+        name: sys-fs
+        readOnly: true
+      - mountPath: /etc/falco/falco.yaml
+        name: falco-yaml
+        subPath: falco.yaml
+      - mountPath: /etc/falco/rules.d
+        name: rules-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kfkjx
+        readOnly: true
+    - args:
+      - artifact
+      - follow
+      - --log-format=json
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imagePullPolicy: IfNotPresent
+      name: falcoctl-artifact-follow
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kfkjx
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - args:
+      - artifact
+      - install
+      - --log-format=json
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imagePullPolicy: IfNotPresent
+      name: falcoctl-artifact-install
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kfkjx
+        readOnly: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: falco
+    serviceAccountName: falco
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - hostPath:
+        path: /var/run/docker.sock
+        type: ""
+      name: container-engine-socket-0
+    - hostPath:
+        path: /run/podman/podman.sock
+        type: ""
+      name: container-engine-socket-1
+    - hostPath:
+        path: /run/host-containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-2
+    - hostPath:
+        path: /run/containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-3
+    - hostPath:
+        path: /run/crio/crio.sock
+        type: ""
+      name: container-engine-socket-4
+    - hostPath:
+        path: /run/k3s/containerd/containerd.sock
+        type: ""
+      name: container-engine-socket-5
+    - emptyDir: {}
+      name: plugins-install-dir
+    - emptyDir: {}
+      name: rulesfiles-install-dir
+    - emptyDir: {}
+      name: artifact-state-dir
+    - emptyDir: {}
+      name: root-falco-fs
+    - hostPath:
+        path: /boot
+        type: ""
+      name: boot-fs
+    - hostPath:
+        path: /lib/modules
+        type: ""
+      name: lib-modules
+    - hostPath:
+        path: /usr
+        type: ""
+      name: usr-fs
+    - hostPath:
+        path: /etc
+        type: ""
+      name: etc-fs
+    - hostPath:
+        path: /sys/kernel
+        type: ""
+      name: sys-fs
+    - hostPath:
+        path: /proc
+        type: ""
+      name: proc-fs
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: falcoctl.yaml
+          path: falcoctl.yaml
+        name: falco-falcoctl
+      name: falcoctl-config-volume
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: falco.yaml
+          path: falco.yaml
+        name: falco
+      name: falco-yaml
+    - configMap:
+        defaultMode: 420
+        name: falco-rules
+      name: rules-volume
+    - name: kube-api-access-kfkjx
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:20Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:44Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:49Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:49Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:44:18Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 512Mi
+      containerID: containerd://8fadf2f1d8c3c68371e25ca6cde11abbd9d19609b5b7dd6431b475ce60d68ed9
+      image: docker.io/falcosecurity/falco:0.44.1
+      imageID: docker.io/falcosecurity/falco@sha256:d0cfe422d6ac0e0f20857798f46c7d7273210e1b064b22821e4e6e7f843cde6b
+      lastState: {}
+      name: falco
+      ready: true
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-18T06:44:44Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+      volumeMounts:
+      - mountPath: /host/var/run/docker.sock
+        name: container-engine-socket-0
+      - mountPath: /host/run/podman/podman.sock
+        name: container-engine-socket-1
+      - mountPath: /host/run/host-containerd/containerd.sock
+        name: container-engine-socket-2
+      - mountPath: /host/run/containerd/containerd.sock
+        name: container-engine-socket-3
+      - mountPath: /host/run/crio/crio.sock
+        name: container-engine-socket-4
+      - mountPath: /host/run/k3s/containerd/containerd.sock
+        name: container-engine-socket-5
+      - mountPath: /etc/falco
+        name: rulesfiles-install-dir
+      - mountPath: /usr/share/falco/plugins
+        name: plugins-install-dir
+      - mountPath: /root/.falco
+        name: root-falco-fs
+      - mountPath: /host/proc
+        name: proc-fs
+      - mountPath: /host/etc
+        name: etc-fs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /sys/kernel
+        name: sys-fs
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /etc/falco/falco.yaml
+        name: falco-yaml
+      - mountPath: /etc/falco/rules.d
+        name: rules-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kfkjx
+        readOnly: true
+        recursiveReadOnly: Disabled
+    - containerID: containerd://ca82cbd432348e977d9164164dec62ef307782011b110444ef25fe12cafa2dd4
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imageID: docker.io/falcosecurity/falcoctl@sha256:0eeb79adc580ae6a5abfdefd7f8f0fed9151fcb545f015c84e8f1d7b2d8a6b02
+      lastState: {}
+      name: falcoctl-artifact-follow
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-18T06:44:44Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kfkjx
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    initContainerStatuses:
+    - containerID: containerd://1248456ec3a0d71d40eecebfdd59b9227ef573100be6a91d434f83a0f0cfb926
+      image: docker.io/falcosecurity/falcoctl:0.13.0
+      imageID: docker.io/falcosecurity/falcoctl@sha256:0eeb79adc580ae6a5abfdefd7f8f0fed9151fcb545f015c84e8f1d7b2d8a6b02
+      lastState: {}
+      name: falcoctl-artifact-install
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://1248456ec3a0d71d40eecebfdd59b9227ef573100be6a91d434f83a0f0cfb926
+          exitCode: 0
+          finishedAt: "2026-07-18T06:44:43Z"
+          reason: Completed
+          startedAt: "2026-07-18T06:44:19Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /plugins
+        name: plugins-install-dir
+      - mountPath: /rulesfiles
+        name: rulesfiles-install-dir
+      - mountPath: /etc/falcoctl
+        name: falcoctl-config-volume
+      - mountPath: /artifactstate
+        name: artifact-state-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kfkjx
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.42.2.18
+    podIPs:
+    - ip: 10.42.2.18
+    qosClass: Burstable
+    startTime: "2026-07-18T06:44:18Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-10T22:50:35Z"
+    generateName: gatekeeper-audit-db77bbf66-
+    generation: 1
+    labels:
+      app: gatekeeper
+      app.kubernetes.io/instance: gatekeeper
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: gatekeeper
+      app.kubernetes.io/version: 3.23.0
+      chart: gatekeeper
+      control-plane: audit-controller
+      gatekeeper.sh/operation: audit
+      gatekeeper.sh/system: "yes"
+      helm.sh/chart: gatekeeper-3.23.0
+      heritage: Helm
+      pod-template-hash: db77bbf66
+      release: gatekeeper
+    name: gatekeeper-audit-db77bbf66-4b86j
+    namespace: gatekeeper-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: gatekeeper-audit-db77bbf66
+      uid: 27f2e2ef-79ee-425b-bc8b-c2ec90091e9d
+    resourceVersion: "9131"
+    uid: 0a6ebb01-d2e7-4164-aabc-e35dc6ae2608
+  spec:
+    affinity: {}
+    automountServiceAccountToken: true
+    containers:
+    - args:
+      - --audit-interval=60
+      - --log-level=INFO
+      - --constraint-violations-limit=20
+      - --validating-webhook-configuration-name=gatekeeper-validating-webhook-configuration
+      - --mutating-webhook-configuration-name=gatekeeper-mutating-webhook-configuration
+      - --audit-from-cache=false
+      - --audit-chunk-size=500
+      - --audit-match-kind-only=false
+      - --audit-events-involved-namespace=false
+      - --operation=generate
+      - --operation=audit
+      - --operation=status
+      - --operation=mutation-status
+      - --logtostderr
+      - --health-addr=:9090
+      - --prometheus-port=8888
+      - --enable-external-data=true
+      - --enable-generator-resource-expansion=true
+      - --metrics-backend=prometheus
+      - --disable-cert-rotation=false
+      - --external-data-provider-response-cache-ttl=3m
+      - --enable-k8s-native-validation=true
+      command:
+      - /manager
+      env:
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: CONTAINER_NAME
+        value: manager
+      - name: OTEL_RESOURCE_ATTRIBUTES
+        value: k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE),k8s.container.name=$(CONTAINER_NAME)
+      image: openpolicyagent/gatekeeper:v3.23.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 9090
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: manager
+      ports:
+      - containerPort: 8888
+        name: metrics
+        protocol: TCP
+      - containerPort: 9090
+        name: healthz
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /readyz
+          port: 9090
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /certs
+        name: cert
+        readOnly: true
+      - mountPath: /tmp/audit
+        name: tmp-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-4fxvv
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-0
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000000000
+    priorityClassName: system-cluster-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 999
+      supplementalGroups:
+      - 999
+    serviceAccount: gatekeeper-admin
+    serviceAccountName: gatekeeper-admin
+    terminationGracePeriodSeconds: 60
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: cert
+      secret:
+        defaultMode: 420
+        secretName: gatekeeper-webhook-server-cert
+    - emptyDir: {}
+      name: tmp-volume
+    - name: kube-api-access-4fxvv
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:53Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:53Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:53Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 512Mi
+      containerID: containerd://24723a10ecedbd0aace48c8b24b196754f151e7b162285c6a637687eee17022a
+      image: docker.io/openpolicyagent/gatekeeper:v3.23.0
+      imageID: docker.io/openpolicyagent/gatekeeper@sha256:4c1aed2a25d3f84ae94dd3809e10154e1574981bb6d6193329671131a8db346a
+      lastState: {}
+      name: manager
+      ready: true
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-10T22:50:52Z"
+      user:
+        linux:
+          gid: 999
+          supplementalGroups:
+          - 999
+          uid: 1000
+      volumeMounts:
+      - mountPath: /certs
+        name: cert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /tmp/audit
+        name: tmp-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-4fxvv
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    phase: Running
+    podIP: 10.42.0.7
+    podIPs:
+    - ip: 10.42.0.7
+    qosClass: Burstable
+    startTime: "2026-07-10T22:50:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-10T22:50:35Z"
+    generateName: gatekeeper-controller-manager-59bcd49475-
+    generation: 1
+    labels:
+      app: gatekeeper
+      app.kubernetes.io/instance: gatekeeper
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: gatekeeper
+      app.kubernetes.io/version: 3.23.0
+      chart: gatekeeper
+      control-plane: controller-manager
+      gatekeeper.sh/operation: webhook
+      gatekeeper.sh/system: "yes"
+      helm.sh/chart: gatekeeper-3.23.0
+      heritage: Helm
+      pod-template-hash: 59bcd49475
+      release: gatekeeper
+    name: gatekeeper-controller-manager-59bcd49475-vdqzb
+    namespace: gatekeeper-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: gatekeeper-controller-manager-59bcd49475
+      uid: 737304fc-265b-4d24-9846-a3caef51adf1
+    resourceVersion: "9147"
+    uid: 97d17909-d2de-427a-a5fb-9e99ea240b6f
+  spec:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: gatekeeper.sh/operation
+                operator: In
+                values:
+                - webhook
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+    automountServiceAccountToken: true
+    containers:
+    - args:
+      - --port=8443
+      - --health-addr=:9090
+      - --prometheus-port=8888
+      - --logtostderr
+      - --log-denies=false
+      - --admission-events-involved-namespace=false
+      - --log-level=INFO
+      - --exempt-namespace=gatekeeper-system
+      - --operation=webhook
+      - --enable-external-data=true
+      - --enable-generator-resource-expansion=true
+      - --log-mutations=false
+      - --mutation-annotations=false
+      - --disable-cert-rotation=false
+      - --max-serving-threads=-1
+      - --tls-min-version=1.3
+      - --validating-webhook-configuration-name=gatekeeper-validating-webhook-configuration
+      - --mutating-webhook-configuration-name=gatekeeper-mutating-webhook-configuration
+      - --external-data-provider-response-cache-ttl=3m
+      - --enable-k8s-native-validation=true
+      - --metrics-backend=prometheus
+      - --operation=mutation-webhook
+      - --disable-opa-builtin={http.send}
+      command:
+      - /manager
+      env:
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: CONTAINER_NAME
+        value: manager
+      - name: OTEL_RESOURCE_ATTRIBUTES
+        value: k8s.pod.name=$(POD_NAME),k8s.namespace.name=$(NAMESPACE),k8s.container.name=$(CONTAINER_NAME)
+      image: openpolicyagent/gatekeeper:v3.23.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 9090
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: manager
+      ports:
+      - containerPort: 8443
+        name: webhook-server
+        protocol: TCP
+      - containerPort: 8888
+        name: metrics
+        protocol: TCP
+      - containerPort: 9090
+        name: healthz
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /readyz
+          port: 9090
+          scheme: HTTP
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /certs
+        name: cert
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9sgtz
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000000000
+    priorityClassName: system-cluster-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 999
+      supplementalGroups:
+      - 999
+    serviceAccount: gatekeeper-admin
+    serviceAccountName: gatekeeper-admin
+    terminationGracePeriodSeconds: 60
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: cert
+      secret:
+        defaultMode: 420
+        secretName: gatekeeper-webhook-server-cert
+    - name: kube-api-access-9sgtz
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:52Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:51:04Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:51:04Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-10T22:50:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 512Mi
+      containerID: containerd://bc8076380089e3245032d06511ee667d587ec8b824e29d99741d6c4f9a65ab6a
+      image: docker.io/openpolicyagent/gatekeeper:v3.23.0
+      imageID: docker.io/openpolicyagent/gatekeeper@sha256:4c1aed2a25d3f84ae94dd3809e10154e1574981bb6d6193329671131a8db346a
+      lastState: {}
+      name: manager
+      ready: true
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-10T22:50:51Z"
+      user:
+        linux:
+          gid: 999
+          supplementalGroups:
+          - 999
+          uid: 1000
+      volumeMounts:
+      - mountPath: /certs
+        name: cert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9sgtz
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Running
+    podIP: 10.42.1.6
+    podIPs:
+    - ip: 10.42.1.6
+    qosClass: Burstable
+    startTime: "2026-07-10T22:50:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-08T13:59:35Z"
+    generateName: coredns-6d668d687-
+    generation: 1
+    labels:
+      k8s-app: kube-dns
+      pod-template-hash: 6d668d687
+    name: coredns-6d668d687-l7gks
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: coredns-6d668d687
+      uid: 1b1ec5de-a366-4667-b291-9ac10f57a66c
+    resourceVersion: "686"
+    uid: cfb49a06-3987-4132-b383-4fb67d100008
+  spec:
+    containers:
+    - args:
+      - -conf
+      - /etc/coredns/Corefile
+      image: rancher/mirrored-coredns-coredns:1.13.1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: coredns
+      ports:
+      - containerPort: 53
+        name: dns
+        protocol: UDP
+      - containerPort: 53
+        name: dns-tcp
+        protocol: TCP
+      - containerPort: 9153
+        name: metrics
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ready
+          port: 8181
+          scheme: HTTP
+        periodSeconds: 2
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          memory: 170Mi
+        requests:
+          cpu: 100m
+          memory: 70Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add:
+          - NET_BIND_SERVICE
+          drop:
+          - all
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/coredns
+        name: config-volume
+        readOnly: true
+      - mountPath: /etc/coredns/custom
+        name: custom-config-volume
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m85nf
+        readOnly: true
+    dnsPolicy: Default
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000000000
+    priorityClassName: system-cluster-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: coredns
+    serviceAccountName: coredns
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    topologySpreadConstraints:
+    - labelSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+    - labelSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+    volumes:
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: Corefile
+          path: Corefile
+        - key: NodeHosts
+          path: NodeHosts
+        name: coredns
+      name: config-volume
+    - configMap:
+        defaultMode: 420
+        name: coredns-custom
+        optional: true
+      name: custom-config-volume
+    - name: kube-api-access-m85nf
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 70Mi
+      containerID: containerd://15eeefc993c18094f192c9d6e1ef4eb87b2c7f39b69a23857a4fc391bde36b61
+      image: docker.io/rancher/mirrored-coredns-coredns:1.13.1
+      imageID: docker.io/rancher/mirrored-coredns-coredns@sha256:9b9128672209474da07c91439bf15ed704ae05ad918dd6454e5b6ae14e35fee6
+      lastState: {}
+      name: coredns
+      ready: true
+      resources:
+        limits:
+          memory: 170Mi
+        requests:
+          cpu: 100m
+          memory: 70Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:03Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /etc/coredns
+        name: config-volume
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /etc/coredns/custom
+        name: custom-config-volume
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-m85nf
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.3
+    podIPs:
+    - ip: 10.42.2.3
+    qosClass: Burstable
+    startTime: "2026-07-08T13:59:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      helmcharts.helm.cattle.io/configHash: SHA256=E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855
+    creationTimestamp: "2026-07-08T13:59:35Z"
+    generateName: helm-install-traefik-crd-
+    generation: 1
+    labels:
+      batch.kubernetes.io/controller-uid: d81c1d2e-0dac-4cd1-bb52-6b8c6ed09f58
+      batch.kubernetes.io/job-name: helm-install-traefik-crd
+      controller-uid: d81c1d2e-0dac-4cd1-bb52-6b8c6ed09f58
+      helmcharts.helm.cattle.io/chart: traefik-crd
+      job-name: helm-install-traefik-crd
+    name: helm-install-traefik-crd-p5psn
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: batch/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Job
+      name: helm-install-traefik-crd
+      uid: d81c1d2e-0dac-4cd1-bb52-6b8c6ed09f58
+    resourceVersion: "694"
+    uid: 18f1eb99-e298-4bfd-947c-f4a951c9205e
+  spec:
+    containers:
+    - args:
+      - install
+      env:
+      - name: NAME
+        value: traefik-crd
+      - name: VERSION
+      - name: REPO
+      - name: HELM_DRIVER
+        value: secret
+      - name: CHART_NAMESPACE
+        value: kube-system
+      - name: CHART
+        value: https://%{KUBERNETES_API}%/static/charts/traefik-crd-37.1.1+up37.1.0.tgz
+      - name: HELM_VERSION
+      - name: TARGET_NAMESPACE
+        value: kube-system
+      - name: AUTH_PASS_CREDENTIALS
+        value: "false"
+      - name: INSECURE_SKIP_TLS_VERIFY
+        value: "false"
+      - name: PLAIN_HTTP
+        value: "false"
+      - name: NO_PROXY
+        value: .svc,.cluster.local,10.42.0.0/16,10.43.0.0/16
+      - name: FAILURE_POLICY
+        value: reinstall
+      image: rancher/klipper-helm:v0.9.10-build20251111
+      imagePullPolicy: IfNotPresent
+      name: helm
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /home/klipper-helm/.helm
+        name: klipper-helm
+      - mountPath: /home/klipper-helm/.cache
+        name: klipper-cache
+      - mountPath: /home/klipper-helm/.config
+        name: klipper-config
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /config
+        name: values
+      - mountPath: /chart
+        name: content
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kzrzp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: OnFailure
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: helm-traefik-crd
+    serviceAccountName: helm-traefik-crd
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir:
+        medium: Memory
+      name: klipper-helm
+    - emptyDir:
+        medium: Memory
+      name: klipper-cache
+    - emptyDir:
+        medium: Memory
+      name: klipper-config
+    - emptyDir:
+        medium: Memory
+      name: tmp
+    - name: values
+      projected:
+        defaultMode: 420
+        sources:
+        - secret:
+            name: chart-values-traefik-crd
+    - configMap:
+        defaultMode: 420
+        name: chart-content-traefik-crd
+      name: content
+    - name: kube-api-access-kzrzp
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:04Z"
+      status: "False"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:02Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:02Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://22b640a02aca06aaf5db5f2194296ffd044056262a3ed6cc5ce8ec84e5550ae6
+      image: docker.io/rancher/klipper-helm:v0.9.10-build20251111
+      imageID: docker.io/rancher/klipper-helm@sha256:251a6a3983934f1026c34f4337fc5a87e093a142438c7d16f7b31c179162176e
+      lastState: {}
+      name: helm
+      ready: false
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://22b640a02aca06aaf5db5f2194296ffd044056262a3ed6cc5ce8ec84e5550ae6
+          exitCode: 0
+          finishedAt: "2026-07-08T14:00:02Z"
+          message: |
+            Installing helm chart
+          reason: Completed
+          startedAt: "2026-07-08T14:00:00Z"
+      user:
+        linux:
+          gid: 1000
+          supplementalGroups:
+          - 1000
+          uid: 1000
+      volumeMounts:
+      - mountPath: /home/klipper-helm/.helm
+        name: klipper-helm
+      - mountPath: /home/klipper-helm/.cache
+        name: klipper-cache
+      - mountPath: /home/klipper-helm/.config
+        name: klipper-config
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /config
+        name: values
+      - mountPath: /chart
+        name: content
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kzrzp
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Succeeded
+    podIP: 10.42.1.2
+    podIPs:
+    - ip: 10.42.1.2
+    qosClass: BestEffort
+    startTime: "2026-07-08T13:59:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      helmcharts.helm.cattle.io/configHash: SHA256=DF293BB1710EF5036B1B1433F88B5623A05D7F3656CB26573AC7D8A08CDF8620
+    creationTimestamp: "2026-07-08T13:59:35Z"
+    generateName: helm-install-traefik-
+    generation: 1
+    labels:
+      batch.kubernetes.io/controller-uid: f8224a52-71a5-464c-8588-66c82c25164b
+      batch.kubernetes.io/job-name: helm-install-traefik
+      controller-uid: f8224a52-71a5-464c-8588-66c82c25164b
+      helmcharts.helm.cattle.io/chart: traefik
+      job-name: helm-install-traefik
+    name: helm-install-traefik-t64mj
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: batch/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Job
+      name: helm-install-traefik
+      uid: f8224a52-71a5-464c-8588-66c82c25164b
+    resourceVersion: "770"
+    uid: 4189915d-8860-4933-a89b-2d679d169437
+  spec:
+    containers:
+    - args:
+      - install
+      - --set-string
+      - global.systemDefaultRegistry=
+      env:
+      - name: NAME
+        value: traefik
+      - name: VERSION
+      - name: REPO
+      - name: HELM_DRIVER
+        value: secret
+      - name: CHART_NAMESPACE
+        value: kube-system
+      - name: CHART
+        value: https://%{KUBERNETES_API}%/static/charts/traefik-37.1.1+up37.1.0.tgz
+      - name: HELM_VERSION
+      - name: TARGET_NAMESPACE
+        value: kube-system
+      - name: AUTH_PASS_CREDENTIALS
+        value: "false"
+      - name: INSECURE_SKIP_TLS_VERIFY
+        value: "false"
+      - name: PLAIN_HTTP
+        value: "false"
+      - name: NO_PROXY
+        value: .svc,.cluster.local,10.42.0.0/16,10.43.0.0/16
+      - name: FAILURE_POLICY
+        value: reinstall
+      image: rancher/klipper-helm:v0.9.10-build20251111
+      imagePullPolicy: IfNotPresent
+      name: helm
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /home/klipper-helm/.helm
+        name: klipper-helm
+      - mountPath: /home/klipper-helm/.cache
+        name: klipper-cache
+      - mountPath: /home/klipper-helm/.config
+        name: klipper-config
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /config
+        name: values
+      - mountPath: /chart
+        name: content
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vnxvd
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-0
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: OnFailure
+    schedulerName: default-scheduler
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: helm-traefik
+    serviceAccountName: helm-traefik
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir:
+        medium: Memory
+      name: klipper-helm
+    - emptyDir:
+        medium: Memory
+      name: klipper-cache
+    - emptyDir:
+        medium: Memory
+      name: klipper-config
+    - emptyDir:
+        medium: Memory
+      name: tmp
+    - name: values
+      projected:
+        defaultMode: 420
+        sources:
+        - secret:
+            items:
+            - key: HelmChartValuesContent
+              path: values-0-000-HelmChart-ValuesContent.yaml
+            name: chart-values-traefik
+    - configMap:
+        defaultMode: 420
+        name: chart-content-traefik
+      name: content
+    - name: kube-api-access-vnxvd
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:12Z"
+      status: "False"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:11Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:11Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://3f8a8519f9e33ab1ca0cfb721bfca584c4ce5a1689c1febedf945ad309f78742
+      image: docker.io/rancher/klipper-helm:v0.9.10-build20251111
+      imageID: docker.io/rancher/klipper-helm@sha256:251a6a3983934f1026c34f4337fc5a87e093a142438c7d16f7b31c179162176e
+      lastState: {}
+      name: helm
+      ready: false
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://3f8a8519f9e33ab1ca0cfb721bfca584c4ce5a1689c1febedf945ad309f78742
+          exitCode: 0
+          finishedAt: "2026-07-08T14:00:10Z"
+          message: |
+            Installing helm chart
+          reason: Completed
+          startedAt: "2026-07-08T14:00:09Z"
+      user:
+        linux:
+          gid: 1000
+          supplementalGroups:
+          - 1000
+          uid: 1000
+      volumeMounts:
+      - mountPath: /home/klipper-helm/.helm
+        name: klipper-helm
+      - mountPath: /home/klipper-helm/.cache
+        name: klipper-cache
+      - mountPath: /home/klipper-helm/.config
+        name: klipper-config
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /config
+        name: values
+      - mountPath: /chart
+        name: content
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vnxvd
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    phase: Succeeded
+    podIP: 10.42.0.2
+    podIPs:
+    - ip: 10.42.0.2
+    qosClass: BestEffort
+    startTime: "2026-07-08T13:59:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-08T13:59:35Z"
+    generateName: local-path-provisioner-869c44bfbd-
+    generation: 1
+    labels:
+      app: local-path-provisioner
+      pod-template-hash: 869c44bfbd
+    name: local-path-provisioner-869c44bfbd-vnvp4
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: local-path-provisioner-869c44bfbd
+      uid: c799f6ba-046e-40a3-8342-c5eca7780b73
+    resourceVersion: "679"
+    uid: f1dc617b-55c7-4b6f-a690-58c8564ee01f
+  spec:
+    containers:
+    - command:
+      - local-path-provisioner
+      - start
+      - --config
+      - /etc/config/config.json
+      env:
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      image: rancher/local-path-provisioner:v0.0.32
+      imagePullPolicy: IfNotPresent
+      name: local-path-provisioner
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/config/
+        name: config-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-5jb9w
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000001000
+    priorityClassName: system-node-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: local-path-provisioner-service-account
+    serviceAccountName: local-path-provisioner-service-account
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: local-path-config
+      name: config-volume
+    - name: kube-api-access-5jb9w
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://55f098ee7493a22316b41a4074cd94ca00fc0d8c7985b851134028336a1c0a4e
+      image: docker.io/rancher/local-path-provisioner:v0.0.32
+      imageID: docker.io/rancher/local-path-provisioner@sha256:9289da488b07912cb4128eb96928a331a5f3e60c28c5cfc5790f354a4ad0cc68
+      lastState: {}
+      name: local-path-provisioner
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:02Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+      volumeMounts:
+      - mountPath: /etc/config/
+        name: config-volume
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-5jb9w
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Running
+    podIP: 10.42.1.3
+    podIPs:
+    - ip: 10.42.1.3
+    qosClass: BestEffort
+    startTime: "2026-07-08T13:59:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-08T13:59:35Z"
+    generateName: metrics-server-7bfffcd44-
+    generation: 1
+    labels:
+      k8s-app: metrics-server
+      pod-template-hash: 7bfffcd44
+    name: metrics-server-7bfffcd44-xgkcm
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: metrics-server-7bfffcd44
+      uid: 0893f544-9928-4407-9cad-1bbd8cf79a79
+    resourceVersion: "794"
+    uid: 35795021-6261-42a2-a3ef-54c33d05398b
+  spec:
+    containers:
+    - args:
+      - --cert-dir=/tmp
+      - --secure-port=10250
+      - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+      - --kubelet-use-node-status-port
+      - --metric-resolution=15s
+      - --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+      image: rancher/mirrored-metrics-server:v0.8.0
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /livez
+          port: https
+          scheme: HTTPS
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: metrics-server
+      ports:
+      - containerPort: 10250
+        name: https
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /readyz
+          port: https
+          scheme: HTTPS
+        periodSeconds: 2
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 70Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hplr6
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000001000
+    priorityClassName: system-node-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: metrics-server
+    serviceAccountName: metrics-server
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: tmp-dir
+    - name: kube-api-access-hplr6
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:03Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:19Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:19Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T13:59:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 70Mi
+      containerID: containerd://cc38ce53163c6022950a04cc78a306325d7a8751d51b04e4b62e611fbda68d51
+      image: docker.io/rancher/mirrored-metrics-server:v0.8.0
+      imageID: docker.io/rancher/mirrored-metrics-server@sha256:89258156d0e9af60403eafd44da9676fd66f600c7934d468ccc17e42b199aee2
+      lastState: {}
+      name: metrics-server
+      ready: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 70Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:03Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          uid: 1000
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp-dir
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hplr6
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.2
+    podIPs:
+    - ip: 10.42.2.2
+    qosClass: Burstable
+    startTime: "2026-07-08T13:59:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-08T14:00:10Z"
+    generateName: svclb-traefik-03207264-
+    generation: 1
+    labels:
+      app: svclb-traefik-03207264
+      controller-revision-hash: 59fb656db5
+      pod-template-generation: "1"
+      svccontroller.k3s.cattle.io/svcname: traefik
+      svccontroller.k3s.cattle.io/svcnamespace: kube-system
+    name: svclb-traefik-03207264-2mmxl
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: svclb-traefik-03207264
+      uid: 0e012f0a-9428-4f2c-b400-263feb1e5d5b
+    resourceVersion: "800"
+    uid: f00bc3e5-cc69-4ee8-ac8f-62c367498fb6
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - k3d-securebank-agent-0
+    automountServiceAccountToken: false
+    containers:
+    - env:
+      - name: SRC_PORT
+        value: "80"
+      - name: SRC_RANGES
+        value: 0.0.0.0/0
+      - name: DEST_PROTO
+        value: TCP
+      - name: DEST_PORT
+        value: "80"
+      - name: DEST_IPS
+        value: 10.43.212.92
+      image: rancher/klipper-lb:v0.4.13
+      imagePullPolicy: IfNotPresent
+      name: lb-tcp-80
+      ports:
+      - containerPort: 80
+        hostPort: 80
+        name: lb-tcp-80
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    - env:
+      - name: SRC_PORT
+        value: "443"
+      - name: SRC_RANGES
+        value: 0.0.0.0/0
+      - name: DEST_PROTO
+        value: TCP
+      - name: DEST_PORT
+        value: "443"
+      - name: DEST_IPS
+        value: 10.43.212.92
+      image: rancher/klipper-lb:v0.4.13
+      imagePullPolicy: IfNotPresent
+      name: lb-tcp-443
+      ports:
+      - containerPort: 443
+        hostPort: 443
+        name: lb-tcp-443
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000001000
+    priorityClassName: system-node-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      sysctls:
+      - name: net.ipv4.ip_forward
+        value: "1"
+    serviceAccount: svclb
+    serviceAccountName: svclb
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:20Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:20Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:20Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://dc088bbaa3e179d1c85091d637df8399a4a1a9011858042755be372329b7de6e
+      image: docker.io/rancher/klipper-lb:v0.4.13
+      imageID: docker.io/rancher/klipper-lb@sha256:7eb86d5b908ec6ddd9796253d8cc2f43df99420fc8b8a18452a94dc56f86aca0
+      lastState: {}
+      name: lb-tcp-443
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:19Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+    - containerID: containerd://963091e25683619471a1998dba59459c304c55e7958b153c00f58785c70cc4b3
+      image: docker.io/rancher/klipper-lb:v0.4.13
+      imageID: docker.io/rancher/klipper-lb@sha256:7eb86d5b908ec6ddd9796253d8cc2f43df99420fc8b8a18452a94dc56f86aca0
+      lastState: {}
+      name: lb-tcp-80
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:19Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+    hostIP: 172.22.0.5
+    hostIPs:
+    - ip: 172.22.0.5
+    phase: Running
+    podIP: 10.42.0.3
+    podIPs:
+    - ip: 10.42.0.3
+    qosClass: BestEffort
+    startTime: "2026-07-08T14:00:10Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-08T14:00:10Z"
+    generateName: svclb-traefik-03207264-
+    generation: 1
+    labels:
+      app: svclb-traefik-03207264
+      controller-revision-hash: 59fb656db5
+      pod-template-generation: "1"
+      svccontroller.k3s.cattle.io/svcname: traefik
+      svccontroller.k3s.cattle.io/svcnamespace: kube-system
+    name: svclb-traefik-03207264-tmpj4
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: svclb-traefik-03207264
+      uid: 0e012f0a-9428-4f2c-b400-263feb1e5d5b
+    resourceVersion: "808"
+    uid: 7e55ad7e-f843-4ecc-a384-189bfd6d0d27
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - k3d-securebank-agent-1
+    automountServiceAccountToken: false
+    containers:
+    - env:
+      - name: SRC_PORT
+        value: "80"
+      - name: SRC_RANGES
+        value: 0.0.0.0/0
+      - name: DEST_PROTO
+        value: TCP
+      - name: DEST_PORT
+        value: "80"
+      - name: DEST_IPS
+        value: 10.43.212.92
+      image: rancher/klipper-lb:v0.4.13
+      imagePullPolicy: IfNotPresent
+      name: lb-tcp-80
+      ports:
+      - containerPort: 80
+        hostPort: 80
+        name: lb-tcp-80
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    - env:
+      - name: SRC_PORT
+        value: "443"
+      - name: SRC_RANGES
+        value: 0.0.0.0/0
+      - name: DEST_PROTO
+        value: TCP
+      - name: DEST_PORT
+        value: "443"
+      - name: DEST_IPS
+        value: 10.43.212.92
+      image: rancher/klipper-lb:v0.4.13
+      imagePullPolicy: IfNotPresent
+      name: lb-tcp-443
+      ports:
+      - containerPort: 443
+        hostPort: 443
+        name: lb-tcp-443
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000001000
+    priorityClassName: system-node-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      sysctls:
+      - name: net.ipv4.ip_forward
+        value: "1"
+    serviceAccount: svclb
+    serviceAccountName: svclb
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:20Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:20Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:20Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://d4469586d0f7d3c4e0a638ee5b755671a0c816f1d0be64caab203d2edf599186
+      image: docker.io/rancher/klipper-lb:v0.4.13
+      imageID: docker.io/rancher/klipper-lb@sha256:7eb86d5b908ec6ddd9796253d8cc2f43df99420fc8b8a18452a94dc56f86aca0
+      lastState: {}
+      name: lb-tcp-443
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:19Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+    - containerID: containerd://1e069453d1a6439a139a3ad32eaeae75414a4dacb97b9d3ab4f957d3bd561149
+      image: docker.io/rancher/klipper-lb:v0.4.13
+      imageID: docker.io/rancher/klipper-lb@sha256:7eb86d5b908ec6ddd9796253d8cc2f43df99420fc8b8a18452a94dc56f86aca0
+      lastState: {}
+      name: lb-tcp-80
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:19Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Running
+    podIP: 10.42.1.4
+    podIPs:
+    - ip: 10.42.1.4
+    qosClass: BestEffort
+    startTime: "2026-07-08T14:00:10Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-08T14:00:10Z"
+    generateName: svclb-traefik-03207264-
+    generation: 1
+    labels:
+      app: svclb-traefik-03207264
+      controller-revision-hash: 59fb656db5
+      pod-template-generation: "1"
+      svccontroller.k3s.cattle.io/svcname: traefik
+      svccontroller.k3s.cattle.io/svcnamespace: kube-system
+    name: svclb-traefik-03207264-vnljd
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: svclb-traefik-03207264
+      uid: 0e012f0a-9428-4f2c-b400-263feb1e5d5b
+    resourceVersion: "814"
+    uid: d7efd2a9-934b-449d-b9f1-ffc081520e70
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - k3d-securebank-server-0
+    automountServiceAccountToken: false
+    containers:
+    - env:
+      - name: SRC_PORT
+        value: "80"
+      - name: SRC_RANGES
+        value: 0.0.0.0/0
+      - name: DEST_PROTO
+        value: TCP
+      - name: DEST_PORT
+        value: "80"
+      - name: DEST_IPS
+        value: 10.43.212.92
+      image: rancher/klipper-lb:v0.4.13
+      imagePullPolicy: IfNotPresent
+      name: lb-tcp-80
+      ports:
+      - containerPort: 80
+        hostPort: 80
+        name: lb-tcp-80
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    - env:
+      - name: SRC_PORT
+        value: "443"
+      - name: SRC_RANGES
+        value: 0.0.0.0/0
+      - name: DEST_PROTO
+        value: TCP
+      - name: DEST_PORT
+        value: "443"
+      - name: DEST_IPS
+        value: 10.43.212.92
+      image: rancher/klipper-lb:v0.4.13
+      imagePullPolicy: IfNotPresent
+      name: lb-tcp-443
+      ports:
+      - containerPort: 443
+        hostPort: 443
+        name: lb-tcp-443
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          add:
+          - NET_ADMIN
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000001000
+    priorityClassName: system-node-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      sysctls:
+      - name: net.ipv4.ip_forward
+        value: "1"
+    serviceAccount: svclb
+    serviceAccountName: svclb
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:21Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:21Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:21Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://c474493dce999da6df09670b21f51adc453cb28202cde3c825f0b38d18ba65f2
+      image: docker.io/rancher/klipper-lb:v0.4.13
+      imageID: docker.io/rancher/klipper-lb@sha256:7eb86d5b908ec6ddd9796253d8cc2f43df99420fc8b8a18452a94dc56f86aca0
+      lastState: {}
+      name: lb-tcp-443
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:20Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+    - containerID: containerd://643d36a60cf610894da5117c71c7b271e416a1503700dc2f9d2630781cd4613f
+      image: docker.io/rancher/klipper-lb:v0.4.13
+      imageID: docker.io/rancher/klipper-lb@sha256:7eb86d5b908ec6ddd9796253d8cc2f43df99420fc8b8a18452a94dc56f86aca0
+      lastState: {}
+      name: lb-tcp-80
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:20Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 6
+          - 10
+          - 11
+          - 20
+          - 26
+          - 27
+          uid: 0
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.4
+    podIPs:
+    - ip: 10.42.2.4
+    qosClass: BestEffort
+    startTime: "2026-07-08T14:00:10Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "9100"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2026-07-08T14:00:10Z"
+    generateName: traefik-865bd56545-
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: traefik-kube-system
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: traefik
+      helm.sh/chart: traefik-37.1.1_up37.1.0
+      pod-template-hash: 865bd56545
+    name: traefik-865bd56545-6vxdk
+    namespace: kube-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: traefik-865bd56545
+      uid: 19853d4c-8f0f-48ef-8544-70ffe4a8ae5d
+    resourceVersion: "32853"
+    uid: 8ecc93e3-6969-4c49-bc43-43534189f829
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - args:
+      - --entryPoints.metrics.address=:9100/tcp
+      - --entryPoints.traefik.address=:8080/tcp
+      - --entryPoints.web.address=:8000/tcp
+      - --entryPoints.websecure.address=:8443/tcp
+      - --api.dashboard=true
+      - --ping=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.entrypoint=metrics
+      - --providers.kubernetescrd
+      - --providers.kubernetescrd.allowEmptyServices=true
+      - --providers.kubernetesingress
+      - --providers.kubernetesingress.allowEmptyServices=true
+      - --providers.kubernetesingress.ingressendpoint.publishedservice=kube-system/traefik
+      - --entryPoints.websecure.http.tls=true
+      - --log.level=INFO
+      env:
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      image: rancher/mirrored-library-traefik:3.5.1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ping
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 2
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 2
+      name: traefik
+      ports:
+      - containerPort: 9100
+        name: metrics
+        protocol: TCP
+      - containerPort: 8080
+        name: traefik
+        protocol: TCP
+      - containerPort: 8000
+        name: web
+        protocol: TCP
+      - containerPort: 8443
+        name: websecure
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 1
+        httpGet:
+          path: /ping
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 2
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 2
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /data
+        name: data
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hzh84
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 2000000000
+    priorityClassName: system-cluster-critical
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      runAsGroup: 65532
+      runAsNonRoot: true
+      runAsUser: 65532
+    serviceAccount: traefik
+    serviceAccountName: traefik
+    terminationGracePeriodSeconds: 60
+    tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: data
+    - emptyDir: {}
+      name: tmp
+    - name: kube-api-access-hzh84
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:27Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:58Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-18T06:45:58Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-08T14:00:10Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://1f27ba3ecf21d79ad1029562bf8b37d0a3a7b99b12a4cbfff661311e02e38c3e
+      image: docker.io/rancher/mirrored-library-traefik:3.5.1
+      imageID: docker.io/rancher/mirrored-library-traefik@sha256:c56901603318ee375477ee5c3f50d175d3ec42dc102efc2f1158f0756ba4dffa
+      lastState: {}
+      name: traefik
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-08T14:00:26Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /data
+        name: data
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hzh84
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.5
+    podIPs:
+    - ip: 10.42.2.5
+    qosClass: BestEffort
+    startTime: "2026-07-08T14:00:10Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-20T08:17:32Z"
+    generateName: securebank-api-6955f687bc-
+    generation: 1
+    labels:
+      app: securebank-api
+      pod-template-hash: 6955f687bc
+    name: securebank-api-6955f687bc-hx87m
+    namespace: securebank
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: securebank-api-6955f687bc
+      uid: 76fafa87-d37d-4623-b3c5-673ecd299689
+    resourceVersion: "39546"
+    uid: 6c2939b9-7187-47a6-b3b3-7c5d899a7a57
+  spec:
+    automountServiceAccountToken: false
+    containers:
+    - envFrom:
+      - secretRef:
+          name: securebank-jwt
+      image: securebank:v1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: api
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-agent-1
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 65532
+      runAsGroup: 65532
+      runAsNonRoot: true
+      runAsUser: 65532
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: securebank-api
+    serviceAccountName: securebank-api
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: tmp
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:33Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:32Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:39Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:39Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 50m
+        memory: 64Mi
+      containerID: containerd://a38be7169b893c546c5f70f599071d5acf2f69d29fccfc6e691b3c6827277bec
+      image: docker.io/library/securebank:v1
+      imageID: sha256:34fc956ae7181d9e6bb6ec137c56020c767f6b404196afd634635d126670bc25
+      lastState: {}
+      name: api
+      ready: true
+      resources:
+        limits:
+          cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-20T08:17:32Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    hostIP: 172.22.0.4
+    hostIPs:
+    - ip: 172.22.0.4
+    phase: Running
+    podIP: 10.42.1.13
+    podIPs:
+    - ip: 10.42.1.13
+    qosClass: Burstable
+    startTime: "2026-07-20T08:17:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-07-20T08:17:24Z"
+    generateName: securebank-api-6955f687bc-
+    generation: 1
+    labels:
+      app: securebank-api
+      pod-template-hash: 6955f687bc
+    name: securebank-api-6955f687bc-tbfft
+    namespace: securebank
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: securebank-api-6955f687bc
+      uid: 76fafa87-d37d-4623-b3c5-673ecd299689
+    resourceVersion: "39507"
+    uid: 71c9171e-45a2-4f8f-86d6-5bc32afb3845
+  spec:
+    automountServiceAccountToken: false
+    containers:
+    - envFrom:
+      - secretRef:
+          name: securebank-jwt
+      image: securebank:v1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: api
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: k3d-securebank-server-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 65532
+      runAsGroup: 65532
+      runAsNonRoot: true
+      runAsUser: 65532
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: securebank-api
+    serviceAccountName: securebank-api
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: tmp
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:26Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:24Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:32Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:32Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-20T08:17:24Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 50m
+        memory: 64Mi
+      containerID: containerd://3880bb5f46dbbcb9313ab2d14a7f1ecd5656606f5d4911b3fcbfaa0333acb91e
+      image: docker.io/library/securebank:v1
+      imageID: sha256:34fc956ae7181d9e6bb6ec137c56020c767f6b404196afd634635d126670bc25
+      lastState: {}
+      name: api
+      ready: true
+      resources:
+        limits:
+          cpu: 200m
+          memory: 128Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-20T08:17:25Z"
+      user:
+        linux:
+          gid: 65532
+          supplementalGroups:
+          - 65532
+          uid: 65532
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    hostIP: 172.22.0.3
+    hostIPs:
+    - ip: 172.22.0.3
+    phase: Running
+    podIP: 10.42.2.24
+    podIPs:
+    - ip: 10.42.2.24
+    qosClass: Burstable
+    startTime: "2026-07-20T08:17:24Z"
+kind: List
+metadata:
+  resourceVersion: ""
