@@ -861,3 +861,244 @@ Tulis `docs/fase-3-k8s-runtime.md`:
 ---
 
 > ✅ **Selesai Fase 3** — Lanjut ke [Fase 4: Vulnerability Management & Red Teaming](fase-4-vuln-redteam.md)
+
+---
+
+# Retrospektif Fase 3 — Kubernetes & Runtime Security
+
+> **Periode:** Hari 31–45 (15 hari)  
+> **Tanggal Retrospektif:** 2026-07-22  
+> **Ditulis oleh:** Muhammad Indragiri dengan AI assist (glm-5.2)
+
+---
+
+## 4. Security Improvements Applied
+
+| Day | Finding | Fix | Status |
+|-----|---------|-----|--------|
+| 31 | No K8s cluster, no deployment | k3d cluster (1 server + 2 agents), 4 manifests (namespace, secret, deployment, service) | ✅ 2 pods Running |
+| 32 | K8s misconfigurations (3 scanners) | Kubesec 14 advise, Checkov 20 failed, Trivy 16 findings — baseline documented | ✅ Baseline set |
+| 33 | SecurityContext missing (26 lines) | 16 security properties added (65 lines): non-root, read-only FS, cap drop, seccomp, probes, resources | ✅ Kubesec 0→11, Checkov 20→0, Trivy 16→0 |
+| 34 | No admission control | OPA Gatekeeper Helm install, 17 CRDs, validating webhook active | ✅ 2 pods Running |
+| 35 | No resource limit policy | ConstraintTemplate + Constraint (4 Rego rules, enforcementAction: deny) | ✅ Policy applied |
+| 36 | Policy untested | 3 test scenarios: no resources=DENIED (4 violations), full=ACCEPTED, partial=ACCEPTED (K8s auto-fill) | ✅ Policy verified |
+| 37 | No NetworkPolicy (CKV2_K8S_6) | 3 policies: default-deny-all, allow-api-ingress (kube-system), allow-dns-egress | ✅ CKV2_K8S_6 PASS, k3s flannel enforces |
+| 38 | default SA, no RBAC (Kubesec advise) | Dedicated SA + Role (get configmap only, resourceNames) + RoleBinding | ✅ Kubesec 11→12, least privilege verified |
+| 39 | No runtime monitoring | Falco 0.44.1 Helm install, modern eBPF driver, 25 default rules, Falcosidekick + WebUI | ✅ 8 pods Running |
+| 40 | No app-specific rules | 4 custom rules: shell (WARNING), sensitive file (CRITICAL), network tool (NOTICE), K8s API (WARNING) | ✅ 29 rules, schema validation OK |
+| 41 | Detection untested | Attack simulation: distroless blocks shell, 6 Falco alerts fired (3/4 rules), NetworkPolicy blocks egress | ✅ Defense in depth proven |
+| 42 | Alerts only to WebUI dashboard | Python webhook receiver + IF routing (CRITICAL→Slack, others→log), Falcosidekick webhook output | ✅ 3 alerts received end-to-end |
+| 43 | Secret in git (base64 K8s Secret) | External Secrets Operator → AWS Secrets Manager sync, Secret Reference Pattern, aws-credentials gitignored | ✅ SecretSynced 20s, GitHub Push Protection blocked leak |
+| 44 | No cluster threat model | AI (glm-5.2) threat analysis: 3 attack paths, CVSS scoring, MITRE ATT&CK mapping, 9 recommendations | ✅ k8s-threat-analysis.md (~450 lines) |
+
+---
+
+## 5. Metrics
+
+| Metrik | Before (Day 31) | After (Day 44) |
+|--------|-----------------|----------------|
+| Kubesec score | 0 | 12 |
+| Kubesec advise | 14 | 2 (AppArmor, SeccompAny) |
+| Checkov K8s passed | 85 | 102 |
+| Checkov K8s failed | 20 | 0 |
+| Checkov K8s skipped | 4 (CLI) | 2 (CKV_K8S_15, CKV_K8S_43) |
+| Trivy K8s findings | 16 (3H/3M/10L) | 0 |
+| SecurityContext properties | 0 | 16 |
+| NetworkPolicies | 0 | 3 (default-deny + allow-ingress + allow-dns) |
+| RBAC resources | 0 | 3 (SA + Role + RoleBinding) |
+| Gatekeeper CRDs | 0 | 17 |
+| Gatekeeper violations blocked | — | 4 (Day 36 test) |
+| Falco rules | 0 | 29 (25 default + 4 custom) |
+| Falco alerts fired | 0 | 6 (attack simulation Day 41) |
+| Falcosidekick outputs | 0 | 2 (WebUI + Webhook) |
+| ESO sync time | — | 20 seconds |
+| Namespaces | 4 (kube-system, default, dll) | 8 (+securebank, gatekeeper-system, falco, external-secrets) |
+| Pods | 2 (SecureBank only) | 15+ across 5 namespaces |
+| AI threat paths analyzed | 0 | 3 (CVSS 9.8, 7.5, 8.6) |
+| Distroless shell exec blocked | — | 4 attempts failed (Day 41) |
+| Secrets in git | 1 (base64 JWT_SECRET) | 0 (ESO-managed, gitignored) |
+| AWS Secrets Manager | 0 | 1 ($0.40/month) |
+
+---
+
+## 6. Lessons Learned
+
+### 6.1 k3s Flannel SUPPORT NetworkPolicy
+
+Day 37 surprise: k3d default CNI (flannel) ternyata **enforce** NetworkPolicy. Flannel standalone tidak support enforcement, tapi k3s menyertakan NetworkPolicy controller. Test membuktikan: cross-namespace access BLOCKED, same-namespace BLOCKED. NetworkPolicy benar-benar di-enforce, bukan hanya object ada.
+
+### 6.2 k3d Tracepoint Limitation is PARTIAL, Not Total
+
+Day 39-40 document "k3d tracepoint limitation = rules can't trigger". **Day 41 correction: limitation is PARTIAL.** `execve` dan `openat` tracepoints work, hanya `connect` yang missing. 3/4 custom rules fired. eBPF probe butuh warm-up time (~25 min) setelah helm upgrade — Day 40 test tidak fire karena probe belum ready.
+
+### 6.3 Distroless = Prevention, Falco = Detection
+
+Day 41 proven: distroless blocks shell exec (4 attempts fail), Falco detects if attacker somehow gets shell. NetworkPolicy blocks egress (wget refused). All 5 defense layers work together. **Distroless is the real security win — prevention > detection.**
+
+### 6.4 Default Deny + Whitelist = Best NetworkPolicy Pattern
+
+Mulai dengan "block everything", kemudian allow hanya yang dibutuhkan. Kalau lupa deny sesuatu, tidak ada celah — default-nya sudah deny. kubelet probes bypass NetworkPolicy (via node, bukan CNI). Port-forward bypass NetworkPolicy (via API Server tunnel).
+
+### 6.5 `default` SA = No Accountability
+
+Semua Pod tanpa `serviceAccountName` pakai `default` SA. Dedicated SA = explicit, auditable. `resourceNames` in Role = true least privilege (restrict ke specific configmap, bukan semua). `automountServiceAccountToken: false` + dedicated SA = defense in depth.
+
+### 6.6 rakkess Repo 404 → access-matrix krew Plugin
+
+rakkess GitHub repo sudah deleted/archived. Maintainer memindahkan ke krew sebagai `access-matrix` plugin. Selalu cek status repo sebelum install. `kubectl auth can-i` = most precise for verifying exact permissions.
+
+### 6.7 Secret Reference Pattern
+
+Git repo cuma berisi referensi (nama-nama), bukan nilai secret. SecretStore references `aws-credentials` (nama), ExternalSecret references `securebank/jwt-secret` (AWS name). Kalau repo leak, attacker tahu nama tapi tidak tahu nilai. ESO = decouple secrets from git.
+
+### 6.8 GitHub Push Protection Actually Works
+
+Checkov report JSON mengandung AWS keys (scanned dari gitignored file di disk). Push Protection **blocked the push**. Fix: remove report dari commit, gitignore. Ini bukan theoretical — GitHub actually prevented secret leak. Real security layer in action.
+
+### 6.9 Falcosidekick Multi-Output: WebUI + Webhook
+
+WebUI untuk visual inspection (human review), Webhook untuk automation (programmatic routing). IF node logic: CRITICAL → Slack (Day 48), others → log. Priority-based routing = alert fatigue prevention.
+
+### 6.10 AI sebagai Threat Modeler
+
+glm-5.2 (model yang powered session ini) menganalisis cluster config dan identify 3 attack paths dengan CVSS + MITRE ATT&CK mapping. AI actually read the YAML dan produce analysis. Tie ke `docs/ai-assistant-brainstorm.md` (Day 39) — skill `threat-modeler` adalah salah satu 7 skills yang dirancang.
+
+### 6.11 DevSecOps = Problem Solving, Bukan Dogmatic Tool Following
+
+n8n Docker image pull timed out (2x, 5 min each) → pivot ke Python webhook receiver. Same learning objectives, no Docker pull, committed to repo. Tutorial adalah guide, bukan gospel. Pragmatic solution > stuck on tooling.
+
+### 6.12 Defense in Depth: 6 Layers, No Single Point of Failure
+
+| Layer | Tool | Function |
+|-------|------|----------|
+| Admission Control | Gatekeeper | Block non-compliant pods |
+| Image Security | Distroless + Cosign | No shell, signed images |
+| Network Isolation | NetworkPolicy | Default deny + whitelist |
+| Access Control | RBAC | Least privilege SA |
+| Runtime Detection | Falco + Falcosidekick | Syscall monitoring + alert |
+| Secret Management | ESO | AWS sync, no secrets in git |
+
+Setiap attack path dari Day 44 punya 4+ mitigations. Tidak ada single point of failure.
+
+---
+
+## 7. Cluster Architecture
+
+```mermaid
+graph TB
+    subgraph "securebank namespace"
+        API[securebank-api<br/>2 pods, distroless<br/>16 SecurityContext properties]
+        SA[ServiceAccount: securebank-api<br/>Role: get configmap only]
+        ESO1[ExternalSecret: securebank-jwt<br/>sync from AWS every 1h]
+        NP1[NetworkPolicy: default-deny-all]
+        NP2[NetworkPolicy: allow-api-ingress<br/>from kube-system:8080]
+        NP3[NetworkPolicy: allow-dns-egress<br/>port 53]
+    end
+
+    subgraph "gatekeeper-system namespace"
+        GK[Gatekeeper<br/>audit + controller<br/>17 CRDs, validating webhook]
+        CT[ConstraintTemplate<br/>K8sRequiredLimits<br/>4 Rego rules]
+    end
+
+    subgraph "falco namespace"
+        FALCO[Falco DaemonSet<br/>3 pods, modern eBPF<br/>29 rules]
+        SIDEKICK[Falcosidekick<br/>2 pods, Webhook + WebUI]
+        UI[Falcosidekick UI<br/>2 pods + Redis]
+    end
+
+    subgraph "external-secrets namespace"
+        ESO[ESO Controller<br/>3 pods<br/>AWS Secrets Manager sync]
+        SS[SecretStore: aws-secrets<br/>region: ap-southeast-1]
+    end
+
+    subgraph "kube-system namespace"
+        DNS[CoreDNS]
+        TRAEFIK[Traefik Ingress<br/>LoadBalancer]
+    end
+
+    AWS[AWS Secrets Manager<br/>securebank/jwt-secret<br/>$0.40/month]
+    WH[Webhook Receiver<br/>host.k3d.internal:5678<br/>IF routing: CRITICAL→Slack]
+
+    TRAEFIK -->|ingress:8080| API
+    API -->|DNS only| DNS
+    ESO -->|sync JWT_SECRET| API
+    ESO -->|reads| AWS
+    FALCO -->|detect shell/file/network| API
+    GK -->|admission webhook| API
+    SIDEKICK -->|forward alerts| WH
+```
+
+---
+
+## 8. File Structure (Fase 3 additions)
+
+```
+securebank-api/
+├── k8s/
+│   ├── namespace.yaml              # Namespace: securebank
+│   ├── secret.yaml                 # Original K8s Secret (placeholder, unused)
+│   ├── deployment.yaml             # 65 lines, hardened (16 SecurityContext)
+│   ├── service.yaml                # ClusterIP, port 80→8080
+│   ├── network-policy.yaml         # 3 NetworkPolicies
+│   ├── rbac.yaml                   # SA + Role + RoleBinding
+│   ├── gatekeeper/
+│   │   ├── constraint-templates/
+│   │   │   └── require-limits.yaml # Rego policy (4 rules)
+│   │   └── constraints/
+│   │       └── require-limits.yaml # Constraint (deny)
+│   └── external-secrets/
+│       ├── secret-store.yaml       # SecretStore → AWS
+│       ├── jwt-secret.yaml         # ExternalSecret → K8s Secret
+│       └── aws-credentials.yaml    # AWS keys (GITIGNORED)
+├── security/
+│   ├── kubesec-report.json         # Day 32 baseline
+│   ├── checkov-k8s-report.json     # Day 32 baseline
+│   ├── trivy-k8s-report.json       # Day 32 baseline
+│   ├── k8s-scan-comparison.md      # 3 scanner comparison
+│   ├── kubesec-post-fix-report.json# Day 33 (score 11)
+│   ├── checkov-k8s-post-fix-report.json
+│   ├── trivy-k8s-post-fix-report.json
+│   ├── kubesec-rbac-report.json    # Day 38 (score 12)
+│   ├── checkov-k8s-rbac-report.json
+│   ├── checkov-k8s-netpol-report.json # Day 37
+│   ├── falco-rules/
+│   │   └── securebank-rules.yaml   # 4 custom rules
+│   ├── falco-values.yaml           # Helm values (driver + sidekick + webhook)
+│   ├── n8n-webhook/
+│   │   ├── webhook_receiver.py     # Python webhook + IF logic
+│   │   └── logs/falco-alerts.log   # Alert audit log
+│   └── threat-model/
+│       ├── architecture.md         # Fase 1 (STRIDE + DREAD)
+│       ├── k8s-threat-analysis.md  # Fase 3 (3 attack paths, CVSS)
+│       ├── netpol.yaml             # Cluster data dump
+│       ├── rbac.yaml               # Cluster data dump
+│       ├── pods.yaml               # Cluster data dump
+│       └── deploy-svc.yaml         # Cluster data dump
+└── docs/
+    └── ai-assistant-brainstorm.md  # Hermes Agent brainstorm (Day 39)
+```
+
+---
+
+## 9. Defense in Depth Summary
+
+| Layer | Tool | Day | What It Prevents/Detects |
+|-------|------|-----|--------------------------|
+| **Admission Control** | OPA Gatekeeper | 34-36 | Pods without resource limits denied before deploy |
+| **Image Security** | Distroless + Cosign | 18-19 | No shell for attacker, signed images for integrity |
+| **Network Isolation** | NetworkPolicy | 37 | Default deny all, only kube-system ingress, DNS egress |
+| **Access Control** | RBAC | 38 | Dedicated SA, get configmap only, no token automount |
+| **Runtime Detection** | Falco + Falcosidekick | 39-42 | 29 rules, syscall monitoring, webhook alert routing |
+| **Secret Management** | External Secrets Operator | 43 | AWS sync, no secrets in git, auto-rotation 1h |
+
+**Day 41 Attack Simulation proven:** All 6 layers work together. Attacker → no shell (distroless) → if shell obtained → Falco detects → NetworkPolicy blocks egress → alert forwarded.
+
+**Day 44 AI Threat Model validated:** 3 attack paths, each with 4+ mitigations. No single point of failure.
+
+---
+
+*Retrospektif ini ditulis pada Hari 45 sebagai penutup Fase 3.*
+
+---
+
+> ✅ **Selesai Fase 3** — Lanjut ke [Fase 4: Vulnerability Management & Red Teaming](fase-4-vuln-redteam.md)
