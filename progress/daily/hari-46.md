@@ -83,16 +83,43 @@ Password: [REDACTED — check local Docker logs]
 
 Password di-generate random oleh initializer. Setiap fresh setup = password berbeda.
 
-### DefectDojo Setup Plan (UI — untuk user)
+### DefectDojo Hierarchy Setup (via API)
 
-Setup berikut dilakukan via browser di `http://localhost:8088`:
+DefectDojo v3.1.200 UI tidak menampilkan tombol "Add" untuk Product Type/Product/Engagement (redesigned Tailwind CSS UI). Pivot ke **API setup** — 3 curl commands:
 
-1. **Login** — `admin` + password dari logs
-2. **Product Type** — `Fintech` (Settings → Product Type → Add)
-3. **Product** — `SecureBank API` (Product Type: Fintech)
-4. **Engagement** — `Q3 Security Audit` (Product: SecureBank API)
+```bash
+# Get API token
+TOKEN=$(curl -s -X POST http://localhost:8088/api/v2/api-token-auth/ \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"<PASSWORD>"}' | python3 -c "import json,sys; print(json.load(sys.stdin)['token'])")
 
-Setelah ini, Day 47 akan upload scan reports (Trivy, Semgrep) ke DefectDojo via API.
+# 1. Create Product Type
+curl -s -X POST http://localhost:8088/api/v2/product_types/ \
+  -H "Authorization: Token $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name": "Fintech", "criticality": 1}'
+# → id=2
+
+# 2. Create Product (prod_type=2 from step 1)
+curl -s -X POST http://localhost:8088/api/v2/products/ \
+  -H "Authorization: Token $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name": "SecureBank API", "prod_type": 2}'
+# → id=1
+
+# 3. Create Engagement (product=1 from step 2)
+curl -s -X POST http://localhost:8088/api/v2/engagements/ \
+  -H "Authorization: Token $TOKEN" -H "Content-Type: application/json" \
+  -d '{"name": "Q3 Security Audit", "product": 1, "status": "In Progress"}'
+# → id=1
+```
+
+**Verification:**
+```
+Fintech (Product Type, id=2)
+  └── SecureBank API (Product, id=1, prod_type=2)
+       └── Q3 Security Audit (Engagement, id=1, product=1, In Progress)
+```
+
+API setup = sekaligus foundation untuk Day 47 (upload scan reports via API). UI bisa dipakai untuk visual verification setelah API create.
 
 ### Port Conflict Resolution
 
@@ -129,6 +156,9 @@ securebank-api/security/defectdojo/
 | Port 8080 conflict dengan local API | Change `published: 8088` di nginx ports |
 | `./docker/extra_settings` bind mount butuh directory | Create dummy directory dengan `.gitkeep` |
 | Docker image pull (1.3GB total) | User bantu pre-pull 4 images sebelum eksekusi |
+| Admin password ter-expose di git | Redact dari daily note, rotate password via `manage.py changepassword` |
+| DefectDojo v3.x UI tidak show add buttons | Pivot ke API — 3 curl commands create Product Type + Product + Engagement |
+| Product lifecycle "active" invalid choice | Hapus lifecycle field, pakai default (DefectDojo assign sendiri) |
 
 ---
 
@@ -171,8 +201,8 @@ securebank-api/security/defectdojo/
 | Aspek | Skor (1–5) | Catatan |
 |-------|-----------|---------|
 | Semangat belajar | 5 | Fase 4 dimulai! DefectDojo jalan tanpa clone |
-| Pemahaman materi | 4 | Docker Compose multi-container, initializer pattern |
-| Progres sesuai target | 5 | 7 containers Running, HTTP 200, admin password obtained |
+| Pemahaman materi | 4 | Docker Compose multi-container, initializer pattern, API setup |
+| Progres sesuai target | 5 | 7 containers Running, HTTP 200, hierarchy created via API |
 
 ---
 
