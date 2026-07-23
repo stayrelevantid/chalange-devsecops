@@ -78,7 +78,7 @@ Tutorial minta `git clone https://github.com/DefectDojo/django-DefectDojo.git` (
 ```
 URL: http://localhost:8088
 Username: admin
-Password: 6BBFxQtWdmFyl74dHACetD
+Password: [REDACTED — check local Docker logs]
 ```
 
 Password di-generate random oleh initializer. Setiap fresh setup = password berbeda.
@@ -138,7 +138,7 @@ securebank-api/security/defectdojo/
 - [x] `security/defectdojo/docker/extra_settings/.gitkeep` — dummy dir (committed)
 - [x] 7 containers Running (6 active + 1 initializer exited after DB setup)
 - [x] DefectDojo accessible di http://localhost:8088 (HTTP 200)
-- [x] Admin password obtained: `6BBFxQtWdmFyl74dHACetD`
+- [x] Admin password obtained: `[REDACTED — check local Docker logs]`
 - [x] Setup plan documented (Product Type → Product → Engagement)
 
 ---
