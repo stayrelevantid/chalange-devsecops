@@ -85,7 +85,15 @@ Password di-generate random oleh initializer. Setiap fresh setup = password berb
 
 ### DefectDojo Hierarchy Setup (via API)
 
-DefectDojo v3.1.200 UI tidak menampilkan tombol "Add" untuk Product Type/Product/Engagement (redesigned Tailwind CSS UI). Pivot ke **API setup** — 3 curl commands:
+DefectDojo v3.1.200 UI tidak menampilkan tombol "Add" untuk Product Type/Product/Engagement (redesigned Tailwind CSS UI). Terminology juga berubah di UI v3.x — "Product Type" → "Organization", "Product" → "Asset". API v2 tetap pakai terminology lama. Pivot ke **API setup** — 3 curl commands:
+
+**Terminology Mapping (API v2 vs UI v3.x):**
+
+| API v2 (yang kita pakai di curl) | UI v3.x (yang user lihat di browser) | Our Value |
+|-----------------------------------|--------------------------------------|-----------|
+| Product Type | Organization | `Fintech` |
+| Product | Asset | `SecureBank API` |
+| Engagement | Engagement (unchanged) | `Q3 Security Audit` |
 
 ```bash
 # Get API token

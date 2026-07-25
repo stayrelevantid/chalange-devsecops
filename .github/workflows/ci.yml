@@ -249,3 +249,57 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "All 7 security scans passed"
+
+  upload-defectdojo:
+    name: DefectDojo Upload
+    needs: [sca-scan, sast-scan, iac-checkov, iac-trivy]
+    runs-on: ubuntu-latest
+    if: ${{ vars.DEFECTDOJO_URL != '' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Trivy SCA Report
+        uses: actions/download-artifact@v4
+        with:
+          name: trivy-sca-report
+          path: ./reports
+
+      - name: Download Semgrep Report
+        uses: actions/download-artifact@v4
+        with:
+          name: semgrep-report
+          path: ./reports
+
+      - name: Download Checkov IaC Report
+        uses: actions/download-artifact@v4
+        with:
+          name: checkov-report
+          path: ./reports
+
+      - name: Upload Trivy SCA to DefectDojo
+        run: |
+          curl -X POST "${{ vars.DEFECTDOJO_URL }}/api/v2/import-scan/" \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "scan_type=Trivy Scan" \
+            -F "product_name=SecureBank API" \
+            -F "engagement_name=Q3 Security Audit" \
+            -F "file=@reports/trivy-sca.json"
+
+      - name: Upload Semgrep to DefectDojo
+        run: |
+          curl -X POST "${{ vars.DEFECTDOJO_URL }}/api/v2/import-scan/" \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "scan_type=Semgrep JSON Report" \
+            -F "product_name=SecureBank API" \
+            -F "engagement_name=Q3 Security Audit" \
+            -F "file=@reports/semgrep-report.json"
+
+      - name: Upload Checkov IaC to DefectDojo
+        run: |
+          curl -X POST "${{ vars.DEFECTDOJO_URL }}/api/v2/import-scan/" \
+            -H "Authorization: Token ${{ secrets.DEFECTDOJO_API_KEY }}" \
+            -F "scan_type=Checkov Scan" \
+            -F "product_name=SecureBank API" \
+            -F "engagement_name=Q3 Security Audit" \
+            -F "file=@reports/checkov-report.json"

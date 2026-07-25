@@ -81,7 +81,7 @@
 | Hari | Topik | Output Konkret | Status | Selesai |
 |------|-------|----------------|--------|---------|
 | [Hari 46](daily/hari-46.md) | DefectDojo Setup | Docker Compose up, login dashboard | ✅ | 2026-07-22 |
-| [Hari 47](daily/hari-47.md) | DefectDojo API Integration | Pipeline upload Trivy+Semgrep JSON ke DefectDojo | ⬜ | — |
+| [Hari 47](daily/hari-47.md) | DefectDojo API Integration | Pipeline upload Trivy+Semgrep JSON ke DefectDojo | ✅ | 2026-07-23 |
 | [Hari 48](daily/hari-48.md) | Alert Routing (n8n) | CRITICAL alert → Slack Security channel | ⬜ | — |
 | [Hari 49](daily/hari-49.md) | AI Remediation Node | n8n + LLM: auto-ringkas SAST finding → Slack dev | ⬜ | — |
 | [Hari 50](daily/hari-50.md) | CSPM (Prowler/ScoutSuite) | Scan AWS/GCP sandbox vs CIS Benchmarks | ⬜ | — |
@@ -96,7 +96,7 @@
 | [Hari 59](daily/hari-59.md) | CDP Exam Sim: Execution | 3 jam: rebuild semua pipeline dari nol | ⬜ | — |
 | [Hari 60](daily/hari-60.md) | Project Showcase | Diagram arsitektur E2E + publikasi final | ⬜ | — |
 
-**Progres Fase 4: 1/15**
+**Progres Fase 4: 2/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 46 / 60 |
+| Total Hari Selesai | 47 / 60 |
 | Fase Selesai | 3 / 4 |
-| Hari Aktif (ada catatan) | 46 |
+| Hari Aktif (ada catatan) | 47 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
