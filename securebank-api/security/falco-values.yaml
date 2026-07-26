@@ -7,7 +7,7 @@ falcosidekick:
     enabled: true
   config:
     webhook:
-      address: "http://host.k3d.internal:5678/webhook/falco-alert"
+      address: "http://host.docker.internal:5678/webhook/falco-alert"
       method: "POST"
 
 customRules:

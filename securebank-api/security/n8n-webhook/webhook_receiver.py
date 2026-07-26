@@ -15,10 +15,13 @@ import argparse
 import json
 import logging
 import os
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_DIR = os.path.join(SCRIPT_DIR, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 LOG_FILE = os.path.join(LOG_DIR, "falco-alerts.log")
 
@@ -31,6 +34,55 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger("falco-webhook")
+
+# Load Slack webhook URL from .env file in same directory
+SLACK_WEBHOOK_URL = None
+env_path = os.path.join(SCRIPT_DIR, ".env")
+if os.path.exists(env_path):
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith("SLACK_WEBHOOK_URL="):
+                SLACK_WEBHOOK_URL = line.split("=", 1)[1].strip("\"'")
+                break
+
+if SLACK_WEBHOOK_URL:
+    logger.info(f"Slack webhook configured: {SLACK_WEBHOOK_URL[:40]}...")
+else:
+    logger.warning("SLACK_WEBHOOK_URL not found — Slack alerts disabled")
+
+
+def post_to_slack(alert):
+    if not SLACK_WEBHOOK_URL:
+        logger.warning("Slack disabled — alert not sent")
+        return False
+
+    rule = alert.get("rule", "unknown")
+    priority = alert.get("priority", "unknown")
+    pod = alert.get("output_fields", {}).get("k8s.pod.name", "unknown")
+    ns = alert.get("output_fields", {}).get("k8s.ns.name", "unknown")
+    proc = alert.get("output_fields", {}).get("proc.name", "unknown")
+    output = alert.get("output", "no output")
+
+    slack_payload = {
+        "text": f"🚨 *Falco CRITICAL Alert*\n*Rule:* {rule}\n*Pod:* {pod} (ns: {ns})\n*Process:* {proc}\n*Output:* `{output[:200]}`",
+    }
+
+    data = json.dumps(slack_payload).encode("utf-8")
+    req = urllib.request.Request(
+        SLACK_WEBHOOK_URL,
+        data=data,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    try:
+        resp = urllib.request.urlopen(req, timeout=10)
+        logger.info(f"Slack POST {resp.status} — alert '{rule}' sent to #security-alerts")
+        return True
+    except urllib.error.URLError as e:
+        logger.error(f"Slack POST failed: {e}")
+        return False
 
 
 class FalcoWebhookHandler(BaseHTTPRequestHandler):
@@ -65,11 +117,14 @@ class FalcoWebhookHandler(BaseHTTPRequestHandler):
 
         logger.info(f"ALERT RECEIVED | priority={priority} rule={rule} pod={pod} ns={ns} proc={proc}")
 
-        # IF node logic — CRITICAL routes to Slack (Day 48), others just log
+        # IF node logic — CRITICAL routes to Slack, others just log
         if priority.lower() == "critical":
-            logger.info(f"  -> IF TRUE: CRITICAL alert — route to Slack #security-alerts (Day 48)")
-            logger.info(f"  -> Slack payload prepared: '{rule}' in pod '{pod}' (ns={ns})")
-            # Day 48 will add: requests.post(slack_webhook_url, json=slack_payload)
+            logger.info(f"  -> IF TRUE: CRITICAL alert — posting to Slack #security-alerts")
+            success = post_to_slack(alert)
+            if success:
+                logger.info(f"  -> Slack notification sent for rule '{rule}'")
+            else:
+                logger.warning(f"  -> Slack notification FAILED for rule '{rule}'")
         else:
             logger.info(f"  -> IF FALSE: {priority} alert — log only (below CRITICAL threshold)")
 
@@ -110,7 +165,8 @@ def main():
     logger.info(f"Webhook endpoint: POST http://<host>:{args.port}/webhook/falco-alert")
     logger.info(f"Health check: GET http://<host>:{args.port}/health")
     logger.info(f"Alert log: {LOG_FILE}")
-    logger.info("IF node logic: CRITICAL -> Slack (Day 48), others -> log only")
+    slack_status = f"Slack: {'connected' if SLACK_WEBHOOK_URL else 'DISABLED'}"
+    logger.info(f"IF node logic: CRITICAL -> Slack #security-alerts ({slack_status}), others -> log only")
 
     try:
         server.serve_forever()

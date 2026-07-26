@@ -13,3 +13,9 @@ securebank-api/security/zap-report-day*.json
 securebank-api/k8s/external-secrets/aws-credentials.yaml
 # Checkov K8s ESO report (may contain scanned secrets from aws-credentials.yaml)
 securebank-api/security/checkov-k8s-eso-report.json
+
+# Slack webhook URL for Falco alert routing
+securebank-api/security/n8n-webhook/.env
+
+# Falco webhook receiver runtime logs
+securebank-api/security/n8n-webhook/logs/
