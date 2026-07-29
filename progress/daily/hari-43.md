@@ -67,7 +67,7 @@ $ aws secretsmanager create-secret \
   --secret-string "$(openssl rand -hex 32)" \
   --region ap-southeast-1
 
-ARN: arn:aws:secretsmanager:ap-southeast-1:683915449775:secret:securebank/jwt-secret-RTgjr9
+ARN: arn:aws:secretsmanager:ap-southeast-1:XXXXXXXXXXXX:secret:securebank/jwt-secret-RTgjr9
 ```
 
 ### ESO Helm Install
