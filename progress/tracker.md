@@ -85,7 +85,7 @@
 | [Hari 48](daily/hari-48.md) | Alert Routing (Slack) | CRITICAL alert → Slack `#security-alerts` via webhook receiver | ✅ | 2026-07-26 |
 | [Hari 49](daily/hari-49.md) | AI Remediation Node | LLM auto-ringkas scanner finding → Slack `#security-alerts` | ✅ | 2026-07-27 |
 | [Hari 50](daily/hari-50.md) | CSPM (Prowler) | AWS scan ap-southeast-1 — 328 checks, 132 FAIL, 4 CRITICAL | ✅ | 2026-07-29 |
-| [Hari 51](daily/hari-51.md) | CSPM Remediation | Fix 3 temuan kritis (MFA, S3 bucket, stale keys) | ⬜ | — |
+| [Hari 51](daily/hari-51.md) | CSPM Remediation | S3 Block Public Access (15 findings) + default SG revoke, 132→106 FAIL | ✅ | 2026-07-30 |
 | [Hari 52](daily/hari-52.md) | Red Team: K8s Escape | Privileged pod → host filesystem → Falco/OPA deteksi | ⬜ | — |
 | [Hari 53](daily/hari-53.md) | Red Team: Leaked Creds | IAM user sementara → CloudTrail → auto-revoke script | ⬜ | — |
 | [Hari 54](daily/hari-54.md) | Chaos Security Engineering | Kill OPA webhook → deploy vulnerable app → alarm? | ⬜ | — |
@@ -96,7 +96,7 @@
 | [Hari 59](daily/hari-59.md) | CDP Exam Sim: Execution | 3 jam: rebuild semua pipeline dari nol | ⬜ | — |
 | [Hari 60](daily/hari-60.md) | Project Showcase | Diagram arsitektur E2E + publikasi final | ⬜ | — |
 
-**Progres Fase 4: 5/15**
+**Progres Fase 4: 6/15**
 
 ---
 
@@ -104,7 +104,7 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 50 / 60 |
+| Total Hari Selesai | 51 / 60 |
 | Fase Selesai | 3 / 4 |
 | Hari Aktif (ada catatan) | 47 |
 | Streak Hari Berturut-turut | 0 |
