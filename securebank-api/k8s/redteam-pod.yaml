@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: attacker-pod
+  namespace: default
+spec:
+  hostPID: true
+  containers:
+  - name: attacker
+    image: alpine:3.20
+    command: ["sleep", "3600"]
+    securityContext:
+      privileged: true

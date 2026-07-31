@@ -263,6 +263,13 @@ cat /etc/kubernetes/kubelet.conf
 - [ ] Eksploitasi nsenter berhasil menembus ke node.
 - [ ] Falco mencatat aktivitas tidak wajar ini.
 
+### Implementation Notes (Hari 52 — Hasil Praktek)
+1. **`privileged: true` saja TIDAK cukup** untuk `nsenter -t 1` mencapai host — pod masih punya PID namespace sendiri (`nsenter -t 1` hanya masuk ke PID 1 pod). Tambah **`hostPID: true`** supaya PID 1 host terlihat. Kombinasi `privileged + hostPID` = escape vector klasik.
+2. **Path kubelet di k3s beda dari kubeadm.** `/etc/kubernetes/kubelet.conf` tidak ada; k3s pakai `/var/lib/rancher/k3s/agent/kubelet.kubeconfig` + `client-kubelet.crt/key`.
+3. **Cek ruleset Falco yang benar-benar ter-load.** Cluster tanpa internet → falcoctl gagal download full rules → hanya 26 rules minimal aktif, tidak ada rule privileged/setns. Tambahkan rule custom: `Privileged container launched`, `Container escape via setns`, `Read kubelet credentials post-escape`.
+4. **Hati-hati FP:** rule kubelet jangan pakai prefix `/var/lib/rancher/k3s/agent` (containerd snapshot juga di sana) — match nama file persis (`endswith client-kubelet.crt`, dll).
+5. **Gap OPA:** pastikan constraint `privileged: true` + `hostPID` benar-benar ada (default setup hanya require resource limits). Lihat `k8s/gatekeeper/constraints/deny-privileged.yaml`.
+
 ---
 
 ## Hari 53: Red Teaming — Scenario 2 (Leaked Credentials)

@@ -77,3 +77,62 @@ customRules:
         command=%proc.cmdline)
       priority: WARNING
       tags: [securebank, k8s, mitre_discovery]
+
+    - rule: Privileged container launched (K8s escape enabler)
+      desc: >
+        Detect any container launched with privileged: true. A privileged pod is the
+        #1 K8s escape primitive — OPA blocks it in securebank, but if an attacker can
+        deploy it elsewhere (e.g. default namespace), they can reach the node.
+      condition: >
+        spawned_process and
+        container and
+        container.privileged=true and
+        not k8s.pod.name startswith "falco"
+      output: >
+        ALERT: Privileged container launched
+        (user=%user.name container=%container.name
+        image=%container.image.repository
+        pod=%k8s.pod.name namespace=%k8s.ns.name)
+      priority: CRITICAL
+      tags: [k8s_escape, mitre_privilege_escalation]
+
+    - rule: Container escape via setns (nsenter)
+      desc: >
+        Detect setns syscall that switches a process into another namespace.
+        nsenter (part of util-linux) is the classic container escape tool —
+        combined with a privileged/hostPID pod it gives root on the node.
+      condition: >
+        evt.type=setns and
+        container and
+        proc.name in (nsenter)
+      output: >
+        ALERT: Container escape via setns/nsenter
+        (user=%user.name container=%container.name
+        proc=%proc.name command=%proc.cmdline
+        pod=%k8s.pod.name namespace=%k8s.ns.name)
+      priority: CRITICAL
+      tags: [k8s_escape, mitre_privilege_escalation]
+
+    - rule: Read kubelet credentials post-escape
+      desc: >
+        Detect reading of node kubelet credentials (kubelet.kubeconfig / client
+        certs) right after a container escape. On k3s they live directly under
+        /var/lib/rancher/k3s/agent, on kubeadm under /etc/kubernetes.
+        NOTE: match exact filenames only — a prefix match on the agent dir
+        false-positives on containerd snapshot paths (containerd stores every
+        container rootfs under /var/lib/rancher/k3s/agent/containerd/...).
+      condition: >
+        open_read and
+        (fd.name endswith kubelet.kubeconfig or
+         fd.name endswith kubeproxy.kubeconfig or
+         fd.name endswith k3scontroller.kubeconfig or
+         fd.name endswith client-kubelet.crt or
+         fd.name endswith client-kubelet.key or
+         fd.name startswith /etc/kubernetes)
+      output: >
+        ALERT: Kubelet credentials read
+        (file=%fd.name user=%user.name proc=%proc.name
+        command=%proc.cmdline container=%container.name
+        pod=%k8s.pod.name namespace=%k8s.ns.name)
+      priority: CRITICAL
+      tags: [k8s_escape, mitre_credential_access]

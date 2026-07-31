@@ -23,3 +23,6 @@ securebank-api/security/n8n-webhook/logs/
 # Prowler scan reports (contains AWS account info — DO NOT COMMIT)
 securebank-api/security/prowler/prowler-report.htm*
 securebank-api/security/prowler/prowler-report.json
+
+# Prowler default output dir (filenames contain AWS account ID — DO NOT COMMIT)
+output/
