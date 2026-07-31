@@ -194,12 +194,57 @@ Agent nodes k3d `NotReady` sejak lama → pod lama Falco di agent stuck `Termina
 
 ---
 
-## 💡 Pelajaran Baru
+## 💡 Lessons Learned
 
-- **"Rules loaded" ≠ "rules harusnya ada".** Falco 26 rule vs 300+ rule. Selalu verifikasi ruleset yang aktif sebelum menilai detection coverage.
-- **Privileged pod tanpa hostPID tidak cukup** untuk nsenter escape — PID namespace tetap terisolasi. Kombinasi privileged + hostPID adalah escape vector nyata, dan itulah yang wajib diblokir OPA.
-- **Detection rules harus presisi.** Prefix match pada direktori yang dipakai containerd internals = false positive tsunami. Match file spesifik untuk kredensial.
-- **Red team menemukan yang blue team tidak sadari.** Asumsi "OPA blokir privileged" ternyata salah — tidak ada constraint-nya. Trust tapi verify, bahkan terhadap konfigurasi sendiri.
+### 1. "Rules loaded" ≠ "Rules harusnya ada"
+
+Falco helm chart pakai `falcoctl` sidecar untuk download rules dari artifact repo. Cluster k3d ini tanpa internet → download gagal diam-diam → hanya **26 rules minimal** dari image yang aktif, bukan 300+ rules standar. Akibatnya: `Launch Privileged Container`, `Change thread namespace`, dan rule-rule escape detection lainnya **tidak ada**.
+
+**Pelajaran:** Jangan pernah berkata "Falco pasti mendeteksi ini" sebelum verifikasi ruleset yang benar-benar termuat. Cek dengan:
+
+```bash
+kubectl exec <falco-pod> -c falco -- grep -c "rule:" /etc/falco/falco_rules.yaml
+```
+
+Kalau angkanya 26, bukan 300+, detection coverage ada lubang besar. Solusinya: tulis rule custom atau pre-load rules file di image.
+
+### 2. Privileged saja tidak cukup — butuh hostPID
+
+Tutorial asli cuma pakai `privileged: true`. Saat dicoba, `nsenter -t 1` hanya menembus PID 1 **di dalam pod** (`sleep 3600`), bukan host. `hostname` tetap `attacker-pod`. Kenapa? Karena pod masih punya PID namespace sendiri — `privileged` kasih akses ke device dan capabilities, tapi **tidak otomatis share PID namespace**.
+
+Solusinya: tambah `hostPID: true`. Sekarang PID 1 host (k3s) terlihat, dan `nsenter -t 1` langsung masuk ke namespace host. Kombinasi `privileged + hostPID` = escape vector klasik yang dipakai exploit nyata.
+
+**Pelajaran:** Saat threat modeling, jangan cuma pikirkan `privileged`. Daftar primitif escape: `privileged`, `hostPID`, `hostNetwork`, `hostIPC`, `hostPath` mounts, `CAP_SYS_ADMIN`. Semua harus diblokir.
+
+### 3. Detection rule yang terlalu lebar lebih berbahaya dari yang kurang
+
+Rule kubelet pertama: `fd.name startswith /var/lib/rancher/k3s/agent`. Terdengar masuk akal — kredensial k3s ada di sana. Tapi containerd juga simpan rootfs semua container di `/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/.../fs/`. Hasilnya: **setiap I/O baca file container = alert CRITICAL**. 1000+ notifikasi palsu banjir ke Slack dalam menit.
+
+Fix pertama: match nama file persis (`endswith client-kubelet.crt`). Tapi ternyata k3s/kubelet sendiri baca cert-nya berkali-kali untuk cert rotation → masih FP (8 alert/2 menit, `container=host`).
+
+Fix kedua: tambah condition `container` — hanya trigger kalau baca dari **dalam container**, bukan host process. k3s internal reads excluded, attacker pod reads tetap terdeteksi.
+
+**Pelajaran:** Rule yang match terlalu banyak = alert fatigue. Tim security akan ignore alarm, dan saat serangan asli datang, tidak ada yang lihat. Lebih baik rule presisi yang fire 1x untuk serangan asli, daripada rule lebar yang fire 1000x untuk noise. Setelah tulis rule, **selalu observe traffic 5-10 menit** untuk verifikasi tidak ada FP.
+
+### 4. Asumsi security control = lubang keamanan terbesar
+
+Saya mengira OPA Gatekeeper memblokir pod privileged di `securebank`. Tutorial bilang begitu. Kenyataannya: **tidak**. OPA cuma punya 1 constraint — `require-resource-limits`. Pod privileged + hostPID lolos begitu saja. Test deploy membuktikan: `pod/attacker-pod-blocked created`.
+
+Ini menakutkan: saya sudah deploy OPA di Day 34, nulis policy di Day 35, test di Day 36. 16 hari berlalu dan saya **tidak pernah sadar** tidak ada policy untuk privileged container. Rasa aman yang semu.
+
+**Pelajaran:** Trust but verify — bahkan terhadap konfigurasi sendiri. Setelah deploy security control, test negatif: coba deploy pod yang **harusnya diblokir**. Kalau lolos, policy-nya tidak lengkap. Red teaming adalah cara terbaik untuk menemukan gap yang blue team tidak sadari.
+
+### 5. Attribution post-escape: deteksi primitive, bukan konsekuensi
+
+Saat nsenter berhasil, proses pindah namespace host. Falco kehilangan atribusi ke pod — alert `Kubelet credentials read` muncul dengan `container=host pod=<NA> proc=<NA>`. Tapi alert `setns/nsenter` tetap ter-attribusi benar ke `attacker-pod`, karena setns terjadi **sebelum** namespace switch selesai.
+
+**Pelajaran:** Deteksi primitif serangan (setns, privileged launch) lebih reliable daripada deteksi konsekuensi (baca kredensial). Saat design detection rules, prioritaskan event yang terjadi **sebelum** attacker berhasil escape — bukan setelah. Setelah escape, attribution sulit dan alert sulit di-investigate.
+
+### 6. Cluster health = prerequisite, bukan optional
+
+Agent nodes `NotReady` sejak 22 hari lalu → pod Falco di agent stuck `Terminating` → daemonset rolling update tidak jalan → rules baru tidak deploy. Force-delete pod lama jadi satu-satunya cara.
+
+**Pelajaran:** Sebelum exercise apapun (red team, DR test, chaos engineering), cek cluster health dulu. `kubectl get nodes`, `kubectl get pods -A`. Node NotReady, pod stuck, CrashLoopBackOff — semua bisa block deployment security control. Lab yang tidak di-maintain akan menghasilkan result yang menyesatkan.
 
 ---
 
