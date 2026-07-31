@@ -110,6 +110,8 @@
   condition: >
     open_read and
     container and
+    not k8s.ns.name in (kube-system, gatekeeper-system, falco, external-secrets) and
+    not proc.name in (traefik, pause, containerd, containerd-shim) and
     (fd.name endswith kubelet.kubeconfig or
      fd.name endswith kubeproxy.kubeconfig or
      fd.name endswith k3scontroller.kubeconfig or
