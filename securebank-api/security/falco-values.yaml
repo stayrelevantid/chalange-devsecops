@@ -4,7 +4,7 @@ driver:
 falcosidekick:
   enabled: true
   webui:
-    enabled: true
+    enabled: false
   config:
     webhook:
       address: "http://host.docker.internal:5678/webhook/falco-alert"
