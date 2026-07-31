@@ -116,13 +116,14 @@ customRules:
     - rule: Read kubelet credentials post-escape
       desc: >
         Detect reading of node kubelet credentials (kubelet.kubeconfig / client
-        certs) right after a container escape. On k3s they live directly under
-        /var/lib/rancher/k3s/agent, on kubeadm under /etc/kubernetes.
-        NOTE: match exact filenames only — a prefix match on the agent dir
-        false-positives on containerd snapshot paths (containerd stores every
-        container rootfs under /var/lib/rancher/k3s/agent/containerd/...).
+        certs) from inside a container — e.g. via hostPath volume mount.
+        On k3s they live directly under /var/lib/rancher/k3s/agent, on kubeadm
+        under /etc/kubernetes. NOTE: only fires for container-context reads;
+        k3s/kubelet internal reads (host context) are excluded to avoid FP.
+        Post-nsenter reads (host context) are covered by the setns escape rule.
       condition: >
         open_read and
+        container and
         (fd.name endswith kubelet.kubeconfig or
          fd.name endswith kubeproxy.kubeconfig or
          fd.name endswith k3scontroller.kubeconfig or

@@ -92,17 +92,17 @@ fd.name startswith /var/lib/rancher/k3s/agent
 
 **SALAH.** containerd menyimpan rootfs semua container di `/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/.../fs/`. Setiap I/O baca file container = read snapshot path → **1000+ FP CRITICAL ke Slack** dalam beberapa menit.
 
-**Fix:** match nama file persis:
+**Fix 1:** match nama file persis:
 
 ```
 fd.name endswith kubelet.kubeconfig or
-fd.name endswith kubeproxy.kubeconfig or
-fd.name endswith k3scontroller.kubeconfig or
 fd.name endswith client-kubelet.crt or
 fd.name endswith client-kubelet.key
 ```
 
-Setelah fix: **0 FP**, dan hanya file kredensial asli yang match.
+**Fix 2:** ternyata k3s/kubelet sendiri baca `client-kubelet.crt/key` berkali-kali untuk cert rotation → masih FP (8 alert/2 menit, `container=host`). Tambah condition `container` — hanya trigger kalau baca dari **dalam container**, bukan host process. k3s internal reads (`container=host`) excluded; attacker pod reads (`container=attacker`) tetap terdeteksi (proses nsenter tetap di cgroup container meskipun pindah namespace).
+
+**Setelah fix 1+2:** 0 FP, true positive tetap fire.
 
 ### 6. Deteksi Berhasil (Setelah Rules Diperbaiki)
 
