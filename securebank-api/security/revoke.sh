@@ -10,7 +10,7 @@
 #
 # Usage:
 #   ./revoke.sh <IAM_USERNAME> <ACCESS_KEY_ID>
-#   ./revoke.sh leaked-dev AKIAZ6PEJSWXU5QVF5KY
+#   ./revoke.sh leaked-dev AKIA...EXAMPLEKEY
 # ==============================================================
 set -euo pipefail
 
