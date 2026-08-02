@@ -305,6 +305,13 @@ echo "User $TARGET_USER revoked."
 - [ ] Jejak akses terdeteksi di CloudTrail.
 - [ ] Skrip revoke/isolasi telah disiapkan.
 
+### Implementation Notes (Hari 53 — Hasil Praktek)
+1. **CloudTrail kemungkinan belum aktif di akun Anda.** Cek dulu: `aws cloudtrail describe-trails`. Jika kosong, buat trail multi-region + log file validation + `start-logging`, dan tambahkan bucket log versi `securebank-cloudtrail-logs-XXXX` (private, deny non-owner).
+2. **Management events cepat, data events lambat.** `GetCallerIdentity`/`ListBuckets` langsung muncul di `cloudtrail lookup-events` (~3–5 menit). S3 data events (GetObject) wajib diaktifkan manual via `put-event-selectors` dan bisa delay hingga 15 menit — fallback: baca file log mentah di bucket (path `AWSLogs/...`).
+3. **CanaryTokens.org tidak bisa di-automasi** (React SPA, semua POST balas `Method Not Allowed`). Ganti dengan **S3 honeypot bucket** berisi file umpan `backup/db-config.txt` + `env/.env.production` yang memuat marker string `CanaryToken-...`. Marker = bukti file benar-benar diakses.
+4. **Script revoke siap dipakai:** `securebank-api/security/revoke.sh` — alur: (1) tampilkan riwayat key via CloudTrail, (2) deactivate key (`update-access-key --status Inactive`), (3) attach Deny-All inline policy `BlockAll-On-Leak`. Setelah dijalankan, key yang bocor langsung balas `InvalidAccessKeyId`.
+5. **Cleanup wajib:** hapus access key, detach policy, delete user, force-delete bucket canary. CloudTrail + bucket log sengaja dibiarkan hidup sebagai improvement permanen.
+
 ---
 
 ## Hari 54: Chaos Security Engineering

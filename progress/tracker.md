@@ -87,7 +87,7 @@
 | [Hari 50](daily/hari-50.md) | CSPM (Prowler) | AWS scan ap-southeast-1 — 328 checks, 132 FAIL, 4 CRITICAL | ✅ | 2026-07-29 |
 | [Hari 51](daily/hari-51.md) | CSPM Remediation | S3 Block Public Access (15 findings) + default SG revoke, 132→106 FAIL | ✅ | 2026-07-30 |
 | [Hari 52](daily/hari-52.md) | Red Team: K8s Escape | nsenter escape ke node + kredensial kubelet + 3 rule Falco baru + gap OPA ditutup | ✅ | 2026-07-31 |
-| [Hari 53](daily/hari-53.md) | Red Team: Leaked Creds | IAM user sementara → CloudTrail → auto-revoke script | ⬜ | — |
+| [Hari 53](daily/hari-53.md) | Red Team: Leaked Creds | IAM user sementara → CloudTrail → auto-revoke script | ✅ | 2026-08-02 |
 | [Hari 54](daily/hari-54.md) | Chaos Security Engineering | Kill OPA webhook → deploy vulnerable app → alarm? | ⬜ | — |
 | [Hari 55](daily/hari-55.md) | Laporan Audit | Export DefectDojo → Executive Summary draft | ⬜ | — |
 | [Hari 56](daily/hari-56.md) | Dokumen Eksekutif (PDF) | PDF formal: metodologi, temuan, mitigasi, sisa risiko | ⬜ | — |
@@ -96,7 +96,7 @@
 | [Hari 59](daily/hari-59.md) | CDP Exam Sim: Execution | 3 jam: rebuild semua pipeline dari nol | ⬜ | — |
 | [Hari 60](daily/hari-60.md) | Project Showcase | Diagram arsitektur E2E + publikasi final | ⬜ | — |
 
-**Progres Fase 4: 7/15**
+**Progres Fase 4: 8/15**
 
 ---
 
@@ -104,9 +104,9 @@
 
 | Metrik | Nilai |
 |--------|-------|
-| Total Hari Selesai | 52 / 60 |
+| Total Hari Selesai | 53 / 60 |
 | Fase Selesai | 3 / 4 |
-| Hari Aktif (ada catatan) | 48 |
+| Hari Aktif (ada catatan) | 49 |
 | Streak Hari Berturut-turut | 0 |
 
 ---
