@@ -349,6 +349,13 @@ kubectl delete -f k8s/test-no-limits.yaml
 - [ ] Memahami pentingnya layer monitoring berlapis (defense in depth).
 - [ ] Sistem dikembalikan ke kondisi normal.
 
+### Implementation Notes (Hari 54 — Hasil Praktek)
+1. **Admission ≠ Runtime.** Gatekeeper mengecek saat deploy, Falco mengecek syscall saat runtime. Dengan `scale deployment gatekeeper-controller-manager --replicas=0`, admission mati dan klaster menjadi **fail-open** — pod non-compliant langsung diterima (`test-no-limits`, `test-privileged` created).
+2. **Runtime hanya melihat primitive, bukan kebijakan.** Pod tanpa limits yang diam → **0 alert Falco**. Pod `privileged: true` → rule `Privileged container launched` fire **CRITICAL** → falcosidekick → webhook → Slack. Runtime tidak "mengerti" resource limits — itu domain detector konfigurasi.
+3. **OPA audit tetap hidup** di deployment terpisah dan mencatat pelanggaran di `status.totalViolations` (8 untuk resource limits + 1 untuk privileged). Cek via kind penuh: `kubectl get k8srequiredlimits.constraints.gatekeeper.sh`.
+4. **Drift detector buatan sendiri:** `securebank-api/security/chaos/drift-check.sh` — script kubectl+jq untuk list container tanpa `requests/limits` per namespace; exit code 1 jika ada drift (bisa dipakai di CI/cron).
+5. **Restore + verifikasi:** scale controller-manager balik ke 1, hapus pod chaos (`--grace-period=0 --force`), re-apply manifest non-compliant harus kembali **Forbidden**. Manifes chaos ada di `k8s/chaos/`.
+
 ---
 
 ## Hari 55: Pembuatan Laporan Audit
