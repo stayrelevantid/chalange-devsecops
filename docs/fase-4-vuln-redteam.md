@@ -385,6 +385,14 @@ Tingkat risiko saat ini: LOW
 - [ ] Report DefectDojo berhasil digenerate.
 - [ ] Draf laporan awal berisi metrik keamanan yang jelas.
 
+### Implementation Notes (Hari 55 — Hasil Praktek)
+1. **Data DefectDojo cepat stale.** Karena DefectDojo lokal, job CI `upload-defectdojo` di-skip (variabel `DEFECTDOJO_URL` kosong) → data terakhir dari import manual Day 47. **Re-sync sebelum laporan**: `bash securebank-api/security/defectdojo/upload-scans.sh` — import menambah test baru per run (dedup tidak menyatukan antar run), catat id test baru sebagai "state terkini".
+2. **Regenerasi report scanner** sebelum re-sync supaya angka mencerminkan kenyataan: `trivy fs --scanners vuln`, `trivy config` (terraform & k8s), `trivy image`, `semgrep --config "p/golang"`. Hasil: IaC turun 14 → 2 Low (bukti remediasi Day 23), k8s-post-fix 0, tapi image stdlib muncul **CVE-2026-39822 HIGH** (rebuild image = action item baru).
+3. **trivy fs men-scan file gitignored** (cosign.key, aws-credentials.yaml, .env) → report lokal bisa berisi secret. Untuk report yang di-commit, gunakan `--scanners vuln` atau `--skip-dirs`. CI aman karena checkout GitHub tidak memuat file gitignored.
+4. **Scope K8s scan ke manifest produksi**: `trivy config --skip-dirs k8s/chaos --skip-files k8s/redteam-pod.yaml k8s/` — supaya report "post-fix" tidak terkotori manifest red team/chaos.
+5. **checkov CLI rusak di Python 3.14** (`No module named checkov.__main__`) dan image `bridgecrewio/checkov` sudah tidak ada → report `checkov-report.json` lama di-rename `.stale`; coverage IaC dialihkan ke trivy config.
+6. **Draf laporan**: `securebank-api/security/audit-reports/draft-q3.md` — pisahkan metrik *aggregate* (52 findings DefectDojo) dari *state terkini* (6 findings), plus tabel tren sebelum/sesudah dan residual risk.
+
 ---
 
 ## Hari 56: Penyusunan Dokumen Eksekutif

@@ -3,9 +3,9 @@
   "Trivy": {
     "Version": "0.71.0"
   },
-  "ReportID": "019f4a4a-8f71-7ecd-870d-5088cad35a67",
-  "CreatedAt": "2026-07-10T11:30:28.209971+07:00",
-  "ArtifactName": "/Users/muhammad.indragiri/Kerja/chalange-devsecops/securebank-api/k8s",
+  "ReportID": "019fd5e2-c0a9-7a48-8ba0-16ccaef5e4fe",
+  "CreatedAt": "2026-08-06T14:03:55.305676+07:00",
+  "ArtifactName": "securebank-api/k8s",
   "ArtifactType": "filesystem",
   "Results": [
     {
@@ -13,7 +13,70 @@
       "Class": "config",
       "Type": "kubernetes",
       "MisconfSummary": {
-        "Successes": 99,
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "external-secrets/aws-credentials.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "external-secrets/jwt-secret.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "external-secrets/secret-store.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "gatekeeper/constraint-templates/deny-privileged.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "gatekeeper/constraint-templates/require-limits.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "gatekeeper/constraints/deny-privileged.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "gatekeeper/constraints/require-limits.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
         "Failures": 0
       }
     },
@@ -22,7 +85,25 @@
       "Class": "config",
       "Type": "kubernetes",
       "MisconfSummary": {
-        "Successes": 99,
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "network-policy.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
+        "Failures": 0
+      }
+    },
+    {
+      "Target": "rbac.yaml",
+      "Class": "config",
+      "Type": "kubernetes",
+      "MisconfSummary": {
+        "Successes": 113,
         "Failures": 0
       }
     },
@@ -31,7 +112,7 @@
       "Class": "config",
       "Type": "kubernetes",
       "MisconfSummary": {
-        "Successes": 99,
+        "Successes": 113,
         "Failures": 0
       }
     },
@@ -40,7 +121,7 @@
       "Class": "config",
       "Type": "kubernetes",
       "MisconfSummary": {
-        "Successes": 99,
+        "Successes": 113,
         "Failures": 0
       }
     }

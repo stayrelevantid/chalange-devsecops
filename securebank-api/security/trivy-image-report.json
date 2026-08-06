@@ -3,9 +3,9 @@
   "Trivy": {
     "Version": "0.71.0"
   },
-  "ReportID": "019ee957-8217-7a1d-9d13-899fe073931a",
-  "CreatedAt": "2026-06-21T15:41:26.807664+07:00",
-  "ArtifactID": "sha256:172fc5ac28d0ec9eb62f96ea627c7974555e4696553707c49bd44f624e6d12e4",
+  "ReportID": "019fd5e1-ef20-77b8-b477-967354b90ff7",
+  "CreatedAt": "2026-08-06T14:03:01.664507+07:00",
+  "ArtifactID": "sha256:1e93f4dda5cb91a87c4233365c5630e83eaaa1da344f3e21a001ba7ba9488145",
   "ArtifactName": "securebank:v1",
   "ArtifactType": "container_image",
   "Metadata": {
@@ -14,7 +14,7 @@
       "Family": "debian",
       "Name": "12.14"
     },
-    "ImageID": "sha256:4f8e6cb6a41e2fdca7d43f1071db15b39816193dcee77059ece0706adf1078f7",
+    "ImageID": "sha256:34fc956ae7181d9e6bb6ec137c56020c767f6b404196afd634635d126670bc25",
     "DiffIDs": [
       "sha256:a0ff877a11d72f1832840a3cddfeeb3962d2b3fae4e11aca8de212cb24ced9f3",
       "sha256:8fa10c0194df9b7c054c90dbe482585f768a54428fc90a5b78a0066a123b1bba",
@@ -28,8 +28,8 @@
       "sha256:ad51d0769d16ba578106a177987dfe3d2e02c1668c852b795b2f6b024068242a",
       "sha256:6e7fbcf090d09b73a4aa85f9dce690d0ace73877c150b7c56955487b6e7a822a",
       "sha256:33b37ab0b0901175c2699d81c10b0c887f0dff944de74763cca00c155904d6fb",
-      "sha256:23869c0e20529c7f59137552da69fddea27f9a0a98ba01275593789387693a04",
-      "sha256:59505f962fbb6ce9021ef64390ee9b51aec83ec9c24efd3061ae904f68c0d229"
+      "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f",
+      "sha256:7ee69ab08a3a57e7ff11a02c2d1e91b49fe7a6d0de2a2cd9090f4ac7f09cda58"
     ],
     "RepoTags": [
       "securebank:v1"
@@ -37,7 +37,7 @@
     "Reference": "securebank:v1",
     "ImageConfig": {
       "architecture": "arm64",
-      "created": "2026-06-20T15:50:04.870165504Z",
+      "created": "2026-06-29T07:39:50.257799927Z",
       "history": [
         {
           "created": "1970-01-01T00:00:00Z",
@@ -88,29 +88,29 @@
           "created_by": "bazel build //common:cacerts_debian12_arm64"
         },
         {
-          "created": "2026-06-20T15:50:04Z",
+          "created": "2026-06-29T07:39:50Z",
           "created_by": "COPY /securebank /securebank # buildkit",
           "comment": "buildkit.dockerfile.v0"
         },
         {
-          "created": "2026-06-20T15:50:04Z",
+          "created": "2026-06-29T07:39:50Z",
           "created_by": "COPY /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ # buildkit",
           "comment": "buildkit.dockerfile.v0"
         },
         {
-          "created": "2026-06-20T15:50:04Z",
+          "created": "2026-06-29T07:39:50Z",
           "created_by": "EXPOSE map[8080/tcp:{}]",
           "comment": "buildkit.dockerfile.v0",
           "empty_layer": true
         },
         {
-          "created": "2026-06-20T15:50:04Z",
+          "created": "2026-06-29T07:39:50Z",
           "created_by": "USER nonroot:nonroot",
           "comment": "buildkit.dockerfile.v0",
           "empty_layer": true
         },
         {
-          "created": "2026-06-20T15:50:04Z",
+          "created": "2026-06-29T07:39:50Z",
           "created_by": "ENTRYPOINT [\"/securebank\"]",
           "comment": "buildkit.dockerfile.v0",
           "empty_layer": true
@@ -132,8 +132,8 @@
           "sha256:ad51d0769d16ba578106a177987dfe3d2e02c1668c852b795b2f6b024068242a",
           "sha256:6e7fbcf090d09b73a4aa85f9dce690d0ace73877c150b7c56955487b6e7a822a",
           "sha256:33b37ab0b0901175c2699d81c10b0c887f0dff944de74763cca00c155904d6fb",
-          "sha256:23869c0e20529c7f59137552da69fddea27f9a0a98ba01275593789387693a04",
-          "sha256:59505f962fbb6ce9021ef64390ee9b51aec83ec9c24efd3061ae904f68c0d229"
+          "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f",
+          "sha256:7ee69ab08a3a57e7ff11a02c2d1e91b49fe7a6d0de2a2cd9090f4ac7f09cda58"
         ]
       },
       "config": {
@@ -144,6 +144,11 @@
           "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
         ],
+        "Labels": {
+          "com.docker.compose.project": "securebank-api",
+          "com.docker.compose.service": "securebank",
+          "com.docker.compose.version": "2.24.5"
+        },
         "User": "nonroot:nonroot",
         "WorkingDir": "/home/nonroot",
         "ExposedPorts": {
@@ -202,11 +207,11 @@
       },
       {
         "Size": 5703680,
-        "DiffID": "sha256:23869c0e20529c7f59137552da69fddea27f9a0a98ba01275593789387693a04"
+        "DiffID": "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f"
       },
       {
         "Size": 182784,
-        "DiffID": "sha256:59505f962fbb6ce9021ef64390ee9b51aec83ec9c24efd3061ae904f68c0d229"
+        "DiffID": "sha256:7ee69ab08a3a57e7ff11a02c2d1e91b49fe7a6d0de2a2cd9090f4ac7f09cda58"
       }
     ]
   },
@@ -1276,7 +1281,7 @@
             "stdlib@v1.26.4"
           ],
           "Layer": {
-            "DiffID": "sha256:23869c0e20529c7f59137552da69fddea27f9a0a98ba01275593789387693a04"
+            "DiffID": "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f"
           },
           "AnalyzedBy": "gobinary"
         },
@@ -1290,7 +1295,7 @@
           "Version": "v1.26.4",
           "Relationship": "direct",
           "Layer": {
-            "DiffID": "sha256:23869c0e20529c7f59137552da69fddea27f9a0a98ba01275593789387693a04"
+            "DiffID": "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f"
           },
           "AnalyzedBy": "gobinary"
         },
@@ -1303,9 +1308,140 @@
           },
           "Version": "v5.3.1",
           "Layer": {
-            "DiffID": "sha256:23869c0e20529c7f59137552da69fddea27f9a0a98ba01275593789387693a04"
+            "DiffID": "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f"
           },
           "AnalyzedBy": "gobinary"
+        }
+      ],
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2026-39822",
+          "VendorIDs": [
+            "GO-2026-4970"
+          ],
+          "PkgID": "stdlib@v1.26.4",
+          "PkgName": "stdlib",
+          "PkgIdentifier": {
+            "PURL": "pkg:golang/stdlib@v1.26.4",
+            "UID": "f67ec6cc3e63f115"
+          },
+          "InstalledVersion": "v1.26.4",
+          "FixedVersion": "1.25.12, 1.26.5, 1.27.0-rc.2",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-39822",
+          "DataSource": {
+            "ID": "govulndb",
+            "Name": "The Go Vulnerability Database",
+            "URL": "https://pkg.go.dev/vuln/"
+          },
+          "Fingerprint": "sha256:639d31adc992e9d0cde69e3a5ae073c2632ca9bc57bd6c6da5d7e7f6da13b877",
+          "Title": "golang: Go os.Root: Symlink following vulnerability allows directory traversal",
+          "Description": "On Unix systems, opening a file in an os.Root improperly follows symlinks to locations outside of the Root when the final path component of the a path is a symbolic link and the path ends in /. For example, 'root.Open(\"symlink/\")' will open \"symlink\" even when \"symlink\" is a symbolic link pointing outside of the root.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-61"
+          ],
+          "VendorSeverity": {
+            "alma": 3,
+            "amazon": 2,
+            "azure": 3,
+            "bitnami": 3,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "rocky": 3
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2026:38995",
+            "https://access.redhat.com/security/cve/CVE-2026-39822",
+            "https://bugzilla.redhat.com/2480756",
+            "https://bugzilla.redhat.com/2484207",
+            "https://bugzilla.redhat.com/2498152",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2498152",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-39822",
+            "https://errata.almalinux.org/8/ALSA-2026-38995.html",
+            "https://errata.rockylinux.org/RLSA-2026:38878",
+            "https://go.dev/cl/797880",
+            "https://go.dev/issue/79005",
+            "https://groups.google.com/g/golang-announce/c/OrmQE_Yp5Sc",
+            "https://linux.oracle.com/cve/CVE-2026-39822.html",
+            "https://linux.oracle.com/errata/ELSA-2026-38995.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-39822",
+            "https://pkg.go.dev/vuln/GO-2026-4970",
+            "https://www.cve.org/CVERecord?id=CVE-2026-39822"
+          ],
+          "PublishedDate": "2026-07-08T17:17:21.31Z",
+          "LastModifiedDate": "2026-07-13T14:54:26.317Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-42505",
+          "VendorIDs": [
+            "GO-2026-5856"
+          ],
+          "PkgID": "stdlib@v1.26.4",
+          "PkgName": "stdlib",
+          "PkgIdentifier": {
+            "PURL": "pkg:golang/stdlib@v1.26.4",
+            "UID": "f67ec6cc3e63f115"
+          },
+          "InstalledVersion": "v1.26.4",
+          "FixedVersion": "1.25.12, 1.26.5, 1.27.0-rc.2",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:1709302b966b9a4b95150d7aa88fc3b292239d81bf6b7069409101cb1de7305f"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-42505",
+          "DataSource": {
+            "ID": "govulndb",
+            "Name": "The Go Vulnerability Database",
+            "URL": "https://pkg.go.dev/vuln/"
+          },
+          "Fingerprint": "sha256:be794f1f907364a75939cac14bc7f118c71d2212bbef507d8b75e3bdffc63ba4",
+          "Title": "crypto/tls: golang: Go crypto/tls: Information disclosure in Encrypted Client Hello",
+          "Description": "Handshakes which used Encrypted Client Hello could be de-anonymized by a passive network observer due to a disclosure of pre-shared key identities in the unencrypted client hello.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-201"
+          ],
+          "VendorSeverity": {
+            "amazon": 2,
+            "azure": 2,
+            "bitnami": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-42505",
+            "https://go.dev/cl/775960",
+            "https://go.dev/issue/79282",
+            "https://groups.google.com/g/golang-announce/c/OrmQE_Yp5Sc",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-42505",
+            "https://pkg.go.dev/vuln/GO-2026-5856",
+            "https://www.cve.org/CVERecord?id=CVE-2026-42505"
+          ],
+          "PublishedDate": "2026-07-08T17:17:21.497Z",
+          "LastModifiedDate": "2026-07-13T17:05:36.303Z"
         }
       ]
     }
