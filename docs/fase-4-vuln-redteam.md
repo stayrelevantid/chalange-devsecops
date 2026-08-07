@@ -416,6 +416,12 @@ Tambahkan bagian ke dalam laporan:
 - [ ] Laporan memiliki 4 komponen utama (Summary, Methodology, Findings/Mitigations, Residual Risk).
 - [ ] Dokumen diekspor ke PDF.
 
+### Implementation Notes (Hari 56 — Hasil Praktek)
+1. **Dokumen formal**: `securebank-api/security/audit-reports/laporan-audit-q3.md` — perluasan `draft-q3.md` dengan YAML front matter (title/subtitle/author/date) dan 7 bagian: Executive Summary (penilaian **MEDIUM**, 6 temuan aktif 0C/1H/2M/2L/1I), Ruang Lingkup & Metodologi (11 layer tools + pendekatan 5 langkah), Key Findings Baseline (F-01..F-10), Mitigation Evidence (tabel bukti + tren sebelum/sesudah), Residual Risk (5 tersisa + 3 diterima dengan alasan), Rekomendasi & Roadmap (Q3 segara → Q4), Konklusi, plus Lampiran alat & referensi bukti per hari.
+2. **Export PDF**: `pandoc laporan-audit-q3.md --pdf-engine=typst -o laporan-audit-q3.pdf` — pandoc **3.10.1** + **typst 0.15.1** (Homebrew). Menghasilkan **7 halaman** PDF 1.7 (~132 KB). Tabel GFM langsung ter-render native oleh Typst — tanpa perlu LaTeX/wkhtmltopdf.
+3. **Verifikasi tanpa PDF viewer**: `file laporan-audit-q3.pdf` → "PDF document, version 1.7, 7 pages". (pdftotext tidak tersedia; `file` cukup untuk validasi struktur.)
+4. **Angka laporan konsisten dengan re-sync Day 55**: 52 agregat DefectDojo vs 6 state terkini; Prowler 132→106; tren per layer bersumber dari catatan hari spesifik (Day 07/10/23/33/51/52-54) — bukan angka stale.
+
 ---
 
 ## Hari 57: Review Dokumen Bersama AI
