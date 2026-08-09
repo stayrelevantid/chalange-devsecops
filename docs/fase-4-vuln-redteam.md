@@ -446,6 +446,13 @@ Saya memiliki draf laporan audit keamanan teknis ini. Tolong perbaiki nada bahas
 - [ ] Draf laporan di-review oleh LLM.
 - [ ] Nada bahasa berhasil ditingkatkan menjadi lebih manajerial/profesional.
 
+### Implementation Notes (Hari 57 — Hasil Praktek)
+1. **File baru**: `securebank-api/security/audit-reports/executive-summary.md` — ringkasan eksekutif untuk manajemen (style CISO/CTO), dibuat TERPISAH dari laporan teknis `laporan-audit-q3.md` (tetap utuh 7 halaman). Alasan: *audience-aware reporting* — CISO butuh postur, keputusan, dan rencana; detail bukti tetap di dokumen teknis.
+2. **Prompt review yang dipakai**: "Perbaiki nada bahasa agar lebih profesional, tidak terlalu teknikal, berfokus pada dampak bisnis (business impact), cocok dibaca CISO/CTO" — diterapkan terhadap laporan-audit-q3.md; saran translasi diadopsi, mis. MD5→bcrypt menjadi "kriptografi modern untuk mitigasi risiko kebocoran data nasabah".
+3. **Struktur executive-summary.md**: Pesan Utama (1 paragraf: MEDIUM terkendali, 0 Critical) → Poin Kunci → Apa yang Berhasil Dicapai (4 kalimat terukur) → Risiko yang Masih Perlu Perhatian (butuh keputusan) → Fokus Rencana ke Depan (Q3/Q4) → Kesimpulan.
+4. **Export PDF eksekutif**: `pandoc executive-summary.md --pdf-engine=typst -o executive-summary.pdf` → **2 halaman** (PDF 1.7). Verifikasi non-viewer: `file` + page count.
+5. **Integritas data**: angka (6 temuan, 0 Critical, 132→106, IaC 14→2) dipertahankan identik dengan laporan teknis; review hanya mengubah presentasi & framing, bukan fakta scan.
+
 ---
 
 ## Hari 58: CDP Exam Simulation (Lab Setup)
