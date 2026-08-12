@@ -2,9 +2,9 @@ name: SecureBank CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, staging, uat]
   pull_request:
-    branches: [main]
+    branches: [develop, staging, uat, main]
 
 permissions:
   contents: read
@@ -243,12 +243,37 @@ jobs:
           name: trivy-iac-report
           path: trivy-iac.json
 
+  image-build-and-scan:
+    name: Container Build & Image Scan
+    needs: [build-and-test, secret-scan, sca-scan, sast-scan, iac-checkov, iac-trivy]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build --tag securebank:ci-${{ github.sha }} securebank-api
+
+      - name: Scan image for blocking vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: securebank:ci-${{ github.sha }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '1'
+
+      - name: Export image metadata
+        run: docker image inspect securebank:ci-${{ github.sha }} --format '{{.Id}}'
+
   security-gate:
     name: Security Gate
-    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy]
+    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy, image-build-and-scan]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "All 7 security scans passed"
+      - run: echo "All blocking security checks passed"
 
   upload-defectdojo:
     name: DefectDojo Upload
