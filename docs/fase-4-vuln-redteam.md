@@ -509,6 +509,14 @@ Menguji kemampuan mengingat dan mengimplementasikan pipeline DevSecOps dari nol 
 - [ ] Pipeline berhasil jalan dan berwarna hijau.
 - [ ] Evaluasi diri: Bagian mana yang masih sering lupa syntax-nya?
 
+### Implementation Notes (Hari 59 — Hasil Praktek)
+1. **Day 58 dilewati dengan sengaja**: environment tidak di-wipe agar evidence security dan konfigurasi SecureBank tetap tersedia. Fokus dialihkan ke perbaikan pipeline dan promotion workflow.
+2. **Quality gate** di `.github/workflows/ci.yml` mempertahankan build/test, Gitleaks, Trivy SCA, Semgrep, ZAP, Checkov, dan Trivy IaC, lalu menambahkan `image-build-and-scan`. Image dibangun dari `securebank-api/Dockerfile` dan gagal jika ada CVE CRITICAL/HIGH yang terdeteksi.
+3. **CD workflow terpisah** di `.github/workflows/cd-deploy.yml` memakai `workflow_dispatch` dan urutan DEV → UAT → PRE-PROD → security approval manual → PROD → post-deployment verification. Runner GitHub tidak dapat mengakses k3d lokal, sehingga deploy menggunakan render Kustomize, `kubectl apply --dry-run`, dan health check container di DEV.
+4. **Promotion branches**: `develop`, `staging`, `uat`, dan `main` dibuat di origin. Branch protection diaktifkan dengan required PR review, status checks, linear history, conversation resolution, dan block force-push/deletion.
+5. **GitHub Environments**: `dev`, `uat`, `preprod`, `security-approval`, dan `prod` dibuat dengan required reviewer `yogi-indragiri`; `prod` memiliki wait timer 5 menit. Tidak ada private key, kubeconfig, atau secret baru yang dibuat otomatis. Cosign signing di-skip karena private key tidak diberikan.
+6. **Kustomize**: manifest reusable dipisahkan ke `securebank-api/k8s/base/`, dengan overlay `dev`, `uat`, `preprod`, dan `prod` untuk replica count serta `APP_ENV`.
+
 ---
 
 ## Hari 60: Project Showcase
