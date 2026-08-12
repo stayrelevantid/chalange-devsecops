@@ -92,7 +92,7 @@
 | [Hari 55](daily/hari-55.md) | Laporan Audit | Export DefectDojo → Executive Summary draft | ✅ | 2026-08-06 |
 | [Hari 56](daily/hari-56.md) | Dokumen Eksekutif (PDF) | PDF formal: metodologi, temuan, mitigasi, sisa risiko | ✅ | 2026-08-07 |
 | [Hari 57](daily/hari-57.md) | AI Review Dokumen | AI periksa struktur & nada bahasa laporan audit | ✅ | 2026-08-08 |
-| [Hari 58](daily/hari-58.md) | CI/CD Multi-Environment | Quality gate + DEV → STAGING → security approval → PROD | ✅ | 2026-08-09 |
+| [Hari 58](daily/hari-58.md) | CI/CD Multi-Environment | Quality gate + DEV → UAT → PRE-PROD → security approval → PROD | ✅ | 2026-08-09 |
 | [Hari 59](daily/hari-59.md) | Persiapan CDP Exam Simulation | Checklist, scope, waktu, dan aturan simulasi | ⬜ | — |
 | [Hari 60](daily/hari-60.md) | Project Showcase | Diagram arsitektur E2E + publikasi final | ⬜ | — |
 

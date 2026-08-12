@@ -66,24 +66,39 @@ jobs:
           for attempt in {1..15}; do curl -fsS http://127.0.0.1:18080/health && exit 0; sleep 2; done
           exit 1
 
-  deploy-staging:
-    name: Deploy STAGING (simulation)
+  deploy-uat:
+    name: Deploy UAT (simulation)
     needs: deploy-dev
     runs-on: ubuntu-latest
-    environment: staging
+    environment: uat
     steps:
       - uses: actions/checkout@v4
-      - name: Render STAGING manifests
+      - name: Render UAT manifests
         run: |
           curl -sS https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
           sudo mv kustomize /usr/local/bin/
-          kustomize build securebank-api/k8s/overlays/staging | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/staging.yaml
-          kubectl apply --dry-run=client --validate=false -f /tmp/staging.yaml
-          echo "STAGING deployment simulation passed"
+          kustomize build securebank-api/k8s/overlays/uat | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/uat.yaml
+          kubectl apply --dry-run=client --validate=false -f /tmp/uat.yaml
+          echo "UAT deployment simulation passed"
+
+  deploy-preprod:
+    name: Deploy PRE-PROD (simulation)
+    needs: deploy-uat
+    runs-on: ubuntu-latest
+    environment: preprod
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render PRE-PROD manifests
+        run: |
+          curl -sS https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
+          sudo mv kustomize /usr/local/bin/
+          kustomize build securebank-api/k8s/overlays/preprod | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/preprod.yaml
+          kubectl apply --dry-run=client --validate=false -f /tmp/preprod.yaml
+          echo "PRE-PROD deployment simulation passed"
 
   security-approval:
     name: Security Approval (manual)
-    needs: deploy-staging
+    needs: deploy-preprod
     runs-on: ubuntu-latest
     environment: security-approval
     steps:
@@ -92,7 +107,7 @@ jobs:
           echo 'SECURITY APPROVAL REQUIRED'
           echo '- CI security-gate passed'
           echo '- Release image scan passed'
-          echo '- STAGING manifests validated'
+          echo '- Pre-production manifests validated'
           echo '- Reviewer confirms residual risk and release scope'
 
   deploy-prod:

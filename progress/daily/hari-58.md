@@ -10,7 +10,7 @@
 ## 🎯 Tujuan Hari Ini
 
 - [x] Memperbaiki quality gate CI dengan container image scan
-- [x] Membuat CD workflow DEV → STAGING → security approval → PROD
+- [x] Membuat CD workflow DEV → UAT → PRE-PROD → security approval → PROD
 - [x] Menambahkan branch protection, GitHub Environments, dan Kustomize overlays
 - [x] Menunda wipe lab CDP agar security evidence tetap tersedia
 
@@ -18,14 +18,15 @@
 
 - `.github/workflows/ci.yml` kini menjalankan build/test, Gitleaks, Trivy SCA, Semgrep, ZAP, Checkov, Trivy IaC, dan image scan.
 - `.github/workflows/cd-deploy.yml` memakai `workflow_dispatch`, approval environment, security approval manual, dan post-deployment verification.
-- Manifest Kubernetes dipisah menjadi Kustomize base serta overlay `dev`, `staging`, dan `prod`.
-- Branch `develop`, `staging`, dan `main` dibuat/protected; empat GitHub Environment dikonfigurasi.
+- Manifest Kubernetes dipisah menjadi Kustomize base serta overlay `dev`, `uat`, `preprod`, dan `prod`.
+- Branch `develop`, `staging`, `uat`, dan `main` dibuat/protected; lima GitHub Environment dikonfigurasi.
 
 ## 📝 Catatan Teknis
 
 ```bash
 kustomize build securebank-api/k8s/overlays/dev
-kustomize build securebank-api/k8s/overlays/staging
+kustomize build securebank-api/k8s/overlays/uat
+kustomize build securebank-api/k8s/overlays/preprod
 kustomize build securebank-api/k8s/overlays/prod
 ```
 
