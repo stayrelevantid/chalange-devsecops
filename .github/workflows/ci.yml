@@ -2,9 +2,9 @@ name: SecureBank CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, staging, uat]
   pull_request:
-    branches: [main]
+    branches: [develop, staging, uat, main]
 
 permissions:
   contents: read
