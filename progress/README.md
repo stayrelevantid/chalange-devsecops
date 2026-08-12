@@ -43,8 +43,8 @@ progress/
 | 🔐 Fase 1 — Secure SDLC & AppSec | Hari 1–15 | ✅ Selesai | 15/15 |
 | 🐳 Fase 2 — IaC & Container Security | Hari 16–30 | ✅ Selesai | 15/15 |
 | ☸️ Fase 3 — K8s & Runtime Security | Hari 31–45 | ✅ Selesai | 15/15 |
-| 🔴 Fase 4 — Vuln Mgmt & Red Team | Hari 46–60 | 🔄 Berjalan | 12/15 |
-| **Total** | **60 Hari** | | **57/60** |
+| 🔴 Fase 4 — Vuln Mgmt & Red Team | Hari 46–60 | 🔄 Berjalan | 13/15 |
+| **Total** | **60 Hari** | | **58/60** |
 
 > Update tabel ini setiap kali satu fase selesai penuh.
 
@@ -55,7 +55,7 @@ progress/
 - [x] **Hari 15** — Fase 1 selesai, pipeline CI/CD dengan Secret/SAST/SCA scan berjalan
 - [x] **Hari 30** — Fase 2 selesai, Docker hardened + Terraform IaC + DAST live
 - [ ] **Hari 45** — Fase 3 selesai, K8s cluster dengan OPA + Falco + RBAC
-- [ ] **Hari 60** — Fase 4 selesai, laporan audit + CDP exam simulation done
+- [ ] **Hari 60** — Fase 4 selesai, laporan audit + CI/CD showcase done
 
 ---
 
