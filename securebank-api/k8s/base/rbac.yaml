@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: securebank-api
+  namespace: securebank
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: securebank-api-role
+  namespace: securebank
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+    resourceNames: ["securebank-config"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: securebank-api-binding
+  namespace: securebank
+subjects:
+  - kind: ServiceAccount
+    name: securebank-api
+    namespace: securebank
+roleRef:
+  kind: Role
+  name: securebank-api-role
+  apiGroup: rbac.authorization.k8s.io
