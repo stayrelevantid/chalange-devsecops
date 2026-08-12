@@ -268,9 +268,34 @@ jobs:
       - name: Export image metadata
         run: docker image inspect securebank:ci-${{ github.sha }} --format '{{.Id}}'
 
+  promotion-policy:
+    name: Promotion Policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate allowed promotion path
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+        run: |
+          case "$BASE:$HEAD" in
+            develop:feature/*|staging:develop|uat:staging|main:uat)
+              echo "Valid promotion path: $HEAD -> $BASE"
+              ;;
+            *)
+              echo "Invalid promotion path: $HEAD -> $BASE"
+              echo "Allowed: feature/* -> develop -> staging -> uat -> main"
+              exit 1
+              ;;
+          esac
+
+      - name: Allow branch push validation
+        if: github.event_name != 'pull_request'
+        run: echo "Promotion policy is enforced on pull requests"
+
   security-gate:
     name: Security Gate
-    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy, image-build-and-scan]
+    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy, image-build-and-scan, promotion-policy]
     runs-on: ubuntu-latest
     steps:
       - run: echo "All blocking security checks passed"
