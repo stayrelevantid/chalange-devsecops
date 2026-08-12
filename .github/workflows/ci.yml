@@ -285,7 +285,7 @@ jobs:
           HEAD: ${{ github.head_ref }}
         run: |
           case "$BASE:$HEAD" in
-            develop:feature/*|develop:day-59-cicd|staging:develop|uat:staging|main:uat)
+            develop:feature/*|develop:day-59-cicd|staging:develop|staging:resolve-*|uat:staging|main:uat)
               echo "Valid promotion path: $HEAD -> $BASE"
               ;;
             *)
