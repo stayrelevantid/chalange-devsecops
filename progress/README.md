@@ -55,7 +55,7 @@ progress/
 - [x] **Hari 15** — Fase 1 selesai, pipeline CI/CD dengan Secret/SAST/SCA scan berjalan
 - [x] **Hari 30** — Fase 2 selesai, Docker hardened + Terraform IaC + DAST live
 - [ ] **Hari 45** — Fase 3 selesai, K8s cluster dengan OPA + Falco + RBAC
-- [ ] **Hari 60** — Fase 4 selesai, laporan audit + CDP exam simulation done
+- [ ] **Hari 60** — Fase 4 selesai, laporan audit + CI/CD showcase done
 
 ---
 
