@@ -164,11 +164,14 @@ jobs:
           echo "API failed to start" && exit 1
 
       - name: ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.13.0
-        with:
-          target: 'http://localhost:8080'
-          cmd_options: '-I'
-          allow_issue_writing: false
+        run: |
+          docker run --network host --rm \
+            -v "$PWD:/zap/wrk/:rw" \
+            zaproxy/zap-stable zap-baseline.py \
+            -t http://localhost:8080 \
+            -r zap-report.html \
+            -J zap-report.json \
+            -I
         continue-on-error: true
 
       - name: Upload ZAP Report
@@ -176,7 +179,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zap-dast-report
-          path: report_html.html
+          path: |
+            zap-report.html
+            zap-report.json
+          if-no-files-found: warn
 
   iac-checkov:
     name: IaC Scan (Checkov)
@@ -268,9 +274,34 @@ jobs:
       - name: Export image metadata
         run: docker image inspect securebank:ci-${{ github.sha }} --format '{{.Id}}'
 
+  promotion-policy:
+    name: Promotion Policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate allowed promotion path
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+        run: |
+          case "$BASE:$HEAD" in
+            develop:feature/*|develop:day-59-cicd|staging:develop|uat:staging|main:uat)
+              echo "Valid promotion path: $HEAD -> $BASE"
+              ;;
+            *)
+              echo "Invalid promotion path: $HEAD -> $BASE"
+              echo "Allowed: feature/* -> develop -> staging -> uat -> main"
+              exit 1
+              ;;
+          esac
+
+      - name: Allow branch push validation
+        if: github.event_name != 'pull_request'
+        run: echo "Promotion policy is enforced on pull requests"
+
   security-gate:
     name: Security Gate
-    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy, image-build-and-scan]
+    needs: [build-and-test, secret-scan, sca-scan, sast-scan, dast-scan, iac-checkov, iac-trivy, image-build-and-scan, promotion-policy]
     runs-on: ubuntu-latest
     steps:
       - run: echo "All blocking security checks passed"
