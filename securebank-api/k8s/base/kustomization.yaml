@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - service.yaml
   - deployment.yaml
+  - rbac.yaml
 
 commonLabels:
   app.kubernetes.io/name: securebank-api
