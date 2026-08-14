@@ -6,9 +6,10 @@ resources:
   - deployment.yaml
   - rbac.yaml
 
-commonLabels:
-  app.kubernetes.io/name: securebank-api
-  app.kubernetes.io/part-of: securebank
+labels:
+  - pairs:
+      app.kubernetes.io/name: securebank-api
+      app.kubernetes.io/part-of: securebank
 
 images:
   - name: securebank
