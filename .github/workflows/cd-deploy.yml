@@ -53,10 +53,15 @@ jobs:
         run: |
           curl -sS https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
           sudo mv kustomize /usr/local/bin/
+      - name: Install kubeconform
+        run: |
+          curl -sSLo /tmp/kubeconform.tar.gz https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          sudo mv /tmp/kubeconform /usr/local/bin/
       - name: Render and validate DEV manifests
         run: |
           kustomize build securebank-api/k8s/overlays/dev | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/dev.yaml
-          kubectl apply --dry-run=client --validate=false -f /tmp/dev.yaml
+          kubeconform -strict -ignore-missing-schemas /tmp/dev.yaml
       - name: Simulate deployment and health check
         run: |
           echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin
@@ -77,8 +82,11 @@ jobs:
         run: |
           curl -sS https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
           sudo mv kustomize /usr/local/bin/
+          curl -sSLo /tmp/kubeconform.tar.gz https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          sudo mv /tmp/kubeconform /usr/local/bin/
           kustomize build securebank-api/k8s/overlays/staging | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/staging.yaml
-          kubectl apply --dry-run=client --validate=false -f /tmp/staging.yaml
+          kubeconform -strict -ignore-missing-schemas /tmp/staging.yaml
           echo "STAGING deployment simulation passed"
 
   security-approval:
@@ -106,8 +114,11 @@ jobs:
         run: |
           curl -sS https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
           sudo mv kustomize /usr/local/bin/
+          curl -sSLo /tmp/kubeconform.tar.gz https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          sudo mv /tmp/kubeconform /usr/local/bin/
           kustomize build securebank-api/k8s/overlays/prod | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/prod.yaml
-          kubectl apply --dry-run=client --validate=false -f /tmp/prod.yaml
+          kubeconform -strict -ignore-missing-schemas /tmp/prod.yaml
           echo "PROD deployment simulation passed"
 
   post-deployment-verification:
