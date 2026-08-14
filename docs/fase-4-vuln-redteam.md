@@ -512,10 +512,10 @@ Menguji kemampuan mengingat dan mengimplementasikan pipeline DevSecOps dari nol 
 ### Implementation Notes (Hari 59 — Hasil Praktek)
 1. **Day 58 disesuaikan**: environment tidak di-wipe agar evidence security dan konfigurasi SecureBank tetap tersedia. Fokus dialihkan ke perbaikan pipeline dan promotion workflow.
 2. **Quality gate** di `.github/workflows/ci.yml` mempertahankan build/test, Gitleaks, Trivy SCA, Semgrep, ZAP, Checkov, dan Trivy IaC, lalu menambahkan `image-build-and-scan`. Image dibangun dari `securebank-api/Dockerfile` dan gagal jika ada CVE CRITICAL/HIGH yang terdeteksi.
-3. **CD workflow terpisah** di `.github/workflows/cd-deploy.yml` memakai `workflow_dispatch` dan urutan DEV → UAT → PRE-PROD → security approval manual → PROD → post-deployment verification. Runner GitHub tidak dapat mengakses k3d lokal, sehingga deploy menggunakan render Kustomize, `kubectl apply --dry-run`, dan health check container di DEV.
-4. **Promotion branches**: `develop`, `staging`, `uat`, dan `main` dibuat di origin. Branch protection diaktifkan dengan required PR review, status checks, linear history, conversation resolution, dan block force-push/deletion.
-5. **GitHub Environments**: `dev`, `uat`, `preprod`, `security-approval`, dan `prod` dibuat dengan required reviewer `yogi-indragiri`; `prod` memiliki wait timer 5 menit. Tidak ada private key, kubeconfig, atau secret baru yang dibuat otomatis. Cosign signing di-skip karena private key tidak diberikan.
-6. **Kustomize**: manifest reusable dipisahkan ke `securebank-api/k8s/base/`, dengan overlay `dev`, `uat`, `preprod`, dan `prod` untuk replica count serta `APP_ENV`.
+3. **CD workflow terpisah** di `.github/workflows/cd-deploy.yml` memakai `workflow_dispatch` dan urutan DEV → STAGING → security approval manual → PROD → post-deployment verification. Runner GitHub tidak dapat mengakses k3d lokal, sehingga deploy menggunakan render Kustomize, schema validation, dan health check container di DEV.
+4. **Promotion branches**: `develop`, `staging`, dan `main` dibuat di origin. Branch protection diaktifkan dengan required PR review, status checks, linear history, conversation resolution, dan block force-push/deletion.
+5. **GitHub Environments**: `dev`, `staging`, `security-approval`, dan `prod` dibuat dengan required reviewer `yogi-indragiri`; `prod` memiliki wait timer 5 menit. Tidak ada private key, kubeconfig, atau secret baru yang dibuat otomatis. Cosign signing di-skip karena private key tidak diberikan.
+6. **Kustomize**: manifest reusable dipisahkan ke `securebank-api/k8s/base/`, dengan overlay `dev`, `staging`, dan `prod` untuk replica count serta `APP_ENV`.
 
 Catatan penyesuaian: implementasi CI/CD di atas dilakukan pada **Hari 58**, sedangkan **Hari 59** dipakai untuk persiapan CDP exam simulation. Execution ujian belum dilakukan dan akan direncanakan pada sesi berikutnya.
 
