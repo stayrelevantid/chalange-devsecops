@@ -2,9 +2,9 @@ name: SecureBank CI
 
 on:
   push:
-    branches: [main, develop, staging, uat]
+    branches: [main, develop, staging]
   pull_request:
-    branches: [develop, staging, uat, main]
+    branches: [develop, staging, main]
 
 permissions:
   contents: read
@@ -285,12 +285,13 @@ jobs:
           HEAD: ${{ github.head_ref }}
         run: |
           case "$BASE:$HEAD" in
-            develop:feature/*|develop:day-59-cicd|staging:develop|staging:resolve-*|uat:staging|main:uat)
+            develop:feature/*|develop:day-59-cicd|develop:fix/*|staging:develop|staging:resolve-*|staging:fix/*|main:staging)
               echo "Valid promotion path: $HEAD -> $BASE"
               ;;
             *)
               echo "Invalid promotion path: $HEAD -> $BASE"
-              echo "Allowed: feature/* -> develop -> staging -> uat -> main"
+              echo "Allowed: feature/* -> develop -> staging -> main"
+              echo "Allowed fixes: fix/* -> develop or staging"
               exit 1
               ;;
           esac

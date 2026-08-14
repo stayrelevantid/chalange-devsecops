@@ -81,24 +81,9 @@ jobs:
           kubectl apply --dry-run=client --validate=false -f /tmp/staging.yaml
           echo "STAGING deployment simulation passed"
 
-  deploy-uat:
-    name: Deploy UAT (simulation)
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    environment: uat
-    steps:
-      - uses: actions/checkout@v4
-      - name: Render UAT manifests
-        run: |
-          curl -sS https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
-          sudo mv kustomize /usr/local/bin/
-          kustomize build securebank-api/k8s/overlays/uat | sed "s|ghcr.io/stayrelevantid/securebank-api:latest|$IMAGE:$IMAGE_TAG|g" > /tmp/uat.yaml
-          kubectl apply --dry-run=client --validate=false -f /tmp/uat.yaml
-          echo "UAT deployment simulation passed"
-
   security-approval:
     name: Security Approval (manual)
-    needs: deploy-uat
+    needs: deploy-staging
     runs-on: ubuntu-latest
     environment: security-approval
     steps:
@@ -107,7 +92,7 @@ jobs:
           echo 'SECURITY APPROVAL REQUIRED'
           echo '- CI security-gate passed'
           echo '- Release image scan passed'
-          echo '- UAT manifests validated'
+          echo '- STAGING manifests validated'
           echo '- Reviewer confirms residual risk and release scope'
 
   deploy-prod:
