@@ -85,6 +85,8 @@ securebank-api/
 
 Branching dan aturan merge: [`docs/branching-and-merge-policy.md`](docs/branching-and-merge-policy.md).
 
+Automatic CD smoke test marker: `develop` deploys to `dev`, `staging` deploys to `staging`, and `main` deploys to `prod` after CI succeeds.
+
 📁 **Lihat catatan harian & retrospektif di folder [`progress/`](progress/README.md)**
 
 ---
