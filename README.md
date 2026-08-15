@@ -83,6 +83,8 @@ securebank-api/
 | 🔴 Fase 4 — Vuln Mgmt & Red Team | 🔄 Berjalan | 13/15 |
 | **Total** | | **58 / 60** |
 
+Branching dan aturan merge: [`docs/branching-and-merge-policy.md`](docs/branching-and-merge-policy.md).
+
 📁 **Lihat catatan harian & retrospektif di folder [`progress/`](progress/README.md)**
 
 ---
