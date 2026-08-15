@@ -516,6 +516,7 @@ Menguji kemampuan mengingat dan mengimplementasikan pipeline DevSecOps dari nol 
 4. **Promotion branches**: `develop`, `staging`, dan `main` dibuat di origin. Branch protection diaktifkan dengan required PR review, status checks, linear history, conversation resolution, dan block force-push/deletion.
 5. **GitHub Environments**: `dev`, `staging`, `security-approval`, dan `prod` dibuat dengan required reviewer `yogi-indragiri`; `prod` memiliki wait timer 5 menit. Tidak ada private key, kubeconfig, atau secret baru yang dibuat otomatis. Cosign signing di-skip karena private key tidak diberikan.
 6. **Kustomize**: manifest reusable dipisahkan ke `securebank-api/k8s/base/`, dengan overlay `dev`, `staging`, dan `prod` untuk replica count serta `APP_ENV`.
+7. **Branching & merge policy**: feature/fix direbase ke `main`; promotion `develop → staging → main` wajib memakai merge commit agar ancestry tetap dapat ditelusuri. Panduan lengkap ada di [`branching-and-merge-policy.md`](branching-and-merge-policy.md).
 
 Catatan penyesuaian: implementasi CI/CD di atas dilakukan pada **Hari 58**, sedangkan **Hari 59** dipakai untuk persiapan CDP exam simulation. Execution ujian belum dilakukan dan akan direncanakan pada sesi berikutnya.
 
