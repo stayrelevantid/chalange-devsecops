@@ -85,7 +85,7 @@ securebank-api/
 
 Branching dan aturan merge: [`docs/branching-and-merge-policy.md`](docs/branching-and-merge-policy.md).
 
-Automatic CD smoke test marker: `develop` deploys to `dev`, `staging` deploys to `staging`, and `main` deploys to `prod` after CI succeeds.
+CI/CD pipeline: quality gate 10 check → auto-CD (`workflow_run`) → `develop→dev`, `staging→staging`, `main→prod`, tanpa approval environment. Deployment berupa simulasi karena runner GitHub-hosted tidak mengakses k3d lokal.
 
 📁 **Lihat catatan harian & retrospektif di folder [`progress/`](progress/README.md)**
 
