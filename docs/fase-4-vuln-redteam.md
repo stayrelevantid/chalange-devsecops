@@ -509,14 +509,16 @@ Menguji kemampuan mengingat dan mengimplementasikan pipeline DevSecOps dari nol 
 - [ ] Pipeline berhasil jalan dan berwarna hijau.
 - [ ] Evaluasi diri: Bagian mana yang masih sering lupa syntax-nya?
 
-### Implementation Notes (Hari 59 — Hasil Praktek)
+### Implementation Notes (Hari 58 — Hasil Praktek)
 1. **Day 58 disesuaikan**: environment tidak di-wipe agar evidence security dan konfigurasi SecureBank tetap tersedia. Fokus dialihkan ke perbaikan pipeline dan promotion workflow.
-2. **Quality gate** di `.github/workflows/ci.yml` mempertahankan build/test, Gitleaks, Trivy SCA, Semgrep, ZAP, Checkov, dan Trivy IaC, lalu menambahkan `image-build-and-scan`. Image dibangun dari `securebank-api/Dockerfile` dan gagal jika ada CVE CRITICAL/HIGH yang terdeteksi.
-3. **CD workflow terpisah** di `.github/workflows/cd-deploy.yml` memakai `workflow_dispatch` dan urutan DEV → STAGING → security approval manual → PROD → post-deployment verification. Runner GitHub tidak dapat mengakses k3d lokal, sehingga deploy menggunakan render Kustomize, schema validation, dan health check container di DEV.
-4. **Promotion branches**: `develop`, `staging`, dan `main` dibuat di origin. Branch protection diaktifkan dengan required PR review, status checks, linear history, conversation resolution, dan block force-push/deletion.
-5. **GitHub Environments**: `dev`, `staging`, `security-approval`, dan `prod` dibuat dengan required reviewer `yogi-indragiri`; `prod` memiliki wait timer 5 menit. Tidak ada private key, kubeconfig, atau secret baru yang dibuat otomatis. Cosign signing di-skip karena private key tidak diberikan.
-6. **Kustomize**: manifest reusable dipisahkan ke `securebank-api/k8s/base/`, dengan overlay `dev`, `staging`, dan `prod` untuk replica count serta `APP_ENV`.
-7. **Branching & merge policy**: feature/fix direbase ke `main`; promotion `develop → staging → main` wajib memakai merge commit agar ancestry tetap dapat ditelusuri. Panduan lengkap ada di [`branching-and-merge-policy.md`](branching-and-merge-policy.md).
+2. **Quality gate** di `.github/workflows/ci.yml`: build/test (Go 1.26), Gitleaks, Trivy SCA, Semgrep, ZAP DAST, Checkov, Trivy IaC, `image-build-and-scan` (Trivy image, gate CRITICAL/HIGH), `promotion-policy`, dan `security-gate` sebagai konsolidasi. Image dibangun dari `securebank-api/Dockerfile` (builder `golang:1.26.6-alpine` untuk menutup CVE stdlib).
+3. **CD otomatis** di `.github/workflows/cd-deploy.yml` memakai `workflow_run` pada workflow **SecureBank CI** (`types: [completed]`, `branches: [develop, staging, main]`). CD hanya berjalan jika `workflow_run.conclusion == 'success'`, tanpa klik `Run workflow` dan tanpa approval environment. Pemilihan target deployment memakai `github.event.workflow_run.head_branch`: `develop → dev`, `staging → staging`, `main → prod` (+ post-deployment verification).
+4. **Promotion branches**: `develop`, `staging`, dan `main` dibuat di origin. Branch protection: required status checks `Build & Test (Go 1.26)` + `Security Gate`, force push diblokir, branch deletion diblokir, conversation resolution wajib, merge commit diizinkan (linear history nonaktif agar promotion memakai merge commit). Untuk solo project, required PR review dinonaktifkan.
+5. **GitHub Environments**: `dev`, `staging`, dan `prod` (UAT, preprod, dan security-approval dihapus). Tidak ada required reviewer maupun wait timer karena approval dilakukan melalui PR checks dan merge commit. Cosign signing di-skip karena private key tidak diberikan; tidak ada key/secret yang dibuat otomatis.
+6. **Validasi manifest tanpa cluster**: runner GitHub-hosted tidak punya Kubernetes API server, sehingga `kubectl apply --dry-run` gagal konek ke `localhost:8080`. Diganti `kubeconform -strict -ignore-missing-schemas` untuk validasi schema setiap manifest environment.
+7. **Kustomize**: manifest reusable di `securebank-api/k8s/base/`; overlay `dev`, `staging`, dan `prod` untuk replica count serta `APP_ENV`.
+8. **Branching & merge policy**: feature/fix direbase ke `main`; promotion `develop → staging → main` wajib memakai merge commit agar ancestry dapat ditelusuri (squash dilarang untuk promotion). Panduan lengkap ada di [`branching-and-merge-policy.md`](branching-and-merge-policy.md).
+9. **Smoke test end-to-end**: alur `feature/test-auto-cd → develop → staging → main` dijalankan; auto-CD terbukti men-deploy `dev`, `staging`, dan `prod` setelah masing-masing CI sukses, tanpa intervensi manual.
 
 Catatan penyesuaian: implementasi CI/CD di atas dilakukan pada **Hari 58**, sedangkan **Hari 59** dipakai untuk persiapan CDP exam simulation. Execution ujian belum dilakukan dan akan direncanakan pada sesi berikutnya.
 
