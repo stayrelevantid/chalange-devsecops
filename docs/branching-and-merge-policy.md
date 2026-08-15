@@ -80,6 +80,52 @@ merge ke staging -> deploy staging
 merge ke main    -> deploy prod
 ```
 
+## Auto-CD (`workflow_run`)
+
+Deployment tidak lagi manual (`workflow_dispatch`). `.github/workflows/cd-deploy.yml` memakai `workflow_run` sehingga CD ter-trigger otomatis saat **SecureBank CI** selesai:
+
+```yaml
+on:
+  workflow_run:
+    workflows: ["SecureBank CI"]
+    types: [completed]
+    branches: [develop, staging, main]
+```
+
+Job `build-image` hanya berjalan jika:
+
+```yaml
+github.event.workflow_run.conclusion == 'success'
+```
+
+Job deployment memilih environment dari branch pemicu:
+
+| Trigger branch | Job deployment | Environment |
+|---|---|---|
+| `develop` | `deploy-dev` | `dev` |
+| `staging` | `deploy-staging` | `staging` |
+| `main` | `deploy-prod` + post-deployment verification | `prod` |
+
+Karena approval sudah berada di lapisan PR (CI quality gate + merge commit), tidak ada approval environment lagi. Environment yang aktif: `dev`, `staging`, `prod`.
+
+Deployment berupa simulasi: render Kustomize overlay, validasi `kubeconform -strict -ignore-missing-schemas`, lalu health check container di `dev`. Runner GitHub-hosted tidak mengakses k3d lokal.
+
+## Hasil Smoke Test End-to-End
+
+Alur berikut dijalankan dan terbukti bekerja:
+
+```text
+feature/test-auto-cd → develop → staging → main
+```
+
+| Tahap | Auto-CD | Hasil |
+|---|---|---|
+| Merge ke `develop` | `Deploy DEV (simulation)` | success |
+| Merge ke `staging` | `Deploy STAGING (simulation)` | success |
+| Merge ke `main` | `Deploy PROD` + post-deployment verification | success |
+
+Auto-CD ter-trigger otomatis setelah masing-masing CI sukses, tanpa intervensi manual.
+
 ## Checklist Sebelum Merge
 
 - [ ] Source dan target PR sesuai promotion policy.
