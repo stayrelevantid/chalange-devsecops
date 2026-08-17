@@ -520,7 +520,13 @@ Menguji kemampuan mengingat dan mengimplementasikan pipeline DevSecOps dari nol 
 8. **Branching & merge policy**: feature/fix direbase ke `main`; promotion `develop → staging → main` wajib memakai merge commit agar ancestry dapat ditelusuri (squash dilarang untuk promotion). Panduan lengkap ada di [`branching-and-merge-policy.md`](branching-and-merge-policy.md).
 9. **Smoke test end-to-end**: alur `feature/test-auto-cd → develop → staging → main` dijalankan; auto-CD terbukti men-deploy `dev`, `staging`, dan `prod` setelah masing-masing CI sukses, tanpa intervensi manual.
 
-Catatan penyesuaian: implementasi CI/CD di atas dilakukan pada **Hari 58**, sedangkan **Hari 59** dipakai untuk persiapan CDP exam simulation. Execution ujian belum dilakukan dan akan direncanakan pada sesi berikutnya.
+Catatan penyesuaian: implementasi CI/CD di atas dilakukan pada **Hari 58**, sedangkan **Hari 59** dipakai untuk persiapan CDP exam simulation.
+
+### Implementation Notes (Hari 59 — Hasil Praktek)
+1. **Panduan persiapan ujian** ditulis di [`cdp-exam-guide.md`](cdp-exam-guide.md): format simulasi 3 jam, strategi alokasi waktu 180 menit, checklist skill, cheatsheet sintaks (komentar Inggris), tips & jebakan, checklist persiapan, dan evaluasi diri.
+2. **15 DevSecOps Best Practices** dari [Practical DevSecOps](https://www.practical-devsecops.com/devsecops-best-practices/) diintegrasikan dan dipetakan ke tindakan konkret saat ujian — termasuk Shift Left, Automation, Continuous Testing, Policy as Code, Immutable Infrastructure, dan Security Observability.
+3. **Jebakan yang dicatat dari 60 hari**: `kubectl apply --dry-run` butuh cluster → pakai `kubeconform`; Gitleaks perlu `fetch-depth: 0`; pin `golang:1.26.6-alpine` untuk CVE stdlib; Kustomize `commonLabels` deprecated → `labels`; konsistensi artifact path; cache key berbasis lockfile.
+4. **Eksekusi ujian 3 jam tidak dilakukan pada hari ini** — hanya dokumentasi strategi dan persiapan; simulasi dapat dijalankan kapan pun menggunakan panduan tersebut.
 
 ---
 
