@@ -80,10 +80,12 @@ securebank-api/
 | 🔐 Fase 1 — Secure SDLC & AppSec | ✅ Selesai | 15/15 |
 | 🐳 Fase 2 — IaC & Container Security | ✅ Selesai | 15/15 |
 | ☸️ Fase 3 — K8s & Runtime Security | ✅ Selesai | 15/15 |
-| 🔴 Fase 4 — Vuln Mgmt & Red Team | 🔄 Berjalan | 13/15 |
-| **Total** | | **58 / 60** |
+| 🔴 Fase 4 — Vuln Mgmt & Red Team | 🔄 Berjalan | 14/15 |
+| **Total** | | **59 / 60** |
 
 Branching dan aturan merge: [`docs/branching-and-merge-policy.md`](docs/branching-and-merge-policy.md).
+
+Panduan persiapan ujian CDP (strategi, cheatsheet, best practices): [`docs/cdp-exam-guide.md`](docs/cdp-exam-guide.md).
 
 CI/CD pipeline: quality gate 10 check → auto-CD (`workflow_run`) → `develop→dev`, `staging→staging`, `main→prod`, tanpa approval environment. Deployment berupa simulasi karena runner GitHub-hosted tidak mengakses k3d lokal.
 
