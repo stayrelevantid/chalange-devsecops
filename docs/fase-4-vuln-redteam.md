@@ -555,10 +555,17 @@ docker-compose down
 ```
 
 ### Checklist
-- [ ] Diagram End-to-End dibuat.
-- [ ] Artikel publikasi dirilis/dipersiapkan.
-- [ ] Repositori di-public-kan (opsional).
-- [ ] Resource dimatikan.
+- [x] Diagram End-to-End dibuat.
+- [x] Artikel publikasi dirilis/dipersiapkan.
+- [x] Repositori dipublikasikan (sudah PUBLIC, diverifikasi tanpa secret).
+- [x] Resource dimatikan (AWS + lokal).
+
+### Implementation Notes (Hari 60 — Hasil Praktek)
+1. **Diagram arsitektur E2E** di [`docs/architecture/day-60-architecture.drawio`](architecture/day-60-architecture.drawio) (render PNG scale 2 via draw.io desktop headless). Tiga lapisan: (1) Source & CI/CD — Developer → GitHub branch protection → SecureBank CI 10 quality gate; (2) Artifacts, Deploy & Runtime — GHCR → Auto-CD `workflow_run` → Kustomize dev/staging/prod → k3d (OPA Gatekeeper, Falco, NetworkPolicy/RBAC/ESO, Pods); (3) Monitoring, Cloud & Output — Falco → n8n → Slack, AWS lab (CloudTrail, Prowler, IAM), Audit PDF + Blog/LinkedIn.
+2. **Blog showcase** di `blogpost.md` (gitignored, tidak ikut commit): framing "berhasil menguasai skill DevSecOps" dengan section keterampilan per kelompok (AppSec, Container & IaC, K8s & Runtime, Cloud Security & Red Team, Vuln Mgmt & Automation, CI/CD) plus draft LinkedIn.
+3. **AWS cleanup untuk cost nol**: credits/resource yang dibuat selama challenge dihapus — Secrets Manager `securebank/jwt-secret` ($0.40/bln) di-`force-delete-without-recovery`; CloudTrail `securebank-trail` di-stop + delete; bucket log S3 dihapus setelah membersihkan **18.098 object versions** (bucket CloudTrail mengaktifkan versioning → `rb --force` gagal `BucketNotEmpty`; solusi: loop `list-object-versions` → `delete-objects` per version + delete markers). Perbaikan keamanan account (S3 Block Public Access, default SG revoke, password policy) dipertahankan karena cost Rp0.
+4. **Teardown lokal**: `k3d cluster delete securebank` (hanya klaster challenge, klaster project lain tidak disentuh), `docker-compose down` untuk app + DefectDojo, webhook receiver Python di-stop. Docker daemon diaktifkan ulang manual sebelum teardown.
+5. **Penutup tracking**: Fase 4 → 15/15, Total → 60/60, Hari Aktif → 56. Retrospektif Fase 4 diisi, README + progress README diverifikasi ulang. Repo **sudah PUBLIC** dari awal (diverifikasi `gh repo view`), tidak perlu perubahan visibility.
 
 ---
 
